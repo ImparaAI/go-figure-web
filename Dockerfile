@@ -53,7 +53,7 @@ RUN cd /var/www/go-figure && \
 
 WORKDIR /var/www/go-figure
 
-EXPOSE 80 4200
+EXPOSE 80 49153
 
 ENV TERM xterm-color
 

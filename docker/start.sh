@@ -12,7 +12,13 @@ if [ $DEVELOPMENT == true ]; then
   touch /var/healthy
 
   # start the app
-  ng serve --host 0.0.0.0 --port 80 --disable-host-check
+  ng serve --host 0.0.0.0 --port 80 --disable-host-check --poll
+
+  while :
+  do
+    sleep 1
+  done
+
 else
   touch /var/healthy
 
