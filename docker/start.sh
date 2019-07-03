@@ -12,7 +12,7 @@ if [ $DEVELOPMENT == true ]; then
   touch /var/healthy
 
   # start the app
-  ng serve --host 0.0.0.0 --port 80
+  ng serve --host 0.0.0.0 --port 80 --disable-host-check
 else
   touch /var/healthy
 
