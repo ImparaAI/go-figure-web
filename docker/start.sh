@@ -9,6 +9,8 @@ if [ $DEVELOPMENT == true ]; then
   # add ng cli to the path
   ln -s /var/www/go-figure/node_modules/@angular/cli/bin/ng /usr/bin
 
+  touch /var/healthy
+
   # start the app
   ng serve --host 0.0.0.0
 fi
