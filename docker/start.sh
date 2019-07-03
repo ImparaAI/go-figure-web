@@ -13,8 +13,8 @@ if [ $DEVELOPMENT == true ]; then
 
   # start the app
   ng serve --host 0.0.0.0 --port 80
+else
+  touch /var/healthy
+
+  supervisord
 fi
-
-touch /var/healthy
-
-supervisord
