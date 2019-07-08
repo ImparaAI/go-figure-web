@@ -47,12 +47,13 @@ RUN apk --no-cache add nginx && \
 
 # Install app
 COPY . /var/www/go-figure
+WORKDIR /var/www/go-figure
+
 RUN cd /var/www/go-figure && \
     chown -R www-data:www-data /var/www/go-figure && \
     chmod -R 777 /var/www/go-figure && \
-    npm install -g npm
-
-WORKDIR /var/www/go-figure
+    npm install -g npm && \
+    npm install
 
 EXPOSE 80 49153
 
