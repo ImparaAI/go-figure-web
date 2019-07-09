@@ -2,6 +2,7 @@ FROM alpine:edge
 
 # Install packages
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
+  echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
   apk update && \
   apk upgrade && \
   apk --no-cache add \
@@ -20,7 +21,8 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/reposit
     zip \
     bzip2 \
     libressl-dev \
-    npm
+    npm \
+    chromium@edge
 
 # Add configuration files
 COPY docker/supervisord.conf /etc/supervisor.d/supervisord.ini
@@ -57,6 +59,8 @@ RUN cd /var/www/go-figure && \
 
 EXPOSE 80 49153
 
-ENV TERM xterm-color
+ENV TERM=xterm-color \
+    CHROME_BIN=/usr/bin/chromium-browser \
+    CHROME_PATH=/usr/lib/chromium/
 
 CMD ["sh", "/bin/start.sh"]
