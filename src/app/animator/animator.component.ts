@@ -56,7 +56,7 @@ export class AnimatorComponent implements OnInit {
   async testApi()  {
 
     try {
-      let response = await this.api.submission('Yay!')
+      let response = await this.api.submission('Yay');
 
       console.log(response);
       alert(response);
