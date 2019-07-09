@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+import { ApiService } from '@app/api/api.service';
+
 class Vector {
   start: {x: number, y: number} = {x: 0, y: 0};
   end: {x: number, y: number} = {x: 0, y: 0};
@@ -24,7 +26,7 @@ export class AnimatorComponent implements OnInit {
   @ViewChild('canvas') canvas: ElementRef;
   drawer: CanvasRenderingContext2D;
 
-  constructor() { }
+  constructor(private api: ApiService) { }
 
   ngOnInit() {
     this.t = -1 * this.timeInterval;
@@ -49,6 +51,23 @@ export class AnimatorComponent implements OnInit {
 
   pause()  {
     this.run = false;
+  }
+
+  async testApi()  {
+
+    try {
+      let response = await this.api.submission('Yay!')
+
+      console.log(response);
+      alert(response);
+    }
+    catch (e) {
+      console.log(e);
+      alert('Fail.');
+      console.log(e);
+    }
+
+
   }
 
   start()  {
