@@ -7,10 +7,14 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 })
 export class CapturerComponent implements OnInit {
 
+  intervalId: any;
+  captureRate: number = 100;
+  timestamp: number;
   mouseIsDown: boolean = false;
   lastPosition: {x: number, y: number} = {x: 0, y: 0};
   currentPosition: {x: number, y: number} = {x: 0, y: 0};
   allPositions: {x: number, y: number}[] = [];
+  data: {x: number, y: number}[] = [];
 
   @ViewChild('canvas') canvas: ElementRef;
   drawer: CanvasRenderingContext2D;
@@ -58,14 +62,32 @@ export class CapturerComponent implements OnInit {
 
   mouseup() {
     this.mouseIsDown = false;
+    this.stopDataCapture();
   }
 
   mousedown(x, y) {
     this.mouseIsDown = true;
     this.clearDrawing();
+    this.startDataCapture()
     this.allPositions = [];
     this.updateMousePositions(x, y);
     this.drawDot();
+  }
+
+  startDataCapture() {
+    this.data = [];
+    this.timestamp = Date.now();
+
+    this.intervalId = setInterval(() => this.captureData(), this.captureRate);
+
+  }
+
+  stopDataCapture() {
+    clearInterval(this.intervalId);
+  }
+
+  captureData() {
+    this.data.push({x: this.currentPosition.x, y: this.currentPosition.y});
   }
 
   drawDot() {
