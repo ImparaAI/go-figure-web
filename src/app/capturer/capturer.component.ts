@@ -68,9 +68,9 @@ export class CapturerComponent implements OnInit {
   mousedown(x, y) {
     this.mouseIsDown = true;
     this.clearDrawing();
-    this.startDataCapture()
     this.allPositions = [];
     this.updateMousePositions(x, y);
+    this.startDataCapture()
     this.drawDot();
   }
 
@@ -78,8 +78,9 @@ export class CapturerComponent implements OnInit {
     this.data = [];
     this.timestamp = Date.now();
 
-    this.intervalId = setInterval(() => this.captureData(), this.captureRate);
+    this.captureData();
 
+    this.intervalId = setInterval(() => this.captureData(), this.captureRate);
   }
 
   stopDataCapture() {
