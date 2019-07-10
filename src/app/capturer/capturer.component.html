@@ -1,8 +1,10 @@
-<canvas #canvas width="500" height="500"></canvas>
+<div class="container">
+  <div><canvas #canvas width="500" height="500"></canvas></div>
 
-<div>
-  Data:
-  <div *ngFor="let position of data">
-    <div>{{position | json}}</div>
+  <div>
+    Data:
+    <div *ngFor="let position of data">
+      <div>{{position | json}}</div>
+    </div>
   </div>
 </div>
