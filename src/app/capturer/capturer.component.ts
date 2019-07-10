@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+import { ApiService } from '@app/api/api.service';
+
 @Component({
   selector: 'iai-capturer',
   templateUrl: './capturer.component.html',
@@ -19,7 +21,7 @@ export class CapturerComponent implements OnInit {
   @ViewChild('canvas') canvas: ElementRef;
   drawer: CanvasRenderingContext2D;
 
-  constructor() { }
+  constructor(private api: ApiService) { }
 
   ngOnInit() {
   }
@@ -110,6 +112,20 @@ export class CapturerComponent implements OnInit {
 
   clearDrawing() {
     this.drawer.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+  }
+
+  async submit()  {
+    try {
+      let response = await this.api.createSubmission(this.data, 25);
+
+      console.log(response);
+      alert(JSON.stringify(response));
+    }
+    catch (e) {
+      console.log(e);
+      alert('Fail.');
+      console.log(e);
+    }
   }
 
 }

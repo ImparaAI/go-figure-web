@@ -7,8 +7,12 @@ export class ApiService {
 
   constructor(private http: HttpService) { }
 
-  submission(message: string): Promise<any> {
+  getSubmission(message: string): Promise<any> {
     return this.http.get('/submission/' + message,  null,  {responseType: 'text'}).toPromise();
+  }
+
+  createSubmission(points: object[], drawVectorCount: number): Promise<any> {
+  	return this.http.post('/submission', {points: points, drawVectorCount: drawVectorCount}).toPromise();
   }
 
 
