@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { MatButtonModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -14,9 +16,12 @@ import { CapturerComponent } from './capturer/capturer.component';
     CapturerComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, //should come before most other modules
+
+    MatButtonModule,
     AppRoutingModule,
     HttpClientModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
