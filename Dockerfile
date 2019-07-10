@@ -7,20 +7,13 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/reposit
   apk upgrade && \
   apk --no-cache add \
     bash \
-    gawk \
     sed \
     grep \
-    bc \
     coreutils \
     vim \
     supervisor \
-    curl \
-    wget \
     openssh \
     git \
-    zip \
-    bzip2 \
-    libressl-dev \
     npm \
     chromium@edge \
     chromium-chromedriver
