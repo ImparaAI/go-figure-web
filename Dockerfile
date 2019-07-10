@@ -22,7 +22,8 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/reposit
     bzip2 \
     libressl-dev \
     npm \
-    chromium@edge
+    chromium@edge \
+    chromium-chromedriver
 
 # Add configuration files
 COPY docker/supervisord.conf /etc/supervisor.d/supervisord.ini

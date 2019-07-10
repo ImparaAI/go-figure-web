@@ -8,6 +8,7 @@ exports.config = {
   specs: [
     './src/**/*.e2e-spec.ts'
   ],
+  chromeDriver: '/usr/bin/chromedriver',
   capabilities: {
     'browserName': 'chrome',
     'chromeOptions': {
