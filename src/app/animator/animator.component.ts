@@ -15,13 +15,14 @@ class Vector {
 export class AnimatorComponent implements OnInit {
 
   t: number;
-  timeInterval: number = .001;
+  timeInterval: number = .005;
   run: boolean = false;
   timeout: number = 100;
   params: {n: number, c: number}[];
   vectors: Vector[];
-  functionValues: {x: number, y: number}[] = [];
+  functionValues: {x: number, y: number, t: number, opacity: number}[] = [];
   offset: {x: number, y: number} = {x: 200, y: -200};
+  pathTransparencyRatio: number = .4;
 
   @ViewChild('canvas') canvas: ElementRef;
   drawer: CanvasRenderingContext2D;
@@ -33,6 +34,7 @@ export class AnimatorComponent implements OnInit {
     this.params = [
       {n: 0, c: 1},
       {n: 1, c: .5},
+      {n: -1, c: .4},
       {n: 2, c: .3},
     ];
 
@@ -58,16 +60,12 @@ export class AnimatorComponent implements OnInit {
     try {
       let response = await this.api.getSubmission('Yay');
 
-      console.log(response);
       alert(response);
     }
     catch (e) {
-      console.log(e);
       alert('Fail.');
       console.log(e);
     }
-
-
   }
 
   start()  {
@@ -85,6 +83,9 @@ export class AnimatorComponent implements OnInit {
 
     this.t += this.timeInterval;
 
+    if (this.t >= 1)
+      this.t -= 1;
+
     this.drawer.clearRect(0, 0, 500, 500)
     this.drawVectors();
     this.drawFunction();
@@ -93,6 +94,7 @@ export class AnimatorComponent implements OnInit {
   }
 
   drawVectors() {
+    this.drawer.lineWidth = 1;
     this.drawer.strokeStyle = 'rgba(0, 0, 0, 1)'
 
     this.drawer.beginPath();
@@ -111,20 +113,23 @@ export class AnimatorComponent implements OnInit {
   }
 
   drawFunction() {
-    this.appendFunctionValue();
+    this.updateFunctionValues();
 
-    this.drawer.strokeStyle = 'rgba(255, 165, 0, 1)'
-
-    this.drawer.beginPath();
+    let lastPoint;
 
     this.functionValues.forEach((point, i) =>  {
-      if (i != 0)
+      if (i != 0) {
+        this.drawer.lineWidth = 3;
+        this.drawer.strokeStyle = "rgba(255, 165, 0, "  + point.opacity + ")"
+
+        this.drawer.beginPath();
+        this.drawer.moveTo(this.offset.x + 100 * lastPoint.x, -1 * (this.offset.y + 100 * lastPoint.y));
         this.drawer.lineTo(this.offset.x + 100 * point.x, -1 * (this.offset.y + 100 * point.y));
+        this.drawer.stroke();
+      }
 
-      this.drawer.moveTo(this.offset.x + 100 * point.x, -1 * (this.offset.y + 100 * point.y));
+      lastPoint = point;
     });
-
-    this.drawer.stroke();
   }
 
   updateVector(v: Vector, index: number) {
@@ -137,13 +142,61 @@ export class AnimatorComponent implements OnInit {
     v.end.y = v.start.y + params.c * Math.sin(val);
   }
 
-  appendFunctionValue() {
+  updateFunctionValues() {
     if (!this.vectors.length)
       return;
 
+    this.appendNewFunctionValue();
+
+    this.removeCyclicalFunctionValues();
+    this.applyFunctionTransparency();
+  }
+
+  appendNewFunctionValue() {
     let lastVector = this.vectors[this.vectors.length - 1];
 
-    this.functionValues.push({x: lastVector.end.x, y: lastVector.end.y});
+    this.functionValues.push({x: lastVector.end.x, y: lastVector.end.y, t: this.t, opacity: 1});
+  }
+
+  removeCyclicalFunctionValues() {
+    let removeCount = 0;
+
+    for (let i = 0; i < this.functionValues.length; ++i) {
+      //remove points close to new point
+      if (this.getNormalizedDistance(this.functionValues[i]) >= .99)
+        removeCount++;
+
+      else
+        break;
+    }
+
+    if (removeCount)
+      this.functionValues.splice(0, removeCount + 1)
+  }
+
+  applyFunctionTransparency() {
+    let distance,
+        transparencySlope = 1 / this.pathTransparencyRatio;
+
+    for (let i = 0; i < this.functionValues.length; ++i) {
+      distance = this.getNormalizedDistance(this.functionValues[i]);
+
+      if (distance >= 1 - this.pathTransparencyRatio)
+        this.functionValues[i].opacity = -1 * transparencySlope * distance + transparencySlope;
+
+      else
+        return;
+    }
+  }
+
+  getNormalizedDistance(currentValue) {
+    let lastTime = this.functionValues[this.functionValues.length - 1].t,
+        currentTime = currentValue.t;
+
+      if (currentTime > lastTime)
+        lastTime += 1;
+
+      return Math.abs(lastTime - currentTime);
   }
 
 }
