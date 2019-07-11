@@ -1,8 +1,13 @@
-:host {
-	display: block;
-	padding-top: 30px;
+.header {
+  border-bottom: 1px solid #bbb;
+  padding: 10px 5px;
 }
 
-h1 {
-	text-align: center;
+.logo {
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+.content {
+  padding: 10px;
 }

@@ -1,0 +1,33 @@
+.c-flex
+{
+  display: flex;
+
+  &--space-between
+  {
+    justify-content: space-between;
+  }
+
+  &--space-around
+  {
+    justify-content: space-around;
+  }
+
+  &--flex-end
+  {
+    justify-content: flex-end;
+  }
+
+  &--space-evenly
+  {
+    > *
+    {
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+  }
+
+  &--center-items
+  {
+    align-items: center;
+  }
+}
