@@ -1,12 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+import { Vector } from '@app/structures/vector';
+import { Point } from '@app/structures/point';
 import { ApiService } from '@app/api/api.service';
-
-class Vector {
-  start: {x: number, y: number} = {x: 0, y: 0};
-  end: {x: number, y: number} = {x: 0, y: 0};
-}
 
 @Component({
   selector: 'iai-animator',
@@ -21,8 +18,8 @@ export class AnimatorComponent implements OnInit {
   timeout: number = 100;
   params: {n: number, c: number}[];
   vectors: Vector[];
-  functionValues: {x: number, y: number, t: number, opacity: number}[] = [];
-  offset: {x: number, y: number} = {x: 200, y: -200};
+  output: {point: Point, t: number, opacity: number}[] = [];
+  offset: Point = new Point(200, -200);
   pathTransparencyRatio: number = .4;
 
   @ViewChild('canvas') canvas: ElementRef;
@@ -51,7 +48,7 @@ export class AnimatorComponent implements OnInit {
   stop()  {
     this.run = false;
     this.t = -1 * this.timeInterval;
-    this.functionValues = [];
+    this.output = [];
   }
 
   pause()  {
@@ -78,7 +75,7 @@ export class AnimatorComponent implements OnInit {
 
     this.drawer.clearRect(0, 0, 500, 500)
     this.drawVectors();
-    this.drawFunction();
+    this.drawOutput();
 
     window.requestAnimationFrame(() => this.animate());
   }
@@ -102,23 +99,23 @@ export class AnimatorComponent implements OnInit {
     this.drawer.lineTo(this.offset.x + 100 * v.end.x, -1 * (this.offset.y + 100 * v.end.y));
   }
 
-  drawFunction() {
-    this.updateFunctionValues();
+  drawOutput() {
+    this.updateOutput();
 
-    let lastPoint;
+    let lastValue;
 
-    this.functionValues.forEach((point, i) =>  {
+    this.output.forEach((value, i) =>  {
       if (i != 0) {
         this.drawer.lineWidth = 3;
-        this.drawer.strokeStyle = "rgba(255, 165, 0, "  + point.opacity + ")"
+        this.drawer.strokeStyle = "rgba(255, 165, 0, "  + value.opacity + ")"
 
         this.drawer.beginPath();
-        this.drawer.moveTo(this.offset.x + 100 * lastPoint.x, -1 * (this.offset.y + 100 * lastPoint.y));
-        this.drawer.lineTo(this.offset.x + 100 * point.x, -1 * (this.offset.y + 100 * point.y));
+        this.drawer.moveTo(this.offset.x + 100 * lastValue.point.x, -1 * (this.offset.y + 100 * lastValue.point.y));
+        this.drawer.lineTo(this.offset.x + 100 * value.point.x, -1 * (this.offset.y + 100 * value.point.y));
         this.drawer.stroke();
       }
 
-      lastPoint = point;
+      lastValue = value;
     });
   }
 
@@ -132,28 +129,31 @@ export class AnimatorComponent implements OnInit {
     v.end.y = v.start.y + params.c * Math.sin(val);
   }
 
-  updateFunctionValues() {
+  updateOutput() {
     if (!this.vectors.length)
       return;
 
-    this.appendNewFunctionValue();
-
-    this.removeCyclicalFunctionValues();
-    this.applyFunctionTransparency();
+    this.appendOutput();
+    this.removeCyclicalValues();
+    this.applyOutputTransparency();
   }
 
-  appendNewFunctionValue() {
+  appendOutput() {
     let lastVector = this.vectors[this.vectors.length - 1];
 
-    this.functionValues.push({x: lastVector.end.x, y: lastVector.end.y, t: this.t, opacity: 1});
+    this.output.push({
+      t: this.t,
+      opacity: 1,
+      point: new Point(lastVector.end.x, lastVector.end.y),
+    });
   }
 
-  removeCyclicalFunctionValues() {
+  removeCyclicalValues() {
     let removeCount = 0;
 
-    for (let i = 0; i < this.functionValues.length; ++i) {
+    for (let i = 0; i < this.output.length; ++i) {
       //remove points close to new point
-      if (this.getNormalizedDistance(this.functionValues[i]) >= .99)
+      if (this.getNormalizedDistance(this.output[i]) >= .99)
         removeCount++;
 
       else
@@ -161,18 +161,18 @@ export class AnimatorComponent implements OnInit {
     }
 
     if (removeCount)
-      this.functionValues.splice(0, removeCount + 1)
+      this.output.splice(0, removeCount + 1)
   }
 
-  applyFunctionTransparency() {
+  applyOutputTransparency() {
     let distance,
         transparencySlope = 1 / this.pathTransparencyRatio;
 
-    for (let i = 0; i < this.functionValues.length; ++i) {
-      distance = this.getNormalizedDistance(this.functionValues[i]);
+    for (let i = 0; i < this.output.length; ++i) {
+      distance = this.getNormalizedDistance(this.output[i]);
 
       if (distance >= 1 - this.pathTransparencyRatio)
-        this.functionValues[i].opacity = -1 * transparencySlope * distance + transparencySlope;
+        this.output[i].opacity = -1 * transparencySlope * distance + transparencySlope;
 
       else
         return;
@@ -180,7 +180,7 @@ export class AnimatorComponent implements OnInit {
   }
 
   getNormalizedDistance(currentValue) {
-    let lastTime = this.functionValues[this.functionValues.length - 1].t,
+    let lastTime = this.output[this.output.length - 1].t,
         currentTime = currentValue.t;
 
       if (currentTime > lastTime)

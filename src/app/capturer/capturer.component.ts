@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+import { Point } from '@app/structures/point';
 import { ApiService } from '@app/api/api.service';
 
 @Component({
@@ -13,10 +14,10 @@ export class CapturerComponent implements OnInit {
   captureRate: number = 100;
   timestamp: number;
   mouseIsDown: boolean = false;
-  lastPosition: {x: number, y: number} = {x: 0, y: 0};
-  currentPosition: {x: number, y: number} = {x: 0, y: 0};
-  allPositions: {x: number, y: number}[] = [];
-  data: {x: number, y: number}[] = [];
+  lastPoint: Point = new Point;
+  currentPoint: Point = new Point;
+  allPoints: Point[] = [];
+  data: Point[] = [];
 
   @ViewChild('canvas') canvas: ElementRef;
   drawer: CanvasRenderingContext2D;
@@ -45,12 +46,12 @@ export class CapturerComponent implements OnInit {
   }
 
   updateMousePositions(x, y) {
-    this.lastPosition.x = this.currentPosition.x;
-    this.lastPosition.y = this.currentPosition.y;
-    this.currentPosition.x = x - this.canvas.nativeElement.offsetLeft;
-    this.currentPosition.y = y - this.canvas.nativeElement.offsetTop;
+    this.lastPoint.x = this.currentPoint.x;
+    this.lastPoint.y = this.currentPoint.y;
+    this.currentPoint.x = x - this.canvas.nativeElement.offsetLeft;
+    this.currentPoint.y = y - this.canvas.nativeElement.offsetTop;
 
-    this.allPositions.push({x: this.currentPosition.x, y: this.currentPosition.y});
+    this.allPoints.push(new Point(this.currentPoint.x, this.currentPoint.y));
   }
 
   mousemove(x, y) {
@@ -70,7 +71,7 @@ export class CapturerComponent implements OnInit {
   mousedown(x, y) {
     this.mouseIsDown = true;
     this.clearDrawing();
-    this.allPositions = [];
+    this.allPoints = [];
     this.updateMousePositions(x, y);
     this.startDataCapture()
     this.drawDot();
@@ -90,20 +91,20 @@ export class CapturerComponent implements OnInit {
   }
 
   captureData() {
-    this.data.push({x: this.currentPosition.x, y: this.currentPosition.y});
+    this.data.push(new Point(this.currentPoint.x, this.currentPoint.y));
   }
 
   drawDot() {
     this.drawer.beginPath();
-    this.drawer.fillStyle = 'lack';
-    this.drawer.fillRect(this.currentPosition.x, this.currentPosition.y, 2, 2);
+    this.drawer.fillStyle = 'black';
+    this.drawer.fillRect(this.currentPoint.x, this.currentPoint.y, 2, 2);
     this.drawer.closePath();
   }
 
   drawLine() {
     this.drawer.beginPath();
-    this.drawer.moveTo(this.lastPosition.x, this.lastPosition.y);
-    this.drawer.lineTo(this.currentPosition.x, this.currentPosition.y);
+    this.drawer.moveTo(this.lastPoint.x, this.lastPoint.y);
+    this.drawer.lineTo(this.currentPoint.x, this.currentPoint.y);
     this.drawer.strokeStyle = "black";
     this.drawer.lineWidth = 1;
     this.drawer.stroke();
