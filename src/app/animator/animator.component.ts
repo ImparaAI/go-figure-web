@@ -1,8 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
-import { Vector } from '@app/structures/vector';
 import { Point } from '@app/structures/point';
+import { Vector } from '@app/structures/vector';
+import { Painter } from '@app/structures/painter';
 import { ApiService } from '@app/api/api.service';
 
 @Component({
@@ -21,9 +22,9 @@ export class AnimatorComponent implements OnInit {
   output: {point: Point, t: number, opacity: number}[] = [];
   offset: Point = new Point(200, -200);
   pathTransparencyRatio: number = .4;
+  painter: Painter;
 
   @ViewChild('canvas') canvas: ElementRef;
-  drawer: CanvasRenderingContext2D;
 
   constructor(private route: ActivatedRoute, private api: ApiService) { }
 
@@ -42,7 +43,7 @@ export class AnimatorComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.drawer = this.canvas.nativeElement.getContext('2d');
+    this.painter = new Painter(this.canvas.nativeElement);
   }
 
   stop()  {
@@ -73,46 +74,51 @@ export class AnimatorComponent implements OnInit {
     if (this.t >= 1)
       this.t -= 1;
 
-    this.drawer.clearRect(0, 0, 500, 500)
-    this.drawVectors();
-    this.drawOutput();
+    this.painter.clearCanvas();
+    this.paintVectors();
+    this.paintOutput();
 
     window.requestAnimationFrame(() => this.animate());
   }
 
-  drawVectors() {
-    this.drawer.lineWidth = 1;
-    this.drawer.strokeStyle = 'rgba(0, 0, 0, 1)'
+  paintVectors() {
+    this.vectors.forEach((v: Vector, i: number) => this.updateVector(v, i));
 
-    this.drawer.beginPath();
+    //transform vectors for visibility until we have real values
+    let transformedVectors = this.vectors.map((v: Vector) => this.getTransformedVector(v));
 
-    this.vectors.forEach((v: Vector, i: number) =>  {
-      this.updateVector(v, i)
-      this.drawVector(v);
-    });
-
-    this.drawer.stroke();
+    this.painter.setLineWidth(1);
+    this.painter.setStrokeStyle('rgba(0, 0, 0, 1)');
+    this.painter.paintVectors(transformedVectors);
   }
 
-  drawVector(v: Vector) {
-    this.drawer.moveTo(this.offset.x + 100 * v.start.x, -1 * (this.offset.y + 100 * v.start.y));
-    this.drawer.lineTo(this.offset.x + 100 * v.end.x, -1 * (this.offset.y + 100 * v.end.y));
+  getTransformedVector(v: Vector) {
+    let t = new Vector;
+
+    t.start = this.getTransFormedPoint(v.start);
+    t.end = this.getTransFormedPoint(v.end);
+
+    return t;
   }
 
-  drawOutput() {
+  getTransFormedPoint(p: Point) {
+    return new Point(this.offset.x + 100 * p.x, -1 * (this.offset.y + 100 * p.y));
+  }
+
+  paintOutput() {
     this.updateOutput();
 
     let lastValue;
 
     this.output.forEach((value, i) =>  {
       if (i != 0) {
-        this.drawer.lineWidth = 3;
-        this.drawer.strokeStyle = "rgba(255, 165, 0, "  + value.opacity + ")"
+        this.painter.setLineWidth(3);
+        this.painter.setStrokeStyle("rgba(255, 165, 0, "  + value.opacity + ")");
 
-        this.drawer.beginPath();
-        this.drawer.moveTo(this.offset.x + 100 * lastValue.point.x, -1 * (this.offset.y + 100 * lastValue.point.y));
-        this.drawer.lineTo(this.offset.x + 100 * value.point.x, -1 * (this.offset.y + 100 * value.point.y));
-        this.drawer.stroke();
+        this.painter.paintLine(
+          this.getTransFormedPoint(lastValue.point),
+          this.getTransFormedPoint(value.point)
+        );
       }
 
       lastValue = value;
