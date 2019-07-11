@@ -5,8 +5,9 @@ import { CapturerComponent } from '@app/capturer/capturer.component';
 import { AnimatorComponent } from '@app/animator/animator.component';
 
 const routes: Routes = [
-  {path: 'capturer', component: CapturerComponent, pathMatch: 'full'},
-  {path: '', component: AnimatorComponent, pathMatch: 'full'},
+  {path: '', component: CapturerComponent, pathMatch: 'full'},
+  {path: 'submission/:id', component: AnimatorComponent},
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({

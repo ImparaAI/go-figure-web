@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { ApiService } from '@app/api/api.service';
@@ -27,9 +28,11 @@ export class AnimatorComponent implements OnInit {
   @ViewChild('canvas') canvas: ElementRef;
   drawer: CanvasRenderingContext2D;
 
-  constructor(private api: ApiService) { }
+  constructor(private route: ActivatedRoute, private api: ApiService) { }
 
   ngOnInit() {
+    let id = this.route.snapshot.paramMap.get('id');
+
     this.t = -1 * this.timeInterval;
     this.params = [
       {n: 0, c: 1},
@@ -53,19 +56,6 @@ export class AnimatorComponent implements OnInit {
 
   pause()  {
     this.run = false;
-  }
-
-  async testApi()  {
-
-    try {
-      let response = await this.api.getSubmission('Yay');
-
-      alert(response);
-    }
-    catch (e) {
-      alert('Fail.');
-      console.log(e);
-    }
   }
 
   start()  {
