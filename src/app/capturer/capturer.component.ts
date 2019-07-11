@@ -48,12 +48,10 @@ export class CapturerComponent implements OnInit {
   }
 
   updateMousePositions(x, y) {
-    this.lastPoint.x = this.currentPoint.x;
-    this.lastPoint.y = this.currentPoint.y;
-    this.currentPoint.x = x - this.canvas.nativeElement.offsetLeft;
-    this.currentPoint.y = y - this.canvas.nativeElement.offsetTop;
+    this.lastPoint.update(this.currentPoint.x, this.currentPoint.y);
+    this.currentPoint.update(x - this.canvas.nativeElement.offsetLeft, y - this.canvas.nativeElement.offsetTop);
 
-    this.allPoints.push(new Point(this.currentPoint.x, this.currentPoint.y));
+    this.allPoints.push(this.currentPoint.clone());
   }
 
   mousemove(x, y) {
