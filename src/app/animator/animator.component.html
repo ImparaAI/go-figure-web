@@ -2,7 +2,7 @@
 <button mat-raised-button color="accent" (click)="pause()">Pause</button>
 <button mat-raised-button color="warn" (click)="stop()">Stop</button>
 t = {{t}}
-<div *ngFor="let v of vectors">
+<div *ngFor="let v of series.vectors">
 
   <div>({{v.start | json}} -> {{v.end | json}})</div>
 

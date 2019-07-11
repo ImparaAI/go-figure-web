@@ -5,6 +5,7 @@ import { Point } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
 import { Painter } from '@app/structures/painter';
 import { ApiService } from '@app/api/api.service';
+import { FourierSeries } from '@app/structures/series';
 
 @Component({
   selector: 'iai-animator',
@@ -17,12 +18,11 @@ export class AnimatorComponent implements OnInit {
   timeInterval: number = .005;
   run: boolean = false;
   timeout: number = 100;
-  params: {n: number, c: number}[];
-  vectors: Vector[];
   output: {point: Point, t: number, opacity: number}[] = [];
   offset: Point = new Point(200, -200);
   pathTransparencyRatio: number = .4;
   painter: Painter;
+  series: FourierSeries;
 
   @ViewChild('canvas') canvas: ElementRef;
 
@@ -32,14 +32,13 @@ export class AnimatorComponent implements OnInit {
     let id = this.route.snapshot.paramMap.get('id');
 
     this.t = -1 * this.timeInterval;
-    this.params = [
+
+    this.series = new FourierSeries([
       {n: 0, c: 1},
       {n: 1, c: .5},
       {n: -1, c: .4},
       {n: 2, c: .3},
-    ];
-
-    this.vectors = this.params.map(() => new Vector);
+    ]);
   }
 
   ngAfterViewInit() {
@@ -82,10 +81,10 @@ export class AnimatorComponent implements OnInit {
   }
 
   paintVectors() {
-    this.vectors.forEach((v: Vector, i: number) => this.updateVector(v, i));
+    this.series.update(this.t);
 
     //transform vectors for visibility until we have real values
-    let transformedVectors = this.vectors.map((v: Vector) => this.getTransformedVector(v));
+    let transformedVectors = this.series.vectors.map((v: Vector) => this.getTransformedVector(v));
 
     this.painter.setLineWidth(1);
     this.painter.setStrokeStyle('rgba(0, 0, 0, 1)');
@@ -125,18 +124,8 @@ export class AnimatorComponent implements OnInit {
     });
   }
 
-  updateVector(v: Vector, index: number) {
-    let params = this.params[index],
-        val = 2 * Math.PI * params.n * this.t;
-
-    v.start.x = index == 0 ? 0 : this.vectors[index-1].end.x;
-    v.start.y = index == 0 ? 0 : this.vectors[index-1].end.y;
-    v.end.x = v.start.x + params.c * Math.cos(val);
-    v.end.y = v.start.y + params.c * Math.sin(val);
-  }
-
   updateOutput() {
-    if (!this.vectors.length)
+    if (!this.series.vectors.length)
       return;
 
     this.appendOutput();
@@ -145,7 +134,7 @@ export class AnimatorComponent implements OnInit {
   }
 
   appendOutput() {
-    let lastVector = this.vectors[this.vectors.length - 1];
+    let lastVector = this.series.vectors[this.series.vectors.length - 1];
 
     this.output.push({
       t: this.t,
