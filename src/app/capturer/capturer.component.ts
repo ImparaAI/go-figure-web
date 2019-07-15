@@ -28,10 +28,10 @@ export class CapturerComponent {
     this.painter.setStrokeStyle('black');
 
     this.canvas.nativeElement.addEventListener("mousemove", (e) => {
-        this.mousemove(e.clientX, e.clientY)
+        this.mousemove(e.layerX, e.layerY)
     }, false);
     this.canvas.nativeElement.addEventListener("mousedown", (e) => {
-        this.mousedown(e.clientX, e.clientY);
+        this.mousedown(e.layerX, e.layerY);
     }, false);
     this.canvas.nativeElement.addEventListener("mouseup", (e) => {
         this.mouseup();
@@ -63,7 +63,7 @@ export class CapturerComponent {
 
   updateMousePositions(x, y) {
     this.lastPoint.update(this.currentPoint.x, this.currentPoint.y);
-    this.currentPoint.update(x - this.canvas.nativeElement.offsetLeft, y - this.canvas.nativeElement.offsetTop);
+    this.currentPoint.update(x, y);
 
     this.captureData();
   }
