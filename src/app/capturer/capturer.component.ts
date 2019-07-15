@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 import { Point } from '@app/structures/point';
 import { Painter } from '@app/structures/painter';
@@ -9,24 +9,18 @@ import { ApiService } from '@app/api/api.service';
   templateUrl: './capturer.component.html',
   styleUrls: ['./capturer.component.scss']
 })
-export class CapturerComponent implements OnInit {
+export class CapturerComponent {
 
-  intervalId: any;
-  captureRate: number = 100;
   timestamp: number;
   mouseIsDown: boolean = false;
   lastPoint: Point = new Point;
   currentPoint: Point = new Point;
-  allPoints: Point[] = [];
-  data: Point[] = [];
+  data: {point: Point, time: number}[];
   painter: Painter;
 
   @ViewChild('canvas') canvas: ElementRef;
 
   constructor(private api: ApiService) { }
-
-  ngOnInit() {
-  }
 
   ngAfterViewInit() {
     this.painter = new Painter(this.canvas.nativeElement);
@@ -47,13 +41,6 @@ export class CapturerComponent implements OnInit {
     }, false);
   }
 
-  updateMousePositions(x, y) {
-    this.lastPoint.update(this.currentPoint.x, this.currentPoint.y);
-    this.currentPoint.update(x - this.canvas.nativeElement.offsetLeft, y - this.canvas.nativeElement.offsetTop);
-
-    this.allPoints.push(this.currentPoint.clone());
-  }
-
   mousemove(x, y) {
     if (!this.mouseIsDown)
       return;
@@ -64,47 +51,51 @@ export class CapturerComponent implements OnInit {
 
   mouseup() {
     this.mouseIsDown = false;
-    this.stopDataCapture();
   }
 
   mousedown(x, y) {
     this.mouseIsDown = true;
-    this.painter.clearCanvas();
-    this.allPoints = [];
+
+    this.reset();
     this.updateMousePositions(x, y);
-    this.startDataCapture()
     this.painter.paintPoint(this.currentPoint);
   }
 
-  startDataCapture() {
-    this.data = [];
-    this.timestamp = Date.now();
+  updateMousePositions(x, y) {
+    this.lastPoint.update(this.currentPoint.x, this.currentPoint.y);
+    this.currentPoint.update(x - this.canvas.nativeElement.offsetLeft, y - this.canvas.nativeElement.offsetTop);
 
     this.captureData();
-
-    this.intervalId = setInterval(() => this.captureData(), this.captureRate);
   }
 
-  stopDataCapture() {
-    clearInterval(this.intervalId);
+  reset() {
+    this.data = [];
+    this.painter.clearCanvas();
+    this.timestamp = Date.now();
   }
 
   captureData() {
-    this.data.push(new Point(this.currentPoint.x, this.currentPoint.y));
+    let time = (Date.now() - this.timestamp) / 1000,
+        point = this.currentPoint.clone();
+
+    this.data.push({point, time});
   }
 
   async submit()  {
     try {
-      let response = await this.api.createSubmission(this.data, 25);
+      let response = await this.api.createSubmission(this.format());
 
       console.log(response);
       alert(JSON.stringify(response));
     }
     catch (e) {
-      console.log(e);
       alert('Fail.');
-      console.log(e);
     }
   }
 
+  format() {
+    return this.data.map((data) => {
+      return {x: data.point.x, y: data.point.y, time: data.time};
+    });
+  }
 }

@@ -11,8 +11,8 @@ export class ApiService {
     return this.http.get('/submission/' + message,  null,  {responseType: 'text'}).toPromise();
   }
 
-  createSubmission(points: object[], drawVectorCount: number): Promise<any> {
-  	return this.http.post('/submission', {points: points, drawVectorCount: drawVectorCount}).toPromise();
+  createSubmission(points: object[]): Promise<any> {
+  	return this.http.post('/submission', {points}).toPromise();
   }
 
 
