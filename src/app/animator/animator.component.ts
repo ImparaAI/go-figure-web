@@ -178,26 +178,26 @@ export class AnimatorComponent implements OnInit {
   dragStart: Point;
 
   bindDraggableCanvas() {
-    // this.canvas.nativeElement.addEventListener("mousemove", (e) => {
-    //     this.mousemove(e.layerX, e.layerY)
-    // }, false);
-    // this.canvas.nativeElement.addEventListener("mousedown", (e) => {
-    //     this.mousedown(e.layerX, e.layerY);
-    // }, false);
-    // this.canvas.nativeElement.addEventListener("mouseup", (e) => {
-    //     this.mouseup();
-    // }, false);
-    // this.canvas.nativeElement.addEventListener("mouseout", (e) => {
-    //     this.mouseup();
-    // }, false);
+    this.canvas.nativeElement.addEventListener("mousemove", (e) => {
+        this.mousemove(e.layerX, e.layerY)
+    }, false);
+    this.canvas.nativeElement.addEventListener("mousedown", (e) => {
+        this.mousedown(e.layerX, e.layerY);
+    }, false);
+    this.canvas.nativeElement.addEventListener("mouseup", (e) => {
+        this.mouseup();
+    }, false);
+    this.canvas.nativeElement.addEventListener("mouseout", (e) => {
+        this.mouseup();
+    }, false);
 
 
-    // if (this.canvas.nativeElement.addEventListener) {
-    //   this.canvas.nativeElement.addEventListener("wheel", (e) => this.handleMousescroll(e), false);
-    //   this.canvas.nativeElement.addEventListener("DOMMouseScroll", (e) => this.handleMousescroll(e), false);
-    // }
-    // else
-    //   this.canvas.nativeElement.attachEvent("onmousewheel", (e) => this.handleMousescroll(e));
+    if (this.canvas.nativeElement.addEventListener) {
+      this.canvas.nativeElement.addEventListener("wheel", (e) => this.handleMousescroll(e), false);
+      this.canvas.nativeElement.addEventListener("DOMMouseScroll", (e) => this.handleMousescroll(e), false);
+    }
+    else
+      this.canvas.nativeElement.attachEvent("onmousewheel", (e) => this.handleMousescroll(e));
 
   }
 

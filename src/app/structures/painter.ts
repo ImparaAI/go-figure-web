@@ -14,14 +14,17 @@ export class Painter {
 
   clearCanvas() {
     this.brush.clearRect(
-      (0 - this.origin.x) / this.scale,
-      (0 - this.origin.y) / this.scale,
-      this.canvas.width / this.scale,
-      this.canvas.height / this.scale);
+      (-this.origin.x - 5000),
+      (-this.origin.y - 5000),
+      (this.canvas.width * 5000),
+      (this.canvas.height * 5000));
   }
 
   shiftOrigin(deltaX: number, deltaY: number) {
-    this.origin = new Point(this.origin.x + deltaX * this.scale, this.origin.y + deltaY * this.scale);
+    deltaX = deltaX / this.scale;
+    deltaY = deltaY / this.scale;
+
+    this.origin = new Point(this.origin.x + deltaX, this.origin.y + deltaY);
     this.brush.translate(deltaX, deltaY);
   }
 
