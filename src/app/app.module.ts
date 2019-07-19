@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
+import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AnimatorComponent } from './animator/animator.component';
 import { CapturerComponent } from './capturer/capturer.component';
@@ -16,12 +17,14 @@ import { CapturerComponent } from './capturer/capturer.component';
     CapturerComponent,
   ],
   imports: [
-    BrowserModule, //should come before most other modules
+    //browser modules come first
+    BrowserModule,
+    BrowserAnimationsModule,
 
-    MatButtonModule,
+    FormsModule,
+    MaterialModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
