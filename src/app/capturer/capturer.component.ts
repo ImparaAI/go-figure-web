@@ -1,3 +1,4 @@
+import { Router} from '@angular/router';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 
 import { Point } from '@app/structures/point';
@@ -20,7 +21,7 @@ export class CapturerComponent {
 
   @ViewChild('canvas') canvas: ElementRef;
 
-  constructor(private api: ApiService) { }
+  constructor(private router: Router, private api: ApiService) { }
 
   ngAfterViewInit() {
     this.painter = new Painter(this.canvas.nativeElement);
@@ -75,7 +76,7 @@ export class CapturerComponent {
   }
 
   captureData() {
-    let time = (Date.now() - this.timestamp) / 1000,
+    let time = this.data.length ? (Date.now() - this.timestamp) / 1000 : 0.00,
         point = this.currentPoint.clone();
 
     this.data.push({point, time});
@@ -83,10 +84,9 @@ export class CapturerComponent {
 
   async submit()  {
     try {
-      let response = await this.api.createSubmission(this.format());
+      let response = await this.api.createDrawing(this.format());
 
-      console.log(response);
-      alert(JSON.stringify(response));
+      this.router.navigate(['drawing', response.id]);
     }
     catch (e) {
       alert('Fail.');

@@ -15,6 +15,7 @@ import { FourierSeries } from '@app/structures/series';
 export class AnimatorComponent implements OnInit {
 
   t: number;
+  id: number;
   timeInterval: number = .005;
   run: boolean = false;
   timeout: number = 100;
@@ -29,20 +30,23 @@ export class AnimatorComponent implements OnInit {
   constructor(private route: ActivatedRoute, private api: ApiService) { }
 
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get('id');
-
-    this.t = -1 * this.timeInterval;
-
-    this.series = new FourierSeries([
-      {n: 0, c: 1},
-      {n: 1, c: .5},
-      {n: -1, c: .4},
-      {n: 2, c: .3},
-    ]);
+    this.id = +this.route.snapshot.paramMap.get('id');
+    this.load();
   }
 
   ngAfterViewInit() {
     this.painter = new Painter(this.canvas.nativeElement);
+  }
+
+  async load() {
+    try {
+      let drawing = await this.api.getDrawing(this.id);
+
+      this.series = new FourierSeries(drawing.drawVectors);
+    }
+    catch (e) {
+
+    }
   }
 
   stop()  {

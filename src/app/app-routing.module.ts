@@ -6,7 +6,7 @@ import { AnimatorComponent } from '@app/animator/animator.component';
 
 const routes: Routes = [
   {path: '', component: CapturerComponent, pathMatch: 'full'},
-  {path: 'submission/:id', component: AnimatorComponent},
+  {path: 'drawing/:id', component: AnimatorComponent},
   {path: '**', redirectTo: ''}
 ];
 
