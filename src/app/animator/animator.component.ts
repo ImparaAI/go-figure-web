@@ -14,16 +14,17 @@ import { FourierSeries } from '@app/structures/series';
 })
 export class AnimatorComponent implements OnInit {
 
-  t: number;
+  t: number = 0;
   id: number;
   timeInterval: number = .005;
   run: boolean = false;
   timeout: number = 100;
   output: {point: Point, t: number, opacity: number}[] = [];
-  offset: Point = new Point(200, -200);
   pathTransparencyRatio: number = .4;
   painter: Painter;
   series: FourierSeries;
+
+  maxVectorCount: number = 1;
 
   @ViewChild('canvas') canvas: ElementRef;
 
@@ -36,6 +37,7 @@ export class AnimatorComponent implements OnInit {
 
   ngAfterViewInit() {
     this.painter = new Painter(this.canvas.nativeElement);
+    this.bindDraggableCanvas();
   }
 
   async load() {
@@ -43,6 +45,7 @@ export class AnimatorComponent implements OnInit {
       let drawing = await this.api.getDrawing(this.id);
 
       this.series = new FourierSeries(drawing.drawVectors);
+      this.maxVectorCount = this.series.vectors.length;
     }
     catch (e) {
 
@@ -50,8 +53,8 @@ export class AnimatorComponent implements OnInit {
   }
 
   stop()  {
+    this.t = 0;
     this.run = false;
-    this.t = -1 * this.timeInterval;
     this.output = [];
   }
 
@@ -72,14 +75,14 @@ export class AnimatorComponent implements OnInit {
     if (!this.run)
       return;
 
+    this.painter.clearCanvas();
+    this.paintVectors();
+    this.paintOutput();
+
     this.t += this.timeInterval;
 
     if (this.t >= 1)
       this.t -= 1;
-
-    this.painter.clearCanvas();
-    this.paintVectors();
-    this.paintOutput();
 
     window.requestAnimationFrame(() => this.animate());
   }
@@ -87,25 +90,9 @@ export class AnimatorComponent implements OnInit {
   paintVectors() {
     this.series.update(this.t);
 
-    //transform vectors for visibility until we have real values
-    let transformedVectors = this.series.vectors.map((v: Vector) => this.getTransformedVector(v));
-
     this.painter.setLineWidth(1);
     this.painter.setStrokeStyle('rgba(0, 0, 0, 1)');
-    this.painter.paintVectors(transformedVectors);
-  }
-
-  getTransformedVector(v: Vector) {
-    let t = new Vector;
-
-    t.start = this.getTransFormedPoint(v.start);
-    t.end = this.getTransFormedPoint(v.end);
-
-    return t;
-  }
-
-  getTransFormedPoint(p: Point) {
-    return new Point(this.offset.x + 100 * p.x, -1 * (this.offset.y + 100 * p.y));
+    this.painter.paintVectors(this.series.vectors.slice(0, this.maxVectorCount));
   }
 
   paintOutput() {
@@ -117,11 +104,7 @@ export class AnimatorComponent implements OnInit {
       if (i != 0) {
         this.painter.setLineWidth(3);
         this.painter.setStrokeStyle("rgba(255, 165, 0, "  + value.opacity + ")");
-
-        this.painter.paintLine(
-          this.getTransFormedPoint(lastValue.point),
-          this.getTransFormedPoint(value.point)
-        );
+        this.painter.paintLine(lastValue.point, value.point);
       }
 
       lastValue = value;
@@ -138,7 +121,7 @@ export class AnimatorComponent implements OnInit {
   }
 
   appendOutput() {
-    let lastVector = this.series.vectors[this.series.vectors.length - 1];
+    let lastVector = this.series.vectors[this.maxVectorCount - 1];
 
     this.output.push({
       t: this.t,
@@ -186,6 +169,73 @@ export class AnimatorComponent implements OnInit {
         lastTime += 1;
 
       return Math.abs(lastTime - currentTime);
+  }
+
+
+
+  //maybe make a draggable canvas component to remove all of this
+  mouseIsDown: boolean;
+  dragStart: Point;
+
+  bindDraggableCanvas() {
+    // this.canvas.nativeElement.addEventListener("mousemove", (e) => {
+    //     this.mousemove(e.layerX, e.layerY)
+    // }, false);
+    // this.canvas.nativeElement.addEventListener("mousedown", (e) => {
+    //     this.mousedown(e.layerX, e.layerY);
+    // }, false);
+    // this.canvas.nativeElement.addEventListener("mouseup", (e) => {
+    //     this.mouseup();
+    // }, false);
+    // this.canvas.nativeElement.addEventListener("mouseout", (e) => {
+    //     this.mouseup();
+    // }, false);
+
+
+    // if (this.canvas.nativeElement.addEventListener) {
+    //   this.canvas.nativeElement.addEventListener("wheel", (e) => this.handleMousescroll(e), false);
+    //   this.canvas.nativeElement.addEventListener("DOMMouseScroll", (e) => this.handleMousescroll(e), false);
+    // }
+    // else
+    //   this.canvas.nativeElement.attachEvent("onmousewheel", (e) => this.handleMousescroll(e));
+
+  }
+
+  handleMousescroll(e) {
+    e = window.event || e;
+    e.stopPropagation();
+    event.preventDefault();
+    this.mousescroll(e.wheelDelta || -e.detail);
+
+    return false;
+  }
+
+  mousescroll(pixles: number) {
+    let val = pixles > 0 ? 1.1 : 0.9;
+
+    this.painter.zoom(val);
+  }
+
+  mousemove(x, y) {
+    if (!this.mouseIsDown)
+      return;
+
+    let deltaX = x - this.dragStart.x,
+        deltaY = y - this.dragStart.y;
+
+    if (deltaX || deltaY) {
+      this.painter.shiftOrigin(deltaX, deltaY)
+      this.dragStart = new Point(x, y);
+    }
+  }
+
+  mouseup() {
+    this.mouseIsDown = false;
+  }
+
+  mousedown(x, y) {
+    this.mouseIsDown = true;
+    this.dragStart = new Point(x, y);
   }
 
 }

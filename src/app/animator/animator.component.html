@@ -2,11 +2,42 @@
 <button mat-raised-button color="accent" (click)="pause()">Pause</button>
 <button mat-raised-button color="warn" (click)="stop()">Stop</button>
 t = {{t}}
-<div *ngFor="let v of series.vectors">
 
-  <div>({{v.start | json}} -> {{v.end | json}})</div>
+<div></div>
 
+
+<mat-card>
+  <mat-card-content>
+    <div>
+      <span>Vector Count: </span>
+      <mat-slider
+          [max]="series ? series.vectors.length : 1"
+          [min]="1"
+          [step]="1"
+          [thumbLabel]="true"
+          [(ngModel)]="maxVectorCount">
+      </mat-slider>
+    </div>
+    <div>
+      <span>Animation Speed: </span>
+      <mat-slider
+          [max]=".1"
+          [min]=".001"
+          [step]=".001"
+          [thumbLabel]="true"
+          [(ngModel)]="timeInterval">
+      </mat-slider>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<div>
+  <canvas #canvas width="500" height="500"></canvas>
 </div>
+<ng-container *ngIf="series">
+  <div *ngFor="let v of series.vectors">
 
+    <div>({{v.start | json}} -> {{v.end | json}})</div>
 
-<canvas #canvas width="500" height="500"></canvas>
+  </div>
+</ng-container>

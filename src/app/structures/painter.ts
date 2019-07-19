@@ -2,6 +2,8 @@ import { Point } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
 
 export class Painter {
+  scale: number = 1;
+  origin: Point = new Point;
   canvas: HTMLCanvasElement;
   brush: CanvasRenderingContext2D;
 
@@ -11,7 +13,21 @@ export class Painter {
   }
 
   clearCanvas() {
-    this.brush.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.brush.clearRect(
+      (0 - this.origin.x) / this.scale,
+      (0 - this.origin.y) / this.scale,
+      this.canvas.width / this.scale,
+      this.canvas.height / this.scale);
+  }
+
+  shiftOrigin(deltaX: number, deltaY: number) {
+    this.origin = new Point(this.origin.x + deltaX * this.scale, this.origin.y + deltaY * this.scale);
+    this.brush.translate(deltaX, deltaY);
+  }
+
+  zoom(scale: number) {
+    this.scale *= scale
+    this.brush.scale(scale, scale);
   }
 
   paintPoint(p: Point) {
