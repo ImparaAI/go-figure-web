@@ -17,7 +17,8 @@ export class Painter {
       (-this.origin.x - 5000),
       (-this.origin.y - 5000),
       (this.canvas.width * 5000),
-      (this.canvas.height * 5000));
+      (this.canvas.height * 5000)
+    );
   }
 
   shiftOrigin(deltaX: number, deltaY: number) {
@@ -29,7 +30,7 @@ export class Painter {
   }
 
   zoom(scale: number) {
-    this.scale *= scale
+    this.scale *= scale;
     this.brush.scale(scale, scale);
   }
 
