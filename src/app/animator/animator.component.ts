@@ -20,9 +20,11 @@ export class AnimatorComponent implements OnInit {
   run: boolean = false;
   timeout: number = 100;
   output: {point: Point, t: number, opacity: number}[] = [];
+  originalPoints: {x: number, y: number, time: number}[] = [];
   pathTransparencyRatio: number = .4;
   painter: Painter;
   series: FourierSeries;
+  showOriginal: boolean = false;
 
   maxVectorCount: number = 1;
 
@@ -46,6 +48,7 @@ export class AnimatorComponent implements OnInit {
 
       this.series = new FourierSeries(drawing.drawVectors);
       this.maxVectorCount = this.series.vectors.length;
+      this.originalPoints = drawing.originalPoints;
     }
     catch (e) {
 
@@ -76,6 +79,10 @@ export class AnimatorComponent implements OnInit {
       return;
 
     this.painter.clearCanvas();
+
+    if (this.showOriginal) {
+      this.paintOriginal();
+    }
     this.paintVectors();
     this.paintOutput();
 
@@ -171,6 +178,19 @@ export class AnimatorComponent implements OnInit {
       return Math.abs(lastTime - currentTime);
   }
 
+  paintOriginal() {
+    let lastValue;
+
+    this.originalPoints.forEach((value, i) =>  {
+      if (i != 0) {
+        this.painter.setLineWidth(3);
+        this.painter.setStrokeStyle("rgba(0, 0, 0)");
+        this.painter.paintLine(new Point(lastValue.x, lastValue.y), new Point(value.x, value.y));
+      }
+
+      lastValue = value;
+    });
+  }
 
 
   //maybe make a draggable canvas component to remove all of this
