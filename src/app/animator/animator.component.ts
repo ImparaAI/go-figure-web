@@ -49,6 +49,12 @@ export class AnimatorComponent implements OnInit {
       this.series = new FourierSeries(drawing.drawVectors);
       this.maxVectorCount = this.series.vectors.length;
       this.originalPoints = drawing.originalPoints;
+
+      if (!this.maxVectorCount) {
+        setTimeout(()=>{
+          this.load()
+        }, 1000)
+      }
     }
     catch (e) {
 
