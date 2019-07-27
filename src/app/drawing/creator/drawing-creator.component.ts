@@ -2,7 +2,6 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
 import { Point } from '@app/structures/point';
-import { Drawing } from '@app/structures/drawing';
 import { ApiService } from '@app/api/api.service';
 import { CanvasManager } from '@app/structures/canvas_manager';
 
@@ -14,7 +13,7 @@ import { CanvasManager } from '@app/structures/canvas_manager';
 export class DrawingCreatorComponent {
 
   canvasManager: CanvasManager;
-  drawing: Drawing = new Drawing;
+  data: {point: Point, time: number}[];
 
   constructor(private router: Router, private api: ApiService) { }
 
@@ -25,7 +24,7 @@ export class DrawingCreatorComponent {
   }
 
   onDrawingUpdated(data: {point: Point, time: number}[]) {
-    this.drawing.rawData = data;
+    this.data = data;
   }
 
   async submit()  {
@@ -40,7 +39,7 @@ export class DrawingCreatorComponent {
   }
 
   format() {
-    return this.drawing.rawData.map((data) => {
+    return this.data.map((data) => {
       return {x: data.point.x, y: data.point.y, time: data.time};
     });
   }

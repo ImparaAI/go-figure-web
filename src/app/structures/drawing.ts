@@ -8,7 +8,6 @@ export class Drawing {
   originalPoints: {x: number, y: number, time: number}[];
   drawVectors: {n: number, real: number, imaginary: number}[];
   createdAt: string;
-  rawData: {point: Point, time: number}[];
 
   constructor(drawing) {
     this.id = drawing.id;
