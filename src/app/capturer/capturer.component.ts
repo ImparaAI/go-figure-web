@@ -2,8 +2,8 @@ import { Router} from '@angular/router';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 
 import { Point } from '@app/structures/point';
-import { Painter } from '@app/structures/painter';
 import { ApiService } from '@app/api/api.service';
+import { CanvasManager } from '@app/structures/canvas_manager';
 
 @Component({
   selector: 'iai-capturer',
@@ -17,16 +17,16 @@ export class CapturerComponent {
   lastPoint: Point = new Point;
   currentPoint: Point = new Point;
   data: {point: Point, time: number}[];
-  painter: Painter;
+  canvasManager: CanvasManager;
 
   @ViewChild('canvas') canvas: ElementRef;
 
   constructor(private router: Router, private api: ApiService) { }
 
   ngAfterViewInit() {
-    this.painter = new Painter(this.canvas.nativeElement);
-    this.painter.setLineWidth(1);
-    this.painter.setStrokeStyle('black');
+    this.canvasManager = new CanvasManager(this.canvas.nativeElement);
+    this.canvasManager.setLineWidth(1);
+    this.canvasManager.setStrokeStyle('black');
 
     this.canvas.nativeElement.addEventListener("mousemove", (e) => {
         this.mousemove(e.layerX, e.layerY)
@@ -47,7 +47,7 @@ export class CapturerComponent {
       return;
 
     this.updateMousePositions(x, y);
-    this.painter.paintLine(this.lastPoint, this.currentPoint);
+    this.canvasManager.paintLine(this.lastPoint, this.currentPoint);
   }
 
   mouseup() {
@@ -59,7 +59,7 @@ export class CapturerComponent {
 
     this.reset();
     this.updateMousePositions(x, y);
-    this.painter.paintPoint(this.currentPoint);
+    this.canvasManager.paintPoint(this.currentPoint);
   }
 
   updateMousePositions(x, y) {
@@ -71,7 +71,7 @@ export class CapturerComponent {
 
   reset() {
     this.data = [];
-    this.painter.clearCanvas();
+    this.canvasManager.clearCanvas();
     this.timestamp = Date.now();
   }
 

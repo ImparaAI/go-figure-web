@@ -1,11 +1,11 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Point } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
-import { Painter } from '@app/structures/painter';
 import { ApiService } from '@app/api/api.service';
 import { FourierSeries } from '@app/structures/series';
+import { CanvasManager } from '@app/structures/canvas_manager';
 
 @Component({
   selector: 'iai-animator',
@@ -22,13 +22,10 @@ export class AnimatorComponent implements OnInit {
   output: {point: Point, t: number, opacity: number}[] = [];
   originalPoints: {x: number, y: number, time: number}[] = [];
   pathTransparencyRatio: number = .4;
-  painter: Painter;
+  canvasManager: CanvasManager;
   series: FourierSeries;
   showOriginal: boolean = false;
-
   maxVectorCount: number = 1;
-
-  @ViewChild('canvas') canvas: ElementRef;
 
   constructor(private route: ActivatedRoute, private api: ApiService) { }
 
@@ -37,9 +34,8 @@ export class AnimatorComponent implements OnInit {
     this.load();
   }
 
-  ngAfterViewInit() {
-    this.painter = new Painter(this.canvas.nativeElement);
-    this.bindDraggableCanvas();
+  onCanvasReady(canvasManager: CanvasManager) {
+    this.canvasManager = canvasManager;
   }
 
   async load() {
@@ -84,7 +80,7 @@ export class AnimatorComponent implements OnInit {
     if (!this.run)
       return;
 
-    this.painter.clearCanvas();
+    this.canvasManager.clearCanvas();
 
     if (this.showOriginal) {
       this.paintOriginal();
@@ -103,9 +99,9 @@ export class AnimatorComponent implements OnInit {
   paintVectors() {
     this.series.update(this.t);
 
-    this.painter.setLineWidth(1);
-    this.painter.setStrokeStyle('rgba(0, 0, 0, 1)');
-    this.painter.paintVectors(this.series.vectors.slice(0, this.maxVectorCount));
+    this.canvasManager.setLineWidth(1);
+    this.canvasManager.setStrokeStyle('rgba(0, 0, 0, 1)');
+    this.canvasManager.paintVectors(this.series.vectors.slice(0, this.maxVectorCount));
   }
 
   paintOutput() {
@@ -115,9 +111,9 @@ export class AnimatorComponent implements OnInit {
 
     this.output.forEach((value, i) =>  {
       if (i != 0) {
-        this.painter.setLineWidth(3);
-        this.painter.setStrokeStyle("rgba(255, 165, 0, "  + value.opacity + ")");
-        this.painter.paintLine(lastValue.point, value.point);
+        this.canvasManager.setLineWidth(3);
+        this.canvasManager.setStrokeStyle("rgba(255, 165, 0, "  + value.opacity + ")");
+        this.canvasManager.paintLine(lastValue.point, value.point);
       }
 
       lastValue = value;
@@ -189,79 +185,13 @@ export class AnimatorComponent implements OnInit {
 
     this.originalPoints.forEach((value, i) =>  {
       if (i != 0) {
-        this.painter.setLineWidth(3);
-        this.painter.setStrokeStyle("rgba(0, 0, 0)");
-        this.painter.paintLine(new Point(lastValue.x, lastValue.y), new Point(value.x, value.y));
+        this.canvasManager.setLineWidth(3);
+        this.canvasManager.setStrokeStyle("rgba(0, 0, 0)");
+        this.canvasManager.paintLine(new Point(lastValue.x, lastValue.y), new Point(value.x, value.y));
       }
 
       lastValue = value;
     });
-  }
-
-
-  //maybe make a draggable canvas component to remove all of this
-  mouseIsDown: boolean;
-  dragStart: Point;
-
-  bindDraggableCanvas() {
-    this.canvas.nativeElement.addEventListener("mousemove", (e) => {
-        this.mousemove(e.layerX, e.layerY)
-    }, false);
-    this.canvas.nativeElement.addEventListener("mousedown", (e) => {
-        this.mousedown(e.layerX, e.layerY);
-    }, false);
-    this.canvas.nativeElement.addEventListener("mouseup", (e) => {
-        this.mouseup();
-    }, false);
-    this.canvas.nativeElement.addEventListener("mouseout", (e) => {
-        this.mouseup();
-    }, false);
-
-
-    if (this.canvas.nativeElement.addEventListener) {
-      this.canvas.nativeElement.addEventListener("wheel", (e) => this.handleMousescroll(e), false);
-      this.canvas.nativeElement.addEventListener("DOMMouseScroll", (e) => this.handleMousescroll(e), false);
-    }
-    else
-      this.canvas.nativeElement.attachEvent("onmousewheel", (e) => this.handleMousescroll(e));
-
-  }
-
-  handleMousescroll(e) {
-    e = window.event || e;
-    e.stopPropagation();
-    event.preventDefault();
-    this.mousescroll(e.wheelDelta || -e.detail);
-
-    return false;
-  }
-
-  mousescroll(pixles: number) {
-    let val = pixles > 0 ? 1.1 : 0.9;
-
-    this.painter.zoom(val);
-  }
-
-  mousemove(x, y) {
-    if (!this.mouseIsDown)
-      return;
-
-    let deltaX = x - this.dragStart.x,
-        deltaY = y - this.dragStart.y;
-
-    if (deltaX || deltaY) {
-      this.painter.shiftOrigin(deltaX, deltaY)
-      this.dragStart = new Point(x, y);
-    }
-  }
-
-  mouseup() {
-    this.mouseIsDown = false;
-  }
-
-  mousedown(x, y) {
-    this.mouseIsDown = true;
-    this.dragStart = new Point(x, y);
   }
 
 }
