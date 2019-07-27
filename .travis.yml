@@ -1,0 +1,11 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - docker build -t imparaai/go-figure-api .
+  - docker run -d --name api imparaai/go-figure-api
+script:
+  - docker exec api sh -c "go test ./.../test"
+notifications:
+  email:
+    on_success: never
