@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Point } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
+import { Drawing } from '@app/structures/drawing';
 import { ApiService } from '@app/api/api.service';
 import { FourierSeries } from '@app/structures/series';
 import { CanvasManager } from '@app/structures/canvas_manager';
@@ -20,12 +21,12 @@ export class DrawingAnimatorComponent implements OnInit {
   run: boolean = false;
   timeout: number = 100;
   output: {point: Point, t: number, opacity: number}[] = [];
-  originalPoints: {x: number, y: number, time: number}[] = [];
   pathTransparencyRatio: number = .4;
   canvasManager: CanvasManager;
   series: FourierSeries;
   showOriginal: boolean = false;
   maxVectorCount: number = 1;
+  drawing: Drawing;
 
   constructor(private route: ActivatedRoute, private api: ApiService) { }
 
@@ -40,11 +41,9 @@ export class DrawingAnimatorComponent implements OnInit {
 
   async load() {
     try {
-      let drawing = await this.api.getDrawing(this.id);
-
-      this.series = new FourierSeries(drawing.drawVectors);
-      this.maxVectorCount = this.series.vectors.length;
-      this.originalPoints = drawing.originalPoints;
+      this.drawing = new Drawing(await this.api.getDrawing(this.id));
+      this.series = new FourierSeries(this.drawing.drawVectors);
+      this.maxVectorCount = this.drawing.drawVectors.length;
 
       if (!this.maxVectorCount) {
         setTimeout(()=>{
@@ -183,7 +182,7 @@ export class DrawingAnimatorComponent implements OnInit {
   paintOriginal() {
     let lastValue;
 
-    this.originalPoints.forEach((value, i) =>  {
+    this.drawing.originalPoints.forEach((value, i) =>  {
       if (i != 0) {
         this.canvasManager.setLineWidth(3);
         this.canvasManager.setStrokeStyle("rgba(0, 0, 0)");
