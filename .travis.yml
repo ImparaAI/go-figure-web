@@ -5,8 +5,8 @@ before_install:
   - docker build -t imparaai/go-figure-web .
   - docker run -d --name web imparaai/go-figure-web
 script:
-  - docker exec web "/var/www/go-figure/node_modules/@angular/cli/bin/ng test --watch=false"
-  - docker exec web "/var/www/go-figure/node_modules/@angular/cli/bin/ng e2e --port 4202"
+  - docker exec web bash -c "/var/www/go-figure/node_modules/@angular/cli/bin/ng test --watch=false"
+  - docker exec web bash -c "/var/www/go-figure/node_modules/@angular/cli/bin/ng e2e --port 4202"
 notifications:
   email:
     on_success: never
