@@ -6,11 +6,11 @@ import { ApiService } from '@app/api/api.service';
 import { CanvasManager } from '@app/structures/canvas_manager';
 
 @Component({
-  selector: 'iai-capturer',
-  templateUrl: './capturer.component.html',
-  styleUrls: ['./capturer.component.scss']
+  selector: 'iai-drawing-creator',
+  templateUrl: './drawing-creator.component.html',
+  styleUrls: ['./drawing-creator.component.scss']
 })
-export class CapturerComponent {
+export class DrawingCreatorComponent {
 
   canvasManager: CanvasManager;
   data: {point: Point, time: number}[];

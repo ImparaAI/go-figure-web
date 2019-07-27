@@ -8,11 +8,11 @@ import { FourierSeries } from '@app/structures/series';
 import { CanvasManager } from '@app/structures/canvas_manager';
 
 @Component({
-  selector: 'iai-animator',
-  templateUrl: './animator.component.html',
-  styleUrls: ['./animator.component.scss']
+  selector: 'iai-drawing-animator',
+  templateUrl: './drawing-animator.component.html',
+  styleUrls: ['./drawing-animator.component.scss']
 })
-export class AnimatorComponent implements OnInit {
+export class DrawingAnimatorComponent implements OnInit {
 
   t: number = 0;
   id: number;
