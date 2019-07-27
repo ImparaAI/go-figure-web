@@ -1,6 +1,9 @@
 <div class="container">
   <div>
-    <canvas #canvas width="500" height="500"></canvas>
+    <iai-drawable-canvas
+      (canvasInitialized)="onCanvasReady($event)"
+      (drawingUpdated)="onDrawingUpdated($event)">
+    </iai-drawable-canvas>
     <button (click)="submit()">Submit</button>
   </div>
 

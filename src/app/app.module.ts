@@ -7,16 +7,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
-import { CanvasComponent } from './canvas/canvas.component';
 import { AnimatorComponent } from './animator/animator.component';
 import { CapturerComponent } from './capturer/capturer.component';
+import { DrawableCanvasComponent } from './canvas/drawable/drawable-canvas.component';
+import { DraggableCanvasComponent } from './canvas/draggable/draggable-canvas.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CanvasComponent,
     AnimatorComponent,
     CapturerComponent,
+    DrawableCanvasComponent,
+    DraggableCanvasComponent,
   ],
   imports: [
     //browser modules come first

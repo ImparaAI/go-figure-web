@@ -4,20 +4,17 @@ import { Point } from '@app/structures/point';
 import { CanvasManager } from '@app/structures/canvas_manager';
 
 @Component({
-  selector: 'iai-canvas',
-  templateUrl: './canvas.component.html',
-  styleUrls: ['./canvas.component.scss']
+  selector: 'iai-draggable-canvas',
+  templateUrl: './draggable-canvas.component.html',
 })
-export class CanvasComponent {
+export class DraggableCanvasComponent {
 
   dragStart: Point;
-  canvasManager: CanvasManager;
   mouseIsDown: boolean;
+  canvasManager: CanvasManager;
 
   @ViewChild('canvas') canvas: ElementRef;
-
-  @Output()
-  canvasInitialized = new EventEmitter<any>();
+  @Output() canvasInitialized = new EventEmitter<any>();
 
   ngAfterViewInit() {
     this.bindDragEvents();
@@ -47,7 +44,7 @@ export class CanvasComponent {
       this.canvas.nativeElement.attachEvent("onmousewheel", (e) => this.handleMousescroll(e));
   }
 
-  handleMousescroll(e) {
+  handleMousescroll(e): boolean {
     e = window.event || e;
     e.stopPropagation();
     event.preventDefault();
