@@ -29,7 +29,7 @@ export class DrawingCreatorComponent {
 
   async submit()  {
     try {
-      let response = await this.api.createDrawing(this.format());
+      let response = await this.api.createDrawing(this.format(), this.canvasManager.getPng());
 
       this.router.navigate(['drawing', response.id]);
     }
