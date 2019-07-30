@@ -1,8 +1,13 @@
-<div [hidden]="maxVectorCount > 0">
-  Processing results...
+<div class="processing" [hidden]="loading || (maxVectorCount > 0)">
+  <div class="main">Hang tight...the drawing is being generated.</div>
+  <div class="sub">While you wait, check out these drawings submitted by other people..</div>
 </div>
 
-<div [hidden]="maxVectorCount == 0">
+<div class="processing" [hidden]="!loading">
+  <div class="main">Loading...</div>
+</div>
+
+<div [hidden]="loading || (maxVectorCount == 0)">
   <button mat-raised-button color="primary" (click)="start()">Start</button>
   <button mat-raised-button color="accent" (click)="pause()">Pause</button>
   <button mat-raised-button color="warn" (click)="stop()">Stop</button>
@@ -48,3 +53,5 @@
     </iai-draggable-canvas>
   </div>
 </div>
+
+<iai-drawing-recent></iai-drawing-recent>

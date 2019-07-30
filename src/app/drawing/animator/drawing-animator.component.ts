@@ -15,6 +15,7 @@ import { CanvasManager } from '@app/structures/canvas_manager';
 })
 export class DrawingAnimatorComponent implements OnInit {
 
+  loading: boolean = true;
   t: number = 0;
   id: number;
   timeInterval: number = .005;
@@ -47,8 +48,13 @@ export class DrawingAnimatorComponent implements OnInit {
 
       if (!this.maxVectorCount) {
         setTimeout(()=>{
+          this.loading = false;
           this.load()
         }, 1000)
+      }
+      else {
+        this.loading = false;
+        this.start()
       }
     }
     catch (e) {

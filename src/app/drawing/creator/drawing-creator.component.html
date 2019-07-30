@@ -1,16 +1,15 @@
 <div class="container">
+  <h2>Draw Something</h2>
+  <h3>(in one continuous line)</h3>
+
   <div>
     <iai-drawable-canvas
       (canvasInitialized)="onCanvasReady($event)"
       (drawingUpdated)="onDrawingUpdated($event)">
     </iai-drawable-canvas>
-    <button (click)="submit()">Submit</button>
   </div>
-
-  <div>
-    Data:
-    <div *ngFor="let position of data">
-      <div>{{position | json}}</div>
-    </div>
-  </div>
+  <button (click)="submit()">Submit</button>
 </div>
+
+
+<iai-drawing-recent></iai-drawing-recent>

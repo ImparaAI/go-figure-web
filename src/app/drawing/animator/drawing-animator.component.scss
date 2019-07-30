@@ -2,3 +2,17 @@ iai-draggable-canvas {
   display: inline-block;
   border: 1px dashed gray;
 }
+
+.processing {
+	padding-top: 130px;
+	text-align: center;
+
+	> .main {
+		font-size: 25px;
+		padding-bottom: 40px;
+	}
+
+	> .sub {
+		font-style: italic;
+	}
+}

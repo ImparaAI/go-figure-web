@@ -1,0 +1,8 @@
+<div class="border"></div>
+
+<h3>Recent Drawings</h3>
+
+<div class="container">
+  <a class="link" *ngFor="let drawing of drawings" [routerLink]="[drawing.uri]">
+    <img [src]="drawing.image"/></a>
+</div>

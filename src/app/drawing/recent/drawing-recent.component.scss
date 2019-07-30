@@ -1,0 +1,39 @@
+:host {
+	display: block;
+	margin-top: 80px;
+}
+
+.border {
+	width: 90%;
+	height: 1px;
+	border-top: 1px solid #aaa;
+	margin: 0 auto 60px;
+}
+
+h3 {
+	text-align: center;
+	font-size: 23px;
+	margin-bottom: 15px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+
+  > .link {
+  	display: block;
+  	border: 1px solid #666;
+  	border-radius: 10px;
+  	flex-basis: 200px;
+  	margin: 10px;
+
+  	&:hover {
+  		background-color: #eee;
+  	}
+
+  	> img {
+  		width: 100%;
+  	}
+  }
+}

@@ -1,9 +1,19 @@
 .container {
-  display: flex;
+	text-align: center;
+}
+
+h2 {
+	margin: 40px 0 7px;
+	font-size: 25px;
+}
+
+h3 {
+	font-style: italic;
+	margin-bottom: 30px;
 }
 
 iai-drawable-canvas {
-  margin-right: 20px;
+  margin-bottom: 20px;
   display: inline-block;
   border: 1px dashed gray;
 }
