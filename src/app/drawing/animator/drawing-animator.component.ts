@@ -1,5 +1,5 @@
-import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Point } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
@@ -29,7 +29,9 @@ export class DrawingAnimatorComponent implements OnInit {
   maxVectorCount: number = 1;
   drawing: Drawing;
 
-  constructor(private route: ActivatedRoute, private api: ApiService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private api: ApiService) {
+    router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   ngOnInit() {
     this.id = +this.route.snapshot.paramMap.get('id');
