@@ -21,13 +21,15 @@ export class DrawingAnimatorComponent implements OnInit {
   timeInterval: number = .005;
   run: boolean = false;
   timeout: number = 100;
-  output: {point: Point, t: number, opacity: number}[] = [];
+  output: {point: Point, t: number, opacity: number, scale: number}[] = [];
   pathTransparencyRatio: number = .4;
   canvasManager: CanvasManager;
   series: FourierSeries;
   maxVectorCount: number = 1;
   drawing: Drawing;
   originalOpacity: number = 0.00;
+  trackOutput: boolean = false;
+  scale: number = 1;
 
   constructor(private route: ActivatedRoute, private router: Router, private api: ApiService) {
     router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -95,6 +97,10 @@ export class DrawingAnimatorComponent implements OnInit {
     this.paintVectors();
     this.paintOutput();
 
+    if (this.trackOutput && this.output.length) {
+      this.canvasManager.centerOn(this.output[this.output.length - 1].point)
+    }
+
     this.t += this.timeInterval;
 
     if (this.t >= 1)
@@ -104,7 +110,7 @@ export class DrawingAnimatorComponent implements OnInit {
   }
 
   paintVectors() {
-    this.series.update(this.t);
+    this.series.update(this.t, this.scale);
 
     this.canvasManager.setLineWidth(1);
     this.canvasManager.setStrokeStyle('rgba(0, 0, 0, 1)');
@@ -120,7 +126,9 @@ export class DrawingAnimatorComponent implements OnInit {
       if (i != 0) {
         this.canvasManager.setLineWidth(3);
         this.canvasManager.setStrokeStyle("rgba(255, 165, 0, "  + value.opacity + ")");
-        this.canvasManager.paintLine(lastValue.point, value.point);
+        this.canvasManager.paintLine(
+          new Point(lastValue.point.x / lastValue.scale * this.scale, lastValue.point.y / lastValue.scale * this.scale),
+          new Point(value.point.x / value.scale * this.scale, value.point.y / value.scale * this.scale));
       }
 
       lastValue = value;
@@ -142,6 +150,7 @@ export class DrawingAnimatorComponent implements OnInit {
     this.output.push({
       t: this.t,
       opacity: 1,
+      scale: this.scale,
       point: new Point(lastVector.end.x, lastVector.end.y),
     });
   }
@@ -194,11 +203,19 @@ export class DrawingAnimatorComponent implements OnInit {
       if (i != 0) {
         this.canvasManager.setLineWidth(3);
         this.canvasManager.setStrokeStyle(`rgba(0, 0, 0, ${this.originalOpacity})`);
-        this.canvasManager.paintLine(new Point(lastValue.x, lastValue.y), new Point(value.x, value.y));
+        this.canvasManager.paintLine(
+          new Point(lastValue.x * this.scale, lastValue.y * this.scale),
+          new Point(value.x * this.scale, value.y * this.scale)
+        );
       }
 
       lastValue = value;
     });
+  }
+
+  incrementScale(scale: number) {
+
+    this.scale += scale;
   }
 
 }

@@ -14,7 +14,9 @@
 <div class="drawing" [hidden]="loading || (maxVectorCount == 0)">
   <div class="canvas">
     <iai-draggable-canvas
-      (canvasInitialized)="onCanvasReady($event)">
+      (canvasInitialized)="onCanvasReady($event)"
+      (zoomIn)="incrementScale(0.1)"
+      (zoomOut)="incrementScale(-0.1)">
     </iai-draggable-canvas>
 
     <div class="total-vectors">
@@ -31,6 +33,9 @@
 </div>
 
 <div class="controls" [hidden]="loading || (maxVectorCount == 0)">
+  <div>
+    <mat-checkbox color="primary" [(ngModel)]="trackOutput">Track Output</mat-checkbox>
+  </div>
   <div>
     <span>Original Opacity:</span>
     <mat-slider

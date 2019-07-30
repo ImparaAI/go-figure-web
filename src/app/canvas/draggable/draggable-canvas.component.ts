@@ -15,6 +15,8 @@ export class DraggableCanvasComponent {
 
   @ViewChild('canvas') canvas: ElementRef;
   @Output() canvasInitialized = new EventEmitter<any>();
+  @Output() zoomIn = new EventEmitter<any>();
+  @Output() zoomOut = new EventEmitter<any>();
 
   ngAfterViewInit() {
     this.bindDragEvents();
@@ -55,10 +57,10 @@ export class DraggableCanvasComponent {
 
   mousescroll(pixles: number) {
     if (pixles > 0)
-      this.canvasManager.zoomIn();
+      this.zoomIn.emit();
 
     else
-      this.canvasManager.zoomOut();
+      this.zoomOut.emit();
   }
 
   mousemove(x, y) {

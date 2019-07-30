@@ -9,15 +9,15 @@ export class FourierSeries {
     this.vectors = this.constants.map(() => new Vector);
   }
 
-  update(time: number) {
+  update(time: number, scale: number) {
     this.vectors.forEach((v: Vector, i: number) => {
       let constant = this.constants[i],
           val = 2 * Math.PI * constant.n * time;
 
       v.start.x = i == 0 ? 0 : this.vectors[i-1].end.x;
       v.start.y = i == 0 ? 0 : this.vectors[i-1].end.y;
-      v.end.x = v.start.x + this.getXComponent(time, constant);
-      v.end.y = v.start.y + this.getYComponent(time, constant);
+      v.end.x = v.start.x + this.getXComponent(time, constant) * scale;
+      v.end.y = v.start.y + this.getYComponent(time, constant) * scale;
     });
   }
 

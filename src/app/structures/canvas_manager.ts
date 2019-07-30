@@ -25,6 +25,19 @@ export class CanvasManager {
     );
   }
 
+  centerOn(point: Point) {
+    let center = new Point(this.element.width / 2 / this.scale, this.element.height / 2 / this.scale);
+    this.setOrigin(center.x - point.x * this.scale, center.y - point.y * this.scale);
+  }
+
+  setOrigin(x: number, y: number) {
+    let deltaX = x - this.origin.x,
+        deltaY = y - this.origin.y;
+
+    this.origin = new Point(this.origin.x + deltaX, this.origin.y + deltaY);
+    this.drawer.translate(deltaX, deltaY);
+  }
+
   shiftOrigin(deltaX: number, deltaY: number) {
     deltaX = deltaX / this.scale;
     deltaY = deltaY / this.scale;
