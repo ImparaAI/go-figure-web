@@ -25,9 +25,9 @@ export class DrawingAnimatorComponent implements OnInit {
   pathTransparencyRatio: number = .4;
   canvasManager: CanvasManager;
   series: FourierSeries;
-  showOriginal: boolean = false;
   maxVectorCount: number = 1;
   drawing: Drawing;
+  originalOpacity: number = 0.00;
 
   constructor(private route: ActivatedRoute, private router: Router, private api: ApiService) {
     router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -89,7 +89,7 @@ export class DrawingAnimatorComponent implements OnInit {
 
     this.canvasManager.clearCanvas();
 
-    if (this.showOriginal) {
+    if (this.originalOpacity > 0) {
       this.paintOriginal();
     }
     this.paintVectors();
@@ -193,7 +193,7 @@ export class DrawingAnimatorComponent implements OnInit {
     this.drawing.originalPoints.forEach((value, i) =>  {
       if (i != 0) {
         this.canvasManager.setLineWidth(3);
-        this.canvasManager.setStrokeStyle("rgba(0, 0, 0)");
+        this.canvasManager.setStrokeStyle(`rgba(0, 0, 0, ${this.originalOpacity})`);
         this.canvasManager.paintLine(new Point(lastValue.x, lastValue.y), new Point(value.x, value.y));
       }
 

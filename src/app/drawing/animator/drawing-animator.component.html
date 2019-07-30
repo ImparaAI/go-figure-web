@@ -32,7 +32,15 @@
 
 <div class="controls" [hidden]="loading || (maxVectorCount == 0)">
   <div>
-    <mat-checkbox color="primary" [(ngModel)]="showOriginal">Show Original</mat-checkbox>
+    <span>Original Opacity:</span>
+    <mat-slider
+        color="primary"
+        [max]="1"
+        [min]="0"
+        [step]=".05"
+        [thumbLabel]="true"
+        [(ngModel)]="originalOpacity">
+    </mat-slider>
   </div>
   <div>
     <span>Animation Speed: </span>
