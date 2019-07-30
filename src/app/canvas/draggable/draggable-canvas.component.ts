@@ -54,9 +54,11 @@ export class DraggableCanvasComponent {
   }
 
   mousescroll(pixles: number) {
-    let val = pixles > 0 ? 1.1 : 0.9;
+    if (pixles > 0)
+      this.canvasManager.zoomIn();
 
-    this.canvasManager.zoom(val);
+    else
+      this.canvasManager.zoomOut();
   }
 
   mousemove(x, y) {

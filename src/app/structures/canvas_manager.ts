@@ -33,6 +33,14 @@ export class CanvasManager {
     this.drawer.translate(deltaX, deltaY);
   }
 
+  zoomIn() {
+    this.zoom((this.scale + 0.1) / this.scale);
+  }
+
+  zoomOut() {
+    this.zoom((this.scale - 0.1) / this.scale);
+  }
+
   zoom(scale: number) {
     this.scale *= scale;
     this.drawer.scale(scale, scale);
