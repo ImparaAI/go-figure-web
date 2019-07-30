@@ -1,56 +1,60 @@
-<div class="processing" [hidden]="loading || (maxVectorCount > 0)">
+<div class="processing" *ngIf="!loading && !maxVectorCount">
   <div class="main">Hang tight...the drawing is being generated.</div>
   <div class="sub">While you wait, check out these drawings submitted by other people..</div>
 </div>
 
-<div class="processing" [hidden]="!loading">
+<div class="processing" *ngIf="loading">
   <div class="main">Loading...</div>
 </div>
 
-<div [hidden]="loading || (maxVectorCount == 0)">
-  <button mat-raised-button color="primary" (click)="start()">Start</button>
-  <button mat-raised-button color="accent" (click)="pause()">Pause</button>
-  <button mat-raised-button color="warn" (click)="stop()">Stop</button>
-  t = {{t}}
+<h2 class="header" *ngIf="!loading && maxVectorCount">
+  Drawing #{{id}}
+</h2>
 
-  <mat-card>
-    <mat-card-content>
-      <div>
-        <span>Vector Count: </span>
-        <mat-slider
-            color="primary"
-            [max]="series ? series.vectors.length : 1"
-            [min]="1"
-            [step]="1"
-            [thumbLabel]="true"
-            [(ngModel)]="maxVectorCount">
-        </mat-slider>
-      </div>
-      <div>
-        <span>Animation Speed: </span>
-        <mat-slider
-            color="primary"
-            [max]=".1"
-            [min]=".001"
-            [step]=".001"
-            [thumbLabel]="true"
-            [(ngModel)]="timeInterval">
-        </mat-slider>
-      </div>
-      <div>
-        <mat-checkbox color="primary" [(ngModel)]="showOriginal">Show Original</mat-checkbox>
-      </div>
-    </mat-card-content>
-  </mat-card>
-
-  <div>
-    Total vectors calculated: {{maxVectorCount}}
-  </div>
-
-  <div>
+<div class="drawing" [hidden]="loading || (maxVectorCount == 0)">
+  <div class="canvas">
     <iai-draggable-canvas
       (canvasInitialized)="onCanvasReady($event)">
     </iai-draggable-canvas>
+
+    <div class="total-vectors">
+      Total vectors: {{maxVectorCount}}
+    </div>
+
+    <div class="playpause">
+      <button class="playpause" (click)="start()" *ngIf="!run">Play</button>
+      <button class="playpause" (click)="pause()" *ngIf="run">Pause</button>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="controls" [hidden]="loading || (maxVectorCount == 0)">
+  <div>
+    <mat-checkbox color="primary" [(ngModel)]="showOriginal">Show Original</mat-checkbox>
+  </div>
+  <div>
+    <span>Animation Speed: </span>
+    <mat-slider
+        color="primary"
+        [max]=".1"
+        [min]=".001"
+        [step]=".001"
+        [thumbLabel]="true"
+        [(ngModel)]="timeInterval">
+    </mat-slider>
+  </div>
+  <div>
+    <span>Vector Count: </span>
+    <mat-slider
+        color="primary"
+        [max]="series ? series.vectors.length : 1"
+        [min]="1"
+        [step]="1"
+        [thumbLabel]="true"
+        [(ngModel)]="maxVectorCount">
+    </mat-slider>
   </div>
 </div>
 

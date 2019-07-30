@@ -1,18 +1,61 @@
-iai-draggable-canvas {
-  display: inline-block;
-  border: 1px dashed gray;
+.processing {
+  padding-top: 130px;
+  text-align: center;
+
+  > .main {
+    font-size: 25px;
+    padding-bottom: 40px;
+  }
+
+  > .sub {
+    font-style: italic;
+  }
 }
 
-.processing {
-	padding-top: 130px;
-	text-align: center;
+h2 {
+  margin: 40px 0 53px;
+  font-size: 25px;
+  text-align: center;
+}
 
-	> .main {
-		font-size: 25px;
-		padding-bottom: 40px;
-	}
+.drawing {
+  text-align: center;
 
-	> .sub {
-		font-style: italic;
-	}
+  > .canvas {
+    position: relative;
+
+    > iai-draggable-canvas {
+      display: inline-block;
+      border: 1px dashed gray;
+    }
+
+    > .total-vectors {
+      position: absolute;
+      bottom: 10px;
+      left: 590px;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 13px;
+      color: #777;
+    }
+
+    > .playpause {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+
+.controls {
+  text-align: center;
+
+  > div {
+    display: inline-block;
+    margin-right: 32px
+  }
 }
