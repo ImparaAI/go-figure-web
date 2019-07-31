@@ -104,10 +104,10 @@ export class DrawableCanvasComponent implements OnInit {
       this.drawLimits = {left: x, right: x, top: y, bottom: y};
     }
     else {
-      this.drawLimits.left = x < this.drawLimits.left ? x : this.drawLimits.left;
-      this.drawLimits.right = x > this.drawLimits.right ? x : this.drawLimits.right;
-      this.drawLimits.top = y > this.drawLimits.top ? y : this.drawLimits.top;
-      this.drawLimits.bottom = y < this.drawLimits.bottom ? y : this.drawLimits.bottom;
+      this.drawLimits.left = Math.min(x, this.drawLimits.left);
+      this.drawLimits.right = Math.max(x, this.drawLimits.right);
+      this.drawLimits.top = Math.max(y, this.drawLimits.top);
+      this.drawLimits.bottom = Math.min(y, this.drawLimits.bottom);
     }
   }
 
@@ -115,8 +115,8 @@ export class DrawableCanvasComponent implements OnInit {
     if (this.imageCentered || !this.drawLimits)
       return;
 
-    let xTranslation: number = Math.floor(((this.width - this.drawLimits.right) - this.drawLimits.left) / 2),
-        yTranslation: number = Math.floor(((this.height - this.drawLimits.bottom) - this.drawLimits.top) / 2),
+    let xTranslation: number = Math.floor((this.width - this.drawLimits.right - this.drawLimits.left) / 2),
+        yTranslation: number = Math.floor((this.height - this.drawLimits.bottom - this.drawLimits.top) / 2),
         lastPoint: Point;
 
     this.canvasManager.clearCanvas();
