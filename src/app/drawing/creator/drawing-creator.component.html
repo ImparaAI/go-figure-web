@@ -10,7 +10,7 @@
       (drawingUpdated)="onDrawingUpdated($event)">
     </iai-drawable-canvas>
   </div>
-  <button (click)="submit()">Submit</button>
+  <button (click)="submit()" [hidden]="!data || !data.length">Submit</button>
 </div>
 
 
