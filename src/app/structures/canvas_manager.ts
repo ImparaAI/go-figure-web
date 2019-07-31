@@ -76,6 +76,17 @@ export class CanvasManager {
 
   paintVector(v: Vector) {
     this.paintLine(v.start, v.end);
+    this.paintVectorArrow(v, 25 * Math.PI / 180);
+    this.paintVectorArrow(v, -25 * Math.PI / 180);
+  }
+
+  paintVectorArrow(v: Vector, rotation: number) {
+    let len = v.length() * 0.1,
+        angle = v.getReverseVector().direction() + rotation,
+        x = v.end.x + len * Math.cos(angle),
+        y = v.end.y + len * Math.sin(angle);
+
+    this.paintLine(v.end, new Point(x, y));
   }
 
   paintLine(start: Point, end: Point) {
