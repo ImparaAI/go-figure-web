@@ -214,7 +214,6 @@ export class DrawingAnimatorComponent implements OnInit {
   }
 
   incrementScale(scale: number) {
-
     this.scale += scale;
   }
 

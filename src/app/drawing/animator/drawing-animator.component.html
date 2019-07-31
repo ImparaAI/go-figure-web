@@ -46,7 +46,8 @@
         [min]="0"
         [step]=".05"
         [thumbLabel]="true"
-        [(ngModel)]="originalOpacity">
+        [value]="originalOpacity"
+        (input)="originalOpacity = $event.value">
     </mat-slider>
   </div>
   <div>
@@ -57,7 +58,8 @@
         [min]=".001"
         [step]=".001"
         [thumbLabel]="true"
-        [(ngModel)]="timeInterval">
+        [value]="timeInterval"
+        (input)="timeInterval = $event.value">
     </mat-slider>
   </div>
   <div>
@@ -68,7 +70,8 @@
         [min]="1"
         [step]="1"
         [thumbLabel]="true"
-        [(ngModel)]="maxVectorCount">
+        [value]="maxVectorCount"
+        (input)="maxVectorCount = $event.value">
     </mat-slider>
   </div>
 </div>

@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { GestureConfig } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
@@ -33,9 +32,7 @@ import { DrawingAnimatorComponent } from '@app/drawing/animator/drawing-animator
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [
-    {provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig},
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
