@@ -14,6 +14,8 @@
 <div class="drawing" [hidden]="loading || (maxVectorCount == 0)">
   <div class="canvas">
     <iai-draggable-canvas
+      width="700"
+      height="400"
       (canvasInitialized)="onCanvasReady($event)"
       (zoomIn)="incrementScale(0.1)"
       (zoomOut)="incrementScale(-0.1)">

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { Point } from '@app/structures/point';
 import { CanvasManager } from '@app/structures/canvas_manager';
@@ -7,16 +7,24 @@ import { CanvasManager } from '@app/structures/canvas_manager';
   selector: 'iai-draggable-canvas',
   templateUrl: './draggable-canvas.component.html',
 })
-export class DraggableCanvasComponent {
+export class DraggableCanvasComponent implements OnInit {
 
   dragStart: Point;
   mouseIsDown: boolean;
   canvasManager: CanvasManager;
 
+  @Input() width: number;
+  @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
   @Output() canvasInitialized = new EventEmitter<any>();
   @Output() zoomIn = new EventEmitter<any>();
   @Output() zoomOut = new EventEmitter<any>();
+
+  ngOnInit() {
+    if (this.width === undefined || this.height === undefined) {
+      throw new Error("A valid width and height need to be provided to the drawable canvas.")
+    }
+  }
 
   ngAfterViewInit() {
     this.bindDragEvents();
