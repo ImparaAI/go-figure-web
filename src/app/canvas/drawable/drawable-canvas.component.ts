@@ -20,7 +20,6 @@ export class DrawableCanvasComponent implements OnInit {
 
   @Input() width: number;
   @Input() height: number;
-  height: number;
   @ViewChild('canvas') canvas: ElementRef;
   @Output() drawingUpdated = new EventEmitter<any>();
   @Output() canvasInitialized = new EventEmitter<any>();
