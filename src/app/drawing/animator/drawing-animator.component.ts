@@ -25,7 +25,7 @@ export class DrawingAnimatorComponent implements OnInit {
   minTimeInterval: number = 0.0005;
   timeInterval: number = 0.005;
   run: boolean = false;
-  output: {point: Point, t: number, shouldDraw: boolean}[] = [];
+  output: {t: number, point?: Point, vectorCount?: number }[] = [];
   canvasManager: CanvasManager;
   series: FourierSeries;
   maxVectorCount: number = 1;
@@ -66,7 +66,7 @@ export class DrawingAnimatorComponent implements OnInit {
       }
       else {
         this.series = new FourierSeries(this.drawing.drawVectors);
-        this.calculateOutput();
+        this.initializeOutput();
         this.loading = false;
         this.start();
       }
@@ -114,7 +114,6 @@ export class DrawingAnimatorComponent implements OnInit {
     this.originalPointsPainter.paint(this.drawing.originalPoints, this.originalOpacity, this.scale);
     this.vectorPainter.paint(this.series.vectors.slice(0, this.maxVectorCount));
     this.outputPainter.paint(this.output, this.time, this.scale);
-    console.log(this.output)
   }
 
   repositionCanvas() {
@@ -131,32 +130,42 @@ export class DrawingAnimatorComponent implements OnInit {
       this.time -= 1;
   }
 
-  calculateOutput() {
-    let lastVector: Vector;
-
+  initializeOutput() {
     for (var t = 0; t < 1; t += this.minTimeInterval) {
-      this.series.update(t, this.scale);
-      lastVector = this.series.vectors[this.maxVectorCount - 1]
-
-      this.output.push({
-        t: t,
-        shouldDraw: false,
-        point: new Point(lastVector.end.x, lastVector.end.y),
-      });
+      this.output.push({t});
     }
   }
 
   updateOutput() {
-    let from = Math.round(this.prevTime / this.minTimeInterval) % this.output.length,
-        to = Math.round(this.time / this.minTimeInterval) % this.output.length,
-        vector;
+    let index = (Math.round(this.prevTime / this.minTimeInterval) + 1) % this.output.length,
+        finalIndex = Math.round(this.time / this.minTimeInterval) % this.output.length;
 
-    for (var i = from; i <= to;  i = (i + 1) % this.output.length) {
-      this.series.update(this.output[i].t, this.scale);
-      vector = this.series.vectors[this.maxVectorCount - 1]
-
-      this.output[i].point = new Point(vector.end.x, vector.end.y);
+    //update all skipped outputs due to changing time interval
+    while (this.time != this.prevTime && index != finalIndex) {
+      this.updateOutputValues(this.output[index]);
+      index = (index + 1) % this.output.length;
     }
+
+    //update current output
+    this.updateOutputValues(this.output[finalIndex]);
+  }
+
+  updateOutputValues(output: {t: number, vectorCount?: number}) {
+    if (output.vectorCount == this.maxVectorCount)
+      return;
+
+    Object.assign(output, {
+      vectorCount: this.maxVectorCount,
+      point: this.getOutputPoint(output.t),
+    });
+  }
+
+  getOutputPoint(time: number) {
+    this.series.update(time, this.scale);
+
+    let finalVector = this.series.vectors[this.maxVectorCount - 1];
+
+    return new Point(finalVector.end.x, finalVector.end.y);
   }
 
   incrementScale(scale: number) {

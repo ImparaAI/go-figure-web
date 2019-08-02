@@ -17,23 +17,30 @@ export class OutputPainter {
 
   public paint(output, time: number, scale: number): void {
     let index: number = this.getStartIndex(time, output),
-        value,
-        lastValue;
+        value, lastValue;
 
     for (var step = 0; step < output.length; ++step) {
       value = output[index];
 
-      if (lastValue && step > this.numStepsHidden) {
+      if (this.shouldDrawLine(step, value, lastValue)) {
         this.canvasManager.setLineWidth(3);
         this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, ${this.getOpacity(step)})`);
         this.canvasManager.paintLine(
           new Point(lastValue.point.x * scale, lastValue.point.y * scale),
-          new Point(value.point.x * scale, value.point.y * scale));
+          new Point(value.point.x * scale, value.point.y * scale)
+        );
       }
 
       lastValue = value;
       index = (index + 1) % output.length;
     }
+  }
+
+  protected shouldDrawLine(step: number, output: {point?: Point}, prevOutput: {point?: Point}): boolean {
+    if (!prevOutput || !prevOutput.point || !output.point)
+      return false;
+
+     return step > this.numStepsHidden;
   }
 
   protected getOpacity(step: number): number {
