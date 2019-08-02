@@ -176,7 +176,7 @@ export class DrawingAnimatorComponent implements OnInit {
   }
 
   incrementScale(scale: number) {
-    this.scale += scale;
+    this.scale = Math.max(0.01, this.scale + scale);
 
     for (let painter of Object.values(this.painters)) {
       painter.setScale(this.scale)
