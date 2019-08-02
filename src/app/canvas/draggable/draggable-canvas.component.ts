@@ -16,10 +16,10 @@ export class DraggableCanvasComponent implements OnInit {
   @Input() width: number;
   @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
-  @Output() canvasInitialized = new EventEmitter<any>();
-  @Output() zoomIn = new EventEmitter<any>();
-  @Output() zoomOut = new EventEmitter<any>();
-  @Output() originMoved = new EventEmitter<any>();
+  @Output() canvasInitialized = new EventEmitter<CanvasManager>();
+  @Output() zoomIn = new EventEmitter<void>();
+  @Output() zoomOut = new EventEmitter<void>();
+  @Output() originMoved = new EventEmitter<Point>();
 
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
@@ -55,7 +55,7 @@ export class DraggableCanvasComponent implements OnInit {
       this.canvas.nativeElement.attachEvent("onmousewheel", (e) => this.handleMousescroll(e));
   }
 
-  handleMousescroll(e): boolean {
+  handleMousescroll(e: any): boolean {
     e = window.event || e;
     e.stopPropagation();
     event.preventDefault();
@@ -72,7 +72,7 @@ export class DraggableCanvasComponent implements OnInit {
       this.zoomOut.emit();
   }
 
-  mousemove(x, y) {
+  mousemove(x: number, y: number) {
     if (!this.mouseIsDown)
       return;
 

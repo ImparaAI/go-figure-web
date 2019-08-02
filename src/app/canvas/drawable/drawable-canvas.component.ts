@@ -3,6 +3,11 @@ import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit }
 import { Point } from '@app/structures/point';
 import { CanvasManager } from '@app/structures/canvas_manager';
 
+interface DataPoint {
+  point: Point;
+  time: number;
+}
+
 @Component({
   selector: 'iai-drawable-canvas',
   templateUrl: './drawable-canvas.component.html',
@@ -14,7 +19,7 @@ export class DrawableCanvasComponent implements OnInit {
   canvasManager: CanvasManager;
   lastPoint: Point = new Point;
   currentPoint: Point = new Point;
-  data: {point: Point, time: number}[];
+  data: DataPoint[];
   drawLimits: {left: number, right: number, top: number, bottom: number};
   imageCentered: boolean = true;
   animation: {
@@ -26,8 +31,8 @@ export class DrawableCanvasComponent implements OnInit {
   @Input() width: number;
   @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
-  @Output() drawingUpdated = new EventEmitter<any>();
-  @Output() canvasInitialized = new EventEmitter<any>();
+  @Output() drawingUpdated = new EventEmitter<DataPoint[]>();
+  @Output() canvasInitialized = new EventEmitter<CanvasManager>();
 
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
@@ -62,7 +67,7 @@ export class DrawableCanvasComponent implements OnInit {
     }, false);
   }
 
-  mousemove(x, y) {
+  mousemove(x: number, y: number) {
     if (!this.mouseIsDown || this.animation.running)
       return;
 
@@ -78,7 +83,7 @@ export class DrawableCanvasComponent implements OnInit {
     this.centerImage();
   }
 
-  mousedown(x, y) {
+  mousedown(x: number, y: number) {
     if (this.animation.running)
       return;
 
@@ -98,7 +103,7 @@ export class DrawableCanvasComponent implements OnInit {
     this.drawingUpdated.emit(this.data);
   }
 
-  updateMousePositions(x, y) {
+  updateMousePositions(x: number, y: number) {
     this.lastPoint.update(this.currentPoint.x, this.currentPoint.y);
     this.currentPoint.update(x, y);
     this.updateDrawLimits(x, y);
@@ -114,7 +119,7 @@ export class DrawableCanvasComponent implements OnInit {
     this.drawingUpdated.emit(this.data);
   }
 
-  updateDrawLimits(x, y) {
+  updateDrawLimits(x: number, y: number) {
     this.imageCentered = false;
 
     if (!this.drawLimits) {

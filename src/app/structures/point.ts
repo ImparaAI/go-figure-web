@@ -7,12 +7,12 @@ export class Point {
     this.y = y;
   }
 
-  update(x, y) {
+  update(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
 
-  clone() {
+  clone(): Point {
     return new Point(this.x, this.y);
   }
 

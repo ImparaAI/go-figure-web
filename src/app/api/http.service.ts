@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 
@@ -8,21 +9,19 @@ export class HttpService {
 
   constructor(private http: HttpClient) { }
 
-  get(uri: string, params?, options?) {
+  get(uri: string, params?: object, options?: object): Observable<any> {
     return this.http.get(this.buildUrl(uri), options || {params});
   }
 
-  post(uri: string, params?, options?) {
+  post(uri: string, params?: object, options?: object): Observable<any> {
     return this.http.post(this.buildUrl(uri), params || {}, options);
   }
 
-  delete(uri: string, params?) {
-    return this.http.request('delete', this.buildUrl(uri), {
-      body: params
-    });
+  delete(uri: string, params?: object): Observable<any> {
+    return this.http.request('delete', this.buildUrl(uri), {body: params});
   }
 
-  buildUrl(uri: string) {
+  buildUrl(uri: string): string {
     return environment.apiUrl + uri;
   }
 
