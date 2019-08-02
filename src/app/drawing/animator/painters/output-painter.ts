@@ -1,5 +1,5 @@
 import { Point } from '@app/structures/point';
-import { CanvasManager } from '@app/structures/canvas_manager';
+import { CanvasManager } from '@app/canvas/canvas_manager';
 
 export class OutputPainter {
 

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 
 import { Point } from '@app/structures/point';
 import { ApiService } from '@app/api/api.service';
-import { CanvasManager } from '@app/structures/canvas_manager';
+import { CanvasManager } from '@app/canvas/canvas_manager';
 
 @Component({
   selector: 'iai-drawing-creator',

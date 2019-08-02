@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { Point } from '@app/structures/point';
-import { CanvasManager } from '@app/structures/canvas_manager';
+import { CanvasManager } from '@app/canvas/canvas_manager';
 
 interface DataPoint {
   point: Point;

@@ -6,7 +6,7 @@ import { Vector } from '@app/structures/vector';
 import { Drawing } from '@app/structures/drawing';
 import { ApiService } from '@app/api/api.service';
 import { FourierSeries } from '@app/structures/series';
-import { CanvasManager } from '@app/structures/canvas_manager';
+import { CanvasManager } from '@app/canvas/canvas_manager';
 import { VectorPainter } from '@app/drawing/animator/painters/vector-painter';
 import { OutputPainter } from '@app/drawing/animator/painters/output-painter';
 import { OriginalPointsPainter } from '@app/drawing/animator/painters/original-points-painter';

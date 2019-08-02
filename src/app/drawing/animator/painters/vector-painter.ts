@@ -1,6 +1,6 @@
 import { Point } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
-import { CanvasManager } from '@app/structures/canvas_manager';
+import { CanvasManager } from '@app/canvas/canvas_manager';
 
 export class VectorPainter {
 
