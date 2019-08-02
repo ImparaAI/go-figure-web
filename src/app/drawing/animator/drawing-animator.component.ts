@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Point } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
+import { Point2D } from '@app/structures/point';
 import { Drawing } from '@app/structures/drawing';
 import { ApiService } from '@app/api/api.service';
 import { FourierSeries } from '@app/structures/series';
+import { OutputDatum } from '@app/drawing/animator/output';
 import { CanvasManager } from '@app/canvas/canvas_manager';
 import { VectorPainter } from '@app/drawing/animator/painters/vector-painter';
 import { OutputPainter } from '@app/drawing/animator/painters/output-painter';
@@ -25,7 +26,7 @@ export class DrawingAnimatorComponent implements OnInit {
   minTimeInterval: number = 0.0005;
   timeInterval: number = 0.005;
   run: boolean = false;
-  output: {t: number, point?: Point, vectorCount?: number }[] = [];
+  output: OutputDatum[] = [];
   canvasManager: CanvasManager;
   series: FourierSeries;
   maxVectorCount: number = 1;
@@ -123,7 +124,7 @@ export class DrawingAnimatorComponent implements OnInit {
   repositionCanvas() {
     if (this.trackOutput && this.series.vectors.length) {
       let finalVector = this.series.vectors[this.series.vectors.length - 1],
-          point = new Point(finalVector.end.x * this.scale, finalVector.end.y * this.scale);
+          point = new Point2D(finalVector.end.x * this.scale, finalVector.end.y * this.scale);
 
       this.canvasManager.centerOn(point)
     }
@@ -138,8 +139,8 @@ export class DrawingAnimatorComponent implements OnInit {
   }
 
   initializeOutput() {
-    for (var t = 0; t < 1; t += this.minTimeInterval) {
-      this.output.push({t});
+    for (var time = 0; time < 1; time += this.minTimeInterval) {
+      this.output.push({time});
     }
   }
 
@@ -157,13 +158,13 @@ export class DrawingAnimatorComponent implements OnInit {
     this.updateOutputValues(this.output[finalIndex]);
   }
 
-  updateOutputValues(output: {t: number, vectorCount?: number}) {
+  updateOutputValues(output: OutputDatum) {
     if (output.vectorCount == this.maxVectorCount)
       return;
 
     Object.assign(output, {
       vectorCount: this.maxVectorCount,
-      point: this.getOutputPoint(output.t),
+      point: this.getOutputPoint(output.time),
     });
   }
 
@@ -172,7 +173,7 @@ export class DrawingAnimatorComponent implements OnInit {
 
     let finalVector = this.series.vectors[this.maxVectorCount - 1];
 
-    return new Point(finalVector.end.x, finalVector.end.y);
+    return new Point2D(finalVector.end.x, finalVector.end.y);
   }
 
   incrementScale(scale: number) {

@@ -1,4 +1,4 @@
-import { Point } from '@app/structures/point';
+import { Point2D, Point3D } from '@app/structures/point';
 import { CanvasManager } from '@app/canvas/canvas_manager';
 
 export class OriginalPointsPainter {
@@ -11,21 +11,17 @@ export class OriginalPointsPainter {
     this.canvasManager = canvasManager;
   }
 
-  public paint(originalPoints: {x: number, y: number, time: number}[], opacity: number): void {
+  public paint(originalPoints: Point3D[], opacity: number): void {
     if (opacity <= 0)
       return;
 
-    let lastValue;
+    let lastValue: Point3D;
 
-    originalPoints.forEach((value, i) =>  {
+    originalPoints.forEach((value: Point3D, i: number) =>  {
       if (i != 0) {
         this.canvasManager.setLineWidth(3);
         this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, ${opacity})`);
-        this.canvasManager.paintLine(
-          new Point(lastValue.x, lastValue.y),
-          new Point(value.x, value.y),
-          this.scale
-        );
+        this.canvasManager.paintLine(lastValue.toPoint2D(), value.toPoint2D(), this.scale);
       }
 
       lastValue = value;

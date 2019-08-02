@@ -1,10 +1,16 @@
 import { Vector } from '@app/structures/vector';
 
+interface FourierConstant {
+  n: number;
+  real: number;
+  imaginary: number;
+}
+
 export class FourierSeries {
-  constants: {n: number, real: number, imaginary: number}[];
+  constants: FourierConstant[];
   vectors: Vector[];
 
-  constructor(constants: {n: number, real: number, imaginary: number}[]) {
+  constructor(constants: FourierConstant[]) {
     this.constants = constants;
     this.vectors = this.constants.map(() => new Vector);
   }
@@ -21,13 +27,13 @@ export class FourierSeries {
     });
   }
 
-  getXComponent(time: number, constant: {n: number, real: number, imaginary: number}) {
+  getXComponent(time: number, constant: FourierConstant) {
     let val = this.getCyclicalComponent(constant.n, time);
 
     return constant.real * Math.cos(val) - constant.imaginary * Math.sin(val);
   }
 
-  getYComponent(time: number, constant: {n: number, real: number, imaginary: number}) {
+  getYComponent(time: number, constant: FourierConstant) {
     let val = this.getCyclicalComponent(constant.n, time);
 
     return constant.real * Math.sin(val) + constant.imaginary * Math.cos(val);

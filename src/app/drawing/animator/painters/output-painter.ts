@@ -1,4 +1,5 @@
-import { Point } from '@app/structures/point';
+import { Point2D } from '@app/structures/point';
+import { OutputDatum } from '@app/drawing/animator/output';
 import { CanvasManager } from '@app/canvas/canvas_manager';
 
 export class OutputPainter {
@@ -13,7 +14,7 @@ export class OutputPainter {
     this.canvasManager = canvasManager;
   }
 
-  public paint(output, time: number): void {
+  public paint(output: OutputDatum[], time: number): void {
     let index: number = this.getStartIndex(time, output),
         value, lastValue;
 
@@ -24,8 +25,8 @@ export class OutputPainter {
         this.canvasManager.setLineWidth(3);
         this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, ${this.getOpacity(step)})`);
         this.canvasManager.paintLine(
-          new Point(lastValue.point.x, lastValue.point.y),
-          new Point(value.point.x, value.point.y),
+          new Point2D(lastValue.point.x, lastValue.point.y),
+          new Point2D(value.point.x, value.point.y),
           this.scale
         );
       }
@@ -35,7 +36,7 @@ export class OutputPainter {
     }
   }
 
-  protected shouldDrawLine(step: number, output: {point?: Point}, prevOutput: {point?: Point}): boolean {
+  protected shouldDrawLine(step: number, output: OutputDatum, prevOutput: OutputDatum): boolean {
     if (!prevOutput || !prevOutput.point || !output.point)
       return false;
 
@@ -46,8 +47,8 @@ export class OutputPainter {
     return Math.min(1, (step - this.numStepsHidden) / (this.stepsTransparent - this.numStepsHidden))
   }
 
-  protected getStartIndex(time: number, output): number {
-    let finalIndex: number = Math.round(time / output[1].t);
+  protected getStartIndex(time: number, output: OutputDatum[]): number {
+    let finalIndex: number = Math.round(time / output[1].time);
     return (finalIndex + 1) % output.length;
   }
 

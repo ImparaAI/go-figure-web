@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { Point } from '@app/structures/point';
+import { Point2D } from '@app/structures/point';
 import { CanvasManager } from '@app/canvas/canvas_manager';
 
 @Component({
@@ -9,7 +9,7 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 })
 export class DraggableCanvasComponent implements OnInit {
 
-  dragStart: Point;
+  dragStart: Point2D;
   mouseIsDown: boolean;
   canvasManager: CanvasManager;
 
@@ -19,7 +19,7 @@ export class DraggableCanvasComponent implements OnInit {
   @Output() canvasInitialized = new EventEmitter<CanvasManager>();
   @Output() zoomIn = new EventEmitter<void>();
   @Output() zoomOut = new EventEmitter<void>();
-  @Output() originMoved = new EventEmitter<Point>();
+  @Output() originMoved = new EventEmitter<Point2D>();
 
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
@@ -81,8 +81,8 @@ export class DraggableCanvasComponent implements OnInit {
 
     if (deltaX || deltaY) {
       this.canvasManager.shiftOrigin(deltaX, deltaY);
-      this.dragStart = new Point(x, y);
-      this.originMoved.emit(new Point(this.canvasManager.origin.x, this.canvasManager.origin.y));
+      this.dragStart = new Point2D(x, y);
+      this.originMoved.emit(new Point2D(this.canvasManager.origin.x, this.canvasManager.origin.y));
     }
   }
 
@@ -90,9 +90,9 @@ export class DraggableCanvasComponent implements OnInit {
     this.mouseIsDown = false;
   }
 
-  mousedown(x, y) {
+  mousedown(x: number, y: number) {
     this.mouseIsDown = true;
-    this.dragStart = new Point(x, y);
+    this.dragStart = new Point2D(x, y);
   }
 
 }

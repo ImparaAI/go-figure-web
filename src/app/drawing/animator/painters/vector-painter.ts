@@ -1,4 +1,4 @@
-import { Point } from '@app/structures/point';
+import { Point2D } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
 import { CanvasManager } from '@app/canvas/canvas_manager';
 
@@ -34,7 +34,7 @@ export class VectorPainter {
         x = v.end.x + (len * Math.cos(angle)),
         y = v.end.y + (len * Math.sin(angle));
 
-    this.canvasManager.paintLine(v.end, new Point(x, y), this.scale);
+    this.canvasManager.paintLine(v.end, new Point2D(x, y), this.scale);
   }
 
 }

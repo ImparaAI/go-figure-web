@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
-import { Point } from '@app/structures/point';
+import { Point3D } from '@app/structures/point';
 import { ApiService } from '@app/api/api.service';
 import { CanvasManager } from '@app/canvas/canvas_manager';
 
@@ -12,8 +12,8 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 })
 export class DrawingCreatorComponent {
 
+  data: Point3D[];
   canvasManager: CanvasManager;
-  data: {point: Point, time: number}[];
 
   constructor(private router: Router, private api: ApiService) { }
 
@@ -23,7 +23,7 @@ export class DrawingCreatorComponent {
     this.canvasManager.setStrokeStyle('black');
   }
 
-  onDrawingUpdated(data: {point: Point, time: number}[]) {
+  onDrawingUpdated(data: Point3D[]) {
     this.data = data;
   }
 
@@ -39,8 +39,8 @@ export class DrawingCreatorComponent {
   }
 
   format() {
-    return this.data.map((data) => {
-      return {x: data.point.x, y: data.point.y, time: data.time};
+    return this.data.map((point) => {
+      return {x: point.x, y: point.y, time: point.time};
     });
   }
 }

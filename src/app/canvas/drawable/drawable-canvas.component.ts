@@ -1,12 +1,7 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { Point } from '@app/structures/point';
+import { Point2D, Point3D } from '@app/structures/point';
 import { CanvasManager } from '@app/canvas/canvas_manager';
-
-interface DataPoint {
-  point: Point;
-  time: number;
-}
 
 @Component({
   selector: 'iai-drawable-canvas',
@@ -17,9 +12,9 @@ export class DrawableCanvasComponent implements OnInit {
   timestamp: number;
   mouseIsDown: boolean = false;
   canvasManager: CanvasManager;
-  lastPoint: Point = new Point;
-  currentPoint: Point = new Point;
-  data: DataPoint[];
+  lastPoint: Point2D = new Point2D;
+  currentPoint: Point2D = new Point2D;
+  data: Point3D[];
   drawLimits: {left: number, right: number, top: number, bottom: number};
   imageCentered: boolean = true;
   animation: {
@@ -31,7 +26,7 @@ export class DrawableCanvasComponent implements OnInit {
   @Input() width: number;
   @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
-  @Output() drawingUpdated = new EventEmitter<DataPoint[]>();
+  @Output() drawingUpdated = new EventEmitter<Point3D[]>();
   @Output() canvasInitialized = new EventEmitter<CanvasManager>();
 
   ngOnInit() {
@@ -112,10 +107,9 @@ export class DrawableCanvasComponent implements OnInit {
   }
 
   captureData() {
-    let time = this.data.length ? (Date.now() - this.timestamp) / 1000 : 0.00,
-        point = this.currentPoint.clone();
+    let time = this.data.length ? (Date.now() - this.timestamp) / 1000 : 0.00;
 
-    this.data.push({point, time});
+    this.data.push(new Point3D(this.currentPoint.x, this.currentPoint.y, time));
     this.drawingUpdated.emit(this.data);
   }
 
@@ -166,21 +160,21 @@ export class DrawableCanvasComponent implements OnInit {
   }
 
   moveImage(deltaX: number, deltaY: number) {
-    let lastPoint: Point;
+    let lastPoint: Point3D;
 
-    this.data.forEach((datum) => {
-      datum.point.update(datum.point.x + deltaX, datum.point.y + deltaY);
+    this.data.forEach((point) => {
+      point.update(point.x + deltaX, point.y + deltaY, point.time);
 
       if (lastPoint)
-        this.canvasManager.paintLine(lastPoint, datum.point);
+        this.canvasManager.paintLine(lastPoint.toPoint2D(), point.toPoint2D());
 
-      lastPoint = datum.point;
+      lastPoint = point;
     })
   }
 
   roundData() {
-    this.data.forEach((datum) => {
-      datum.point.update(Math.round(datum.point.x), Math.round(datum.point.y));
+    this.data.forEach((point: Point3D) => {
+      point.update(Math.round(point.x), Math.round(point.y), point.time);
     });
   }
 
