@@ -121,8 +121,11 @@ export class DrawingAnimatorComponent implements OnInit {
   }
 
   repositionCanvas() {
-    if (this.trackOutput && this.output.length) {
-      this.canvasManager.centerOn(this.output[this.output.length - 1].point)
+    if (this.trackOutput && this.series.vectors.length) {
+      let finalVector = this.series.vectors[this.series.vectors.length - 1],
+          point = new Point(finalVector.end.x * this.scale, finalVector.end.y * this.scale);
+
+      this.canvasManager.centerOn(point)
     }
   }
 
