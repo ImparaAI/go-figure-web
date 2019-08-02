@@ -54,9 +54,9 @@
     <span>Animation Speed: </span>
     <mat-slider
         color="primary"
-        [max]=".1"
-        [min]=".001"
-        [step]=".001"
+        [max]="0.02"
+        [min]="minTimeInterval"
+        [step]="minTimeInterval"
         [thumbLabel]="true"
         [value]="timeInterval"
         (input)="timeInterval = $event.value">

@@ -7,6 +7,9 @@ import { Drawing } from '@app/structures/drawing';
 import { ApiService } from '@app/api/api.service';
 import { FourierSeries } from '@app/structures/series';
 import { CanvasManager } from '@app/structures/canvas_manager';
+import { VectorPainter } from '@app/drawing/animator/painters/vector-painter';
+import { OutputPainter } from '@app/drawing/animator/painters/output-painter';
+import { OriginalPointsPainter } from '@app/drawing/animator/painters/original-points-painter';
 
 @Component({
   selector: 'iai-drawing-animator',
@@ -16,20 +19,23 @@ import { CanvasManager } from '@app/structures/canvas_manager';
 export class DrawingAnimatorComponent implements OnInit {
 
   loading: boolean = true;
-  t: number = 0;
   id: number;
-  timeInterval: number = .005;
+  time: number = 0;
+  prevTime: number = 0;
+  minTimeInterval: number = 0.0005;
+  timeInterval: number = 0.005;
   run: boolean = false;
-  timeout: number = 100;
-  output: {point: Point, t: number, opacity: number, scale: number}[] = [];
-  pathTransparencyRatio: number = .4;
+  output: {point: Point, t: number, shouldDraw: boolean}[] = [];
   canvasManager: CanvasManager;
   series: FourierSeries;
   maxVectorCount: number = 1;
   drawing: Drawing;
-  originalOpacity: number = 0.00;
+  originalOpacity: number = 0.2;
   trackOutput: boolean = false;
   scale: number = 1;
+  vectorPainter: VectorPainter;
+  outputPainter: OutputPainter;
+  originalPointsPainter: OriginalPointsPainter;
 
   constructor(private route: ActivatedRoute, private router: Router, private api: ApiService) {
     router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -42,12 +48,14 @@ export class DrawingAnimatorComponent implements OnInit {
 
   onCanvasReady(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
+    this.vectorPainter = new VectorPainter(this.canvasManager);
+    this.outputPainter = new OutputPainter(this.canvasManager);
+    this.originalPointsPainter = new OriginalPointsPainter(this.canvasManager);
   }
 
   async load() {
     try {
       this.drawing = new Drawing(await this.api.getDrawing(this.id));
-      this.series = new FourierSeries(this.drawing.drawVectors);
       this.maxVectorCount = this.drawing.drawVectors.length;
 
       if (!this.maxVectorCount) {
@@ -57,8 +65,10 @@ export class DrawingAnimatorComponent implements OnInit {
         }, 1000)
       }
       else {
+        this.series = new FourierSeries(this.drawing.drawVectors);
+        this.calculateOutput();
         this.loading = false;
-        this.start()
+        this.start();
       }
     }
     catch (e) {
@@ -67,7 +77,7 @@ export class DrawingAnimatorComponent implements OnInit {
   }
 
   stop()  {
-    this.t = 0;
+    this.time = 0;
     this.run = false;
     this.output = [];
   }
@@ -89,128 +99,64 @@ export class DrawingAnimatorComponent implements OnInit {
     if (!this.run)
       return;
 
-    this.canvasManager.clearCanvas();
+    this.updateOutput();
+    this.series.update(this.time, this.scale);
 
-    if (this.originalOpacity > 0) {
-      this.paintOriginal();
-    }
-    this.paintVectors();
-    this.paintOutput();
-
-    if (this.trackOutput && this.output.length) {
-      this.canvasManager.centerOn(this.output[this.output.length - 1].point)
-    }
-
-    this.t += this.timeInterval;
-
-    if (this.t >= 1)
-      this.t -= 1;
+    this.paint();
+    this.repositionCanvas();
+    this.updateTime();
 
     window.requestAnimationFrame(() => this.animate());
   }
 
-  paintVectors() {
-    this.series.update(this.t, this.scale);
-
-    this.canvasManager.setLineWidth(1);
-    this.canvasManager.setStrokeStyle('rgba(0, 0, 0, 1)');
-    this.canvasManager.paintVectors(this.series.vectors.slice(0, this.maxVectorCount));
+  paint() {
+    this.canvasManager.clearCanvas();
+    this.originalPointsPainter.paint(this.drawing.originalPoints, this.originalOpacity, this.scale);
+    this.vectorPainter.paint(this.series.vectors.slice(0, this.maxVectorCount));
+    this.outputPainter.paint(this.output, this.time, this.scale);
+    console.log(this.output)
   }
 
-  paintOutput() {
-    this.updateOutput();
+  repositionCanvas() {
+    if (this.trackOutput && this.output.length) {
+      this.canvasManager.centerOn(this.output[this.output.length - 1].point)
+    }
+  }
 
-    let lastValue;
+  updateTime() {
+    this.prevTime = this.time;
+    this.time += this.timeInterval;
 
-    this.output.forEach((value, i) =>  {
-      if (i != 0) {
-        this.canvasManager.setLineWidth(3);
-        this.canvasManager.setStrokeStyle("rgba(255, 165, 0, "  + value.opacity + ")");
-        this.canvasManager.paintLine(
-          new Point(lastValue.point.x / lastValue.scale * this.scale, lastValue.point.y / lastValue.scale * this.scale),
-          new Point(value.point.x / value.scale * this.scale, value.point.y / value.scale * this.scale));
-      }
+    if (this.time >= 1)
+      this.time -= 1;
+  }
 
-      lastValue = value;
-    });
+  calculateOutput() {
+    let lastVector: Vector;
+
+    for (var t = 0; t < 1; t += this.minTimeInterval) {
+      this.series.update(t, this.scale);
+      lastVector = this.series.vectors[this.maxVectorCount - 1]
+
+      this.output.push({
+        t: t,
+        shouldDraw: false,
+        point: new Point(lastVector.end.x, lastVector.end.y),
+      });
+    }
   }
 
   updateOutput() {
-    if (!this.series.vectors.length)
-      return;
+    let from = Math.round(this.prevTime / this.minTimeInterval) % this.output.length,
+        to = Math.round(this.time / this.minTimeInterval) % this.output.length,
+        vector;
 
-    this.appendOutput();
-    this.removeCyclicalValues();
-    this.applyOutputTransparency();
-  }
+    for (var i = from; i <= to;  i = (i + 1) % this.output.length) {
+      this.series.update(this.output[i].t, this.scale);
+      vector = this.series.vectors[this.maxVectorCount - 1]
 
-  appendOutput() {
-    let lastVector = this.series.vectors[this.maxVectorCount - 1];
-
-    this.output.push({
-      t: this.t,
-      opacity: 1,
-      scale: this.scale,
-      point: new Point(lastVector.end.x, lastVector.end.y),
-    });
-  }
-
-  removeCyclicalValues() {
-    let removeCount = 0;
-
-    for (let i = 0; i < this.output.length; ++i) {
-      //remove points close to new point
-      if (this.getNormalizedDistance(this.output[i]) >= .99)
-        removeCount++;
-
-      else
-        break;
+      this.output[i].point = new Point(vector.end.x, vector.end.y);
     }
-
-    if (removeCount)
-      this.output.splice(0, removeCount + 1)
-  }
-
-  applyOutputTransparency() {
-    let distance,
-        transparencySlope = 1 / this.pathTransparencyRatio;
-
-    for (let i = 0; i < this.output.length; ++i) {
-      distance = this.getNormalizedDistance(this.output[i]);
-
-      if (distance >= 1 - this.pathTransparencyRatio)
-        this.output[i].opacity = -1 * transparencySlope * distance + transparencySlope;
-
-      else
-        return;
-    }
-  }
-
-  getNormalizedDistance(currentValue) {
-    let lastTime = this.output[this.output.length - 1].t,
-        currentTime = currentValue.t;
-
-      if (currentTime > lastTime)
-        lastTime += 1;
-
-      return Math.abs(lastTime - currentTime);
-  }
-
-  paintOriginal() {
-    let lastValue;
-
-    this.drawing.originalPoints.forEach((value, i) =>  {
-      if (i != 0) {
-        this.canvasManager.setLineWidth(3);
-        this.canvasManager.setStrokeStyle(`rgba(0, 0, 0, ${this.originalOpacity})`);
-        this.canvasManager.paintLine(
-          new Point(lastValue.x * this.scale, lastValue.y * this.scale),
-          new Point(value.x * this.scale, value.y * this.scale)
-        );
-      }
-
-      lastValue = value;
-    });
   }
 
   incrementScale(scale: number) {

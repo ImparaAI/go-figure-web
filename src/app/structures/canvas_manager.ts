@@ -1,5 +1,4 @@
 import { Point } from '@app/structures/point';
-import { Vector } from '@app/structures/vector';
 
 export class CanvasManager {
   scale: number = 1;
@@ -64,29 +63,6 @@ export class CanvasManager {
     this.drawer.fillStyle = 'black';
     this.drawer.fillRect(p.x, p.y, 1, 1);
     this.drawer.closePath();
-  }
-
-  paintVectors(vectors: Vector[]) {
-    this.drawer.beginPath();
-
-    vectors.forEach((v: Vector) => this.paintVector(v));
-
-    this.drawer.stroke();
-  }
-
-  paintVector(v: Vector) {
-    this.paintLine(v.start, v.end);
-    this.paintVectorArrow(v, 25 * Math.PI / 180);
-    this.paintVectorArrow(v, -25 * Math.PI / 180);
-  }
-
-  paintVectorArrow(v: Vector, rotation: number) {
-    let len = v.length() * 0.1,
-        angle = v.getReverseVector().direction() + rotation,
-        x = v.end.x + len * Math.cos(angle),
-        y = v.end.y + len * Math.sin(angle);
-
-    this.paintLine(v.end, new Point(x, y));
   }
 
   paintLine(start: Point, end: Point) {
