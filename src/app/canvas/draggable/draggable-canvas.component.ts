@@ -19,6 +19,7 @@ export class DraggableCanvasComponent implements OnInit {
   @Output() canvasInitialized = new EventEmitter<any>();
   @Output() zoomIn = new EventEmitter<any>();
   @Output() zoomOut = new EventEmitter<any>();
+  @Output() originMoved = new EventEmitter<any>();
 
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
@@ -79,8 +80,9 @@ export class DraggableCanvasComponent implements OnInit {
         deltaY = y - this.dragStart.y;
 
     if (deltaX || deltaY) {
-      this.canvasManager.shiftOrigin(deltaX, deltaY)
+      this.canvasManager.shiftOrigin(deltaX, deltaY);
       this.dragStart = new Point(x, y);
+      this.originMoved.emit(new Point(this.canvasManager.origin.x, this.canvasManager.origin.y));
     }
   }
 

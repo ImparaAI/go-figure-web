@@ -102,14 +102,14 @@ export class DrawingAnimatorComponent implements OnInit {
     this.updateOutput();
     this.series.update(this.time, this.scale);
 
-    this.paint();
+    this.repaint();
     this.repositionCanvas();
     this.updateTime();
 
     window.requestAnimationFrame(() => this.animate());
   }
 
-  paint() {
+  repaint() {
     this.canvasManager.clearCanvas();
     this.originalPointsPainter.paint(this.drawing.originalPoints, this.originalOpacity, this.scale);
     this.vectorPainter.paint(this.series.vectors.slice(0, this.maxVectorCount));
@@ -170,6 +170,8 @@ export class DrawingAnimatorComponent implements OnInit {
 
   incrementScale(scale: number) {
     this.scale += scale;
+
+    this.repaint();
   }
 
 }

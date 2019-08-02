@@ -17,6 +17,7 @@
       width="700"
       height="400"
       (canvasInitialized)="onCanvasReady($event)"
+      (originMoved)="repaint()"
       (zoomIn)="incrementScale(0.1)"
       (zoomOut)="incrementScale(-0.1)">
     </iai-draggable-canvas>
