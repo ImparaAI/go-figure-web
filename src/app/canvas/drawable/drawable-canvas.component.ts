@@ -17,6 +17,11 @@ export class DrawableCanvasComponent implements OnInit {
   data: {point: Point, time: number}[];
   drawLimits: {left: number, right: number, top: number, bottom: number};
   imageCentered: boolean = true;
+  animation: {
+    running: boolean,
+    currentStep: number,
+    totalSteps: number,
+  }
 
   @Input() width: number;
   @Input() height: number;
@@ -27,6 +32,12 @@ export class DrawableCanvasComponent implements OnInit {
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
       throw new Error("A valid width and height need to be provided to the drawable canvas.")
+    }
+
+    this.animation = {
+      running: false,
+      currentStep: 0,
+      totalSteps: 25,
     }
   }
 
@@ -52,7 +63,7 @@ export class DrawableCanvasComponent implements OnInit {
   }
 
   mousemove(x, y) {
-    if (!this.mouseIsDown)
+    if (!this.mouseIsDown || this.animation.running)
       return;
 
     this.updateMousePositions(x, y);
@@ -60,11 +71,17 @@ export class DrawableCanvasComponent implements OnInit {
   }
 
   mouseup() {
+    if (this.animation.running)
+      return;
+
     this.mouseIsDown = false;
     this.centerImage();
   }
 
   mousedown(x, y) {
+    if (this.animation.running)
+      return;
+
     this.mouseIsDown = true;
 
     this.clear();
@@ -115,24 +132,51 @@ export class DrawableCanvasComponent implements OnInit {
     if (this.imageCentered || !this.drawLimits)
       return;
 
-    let xTranslation: number = Math.floor((this.width - this.drawLimits.right - this.drawLimits.left) / 2),
-        yTranslation: number = Math.floor((this.height - this.drawLimits.bottom - this.drawLimits.top) / 2),
-        lastPoint: Point;
+    let xTranslation: number = (this.width - this.drawLimits.right - this.drawLimits.left) / 2,
+        yTranslation: number = (this.height - this.drawLimits.bottom - this.drawLimits.top) / 2;
+
+    this.animation.running = true;
+    this.animation.currentStep = 0;
+    this.animateToCenter(xTranslation / this.animation.totalSteps, yTranslation / this.animation.totalSteps);
+  }
+
+  animateToCenter(deltaX: number, deltaY: number) {
+    if (this.animation.currentStep == this.animation.totalSteps) {
+      this.completeAnimation();
+      return;
+    }
 
     this.canvasManager.clearCanvas();
+    this.moveImage(deltaX, deltaY);
+    this.animation.currentStep++;
+
+    window.requestAnimationFrame(() => this.animateToCenter(deltaX, deltaY));
+  }
+
+  completeAnimation() {
+    this.roundData();
+    this.imageCentered = true;
+    this.animation.running = false;
+    this.drawingUpdated.emit(this.data);
+  }
+
+  moveImage(deltaX: number, deltaY: number) {
+    let lastPoint: Point;
 
     this.data.forEach((datum) => {
-      datum.point.update(datum.point.x + xTranslation, datum.point.y + yTranslation);
+      datum.point.update(datum.point.x + deltaX, datum.point.y + deltaY);
 
       if (lastPoint)
         this.canvasManager.paintLine(lastPoint, datum.point);
 
       lastPoint = datum.point;
     })
+  }
 
-    this.imageCentered = true;
-
-    this.drawingUpdated.emit(this.data);
+  roundData() {
+    this.data.forEach((datum) => {
+      datum.point.update(Math.round(datum.point.x), Math.round(datum.point.y));
+    });
   }
 
 }
