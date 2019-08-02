@@ -3,19 +3,17 @@ import { CanvasManager } from '@app/structures/canvas_manager';
 
 export class OutputPainter {
 
-  protected rgb: string;
-  protected numStepsHidden: number;
-  protected stepsTransparent: number;
+  protected scale: number = 1;
+  protected rgb: string ="255, 165, 0";
+  protected numStepsHidden: number = 100;
+  protected stepsTransparent: number = 400;
   protected canvasManager: CanvasManager;
 
   constructor(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
-    this.numStepsHidden = 100;
-    this.stepsTransparent = 400;
-    this.rgb = "255, 165, 0";
   }
 
-  public paint(output, time: number, scale: number): void {
+  public paint(output, time: number): void {
     let index: number = this.getStartIndex(time, output),
         value, lastValue;
 
@@ -26,8 +24,9 @@ export class OutputPainter {
         this.canvasManager.setLineWidth(3);
         this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, ${this.getOpacity(step)})`);
         this.canvasManager.paintLine(
-          new Point(lastValue.point.x * scale, lastValue.point.y * scale),
-          new Point(value.point.x * scale, value.point.y * scale)
+          new Point(lastValue.point.x, lastValue.point.y),
+          new Point(value.point.x, value.point.y),
+          this.scale
         );
       }
 
@@ -50,6 +49,10 @@ export class OutputPainter {
   protected getStartIndex(time: number, output): number {
     let finalIndex: number = Math.round(time / output[1].t);
     return (finalIndex + 1) % output.length;
+  }
+
+  public setScale(scale: number): void {
+    this.scale = scale;
   }
 
 }

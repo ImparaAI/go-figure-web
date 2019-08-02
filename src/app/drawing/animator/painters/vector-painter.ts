@@ -4,14 +4,13 @@ import { CanvasManager } from '@app/structures/canvas_manager';
 
 export class VectorPainter {
 
-  protected rgb: string;
-  protected arrowAngle: number;
+  protected scale: number = 1;
+  protected rgb: string ="0, 0, 0";
+  protected arrowAngle: number = 50;
   protected canvasManager: CanvasManager;
 
   constructor(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
-    this.rgb = "0, 0, 0";
-    this.arrowAngle = 50;
   }
 
   public paint(vectors: Vector[]): void {
@@ -19,19 +18,23 @@ export class VectorPainter {
     this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, 1)`);
 
     vectors.forEach((v: Vector) => {
-      this.canvasManager.paintLine(v.start, v.end);
+      this.canvasManager.paintLine(v.start, v.end, this.scale);
       this.paintVectorArrow(v, this.arrowAngle / 2);
       this.paintVectorArrow(v, -this.arrowAngle / 2);
     });
   }
 
+  public setScale(scale: number): void {
+    this.scale = scale;
+  }
+
   protected paintVectorArrow(v: Vector, rotation: number) {
     let len = v.length() * 0.1,
         angle = v.getReverseVector().direction() + (rotation * Math.PI / 180),
-        x = v.end.x + len * Math.cos(angle),
-        y = v.end.y + len * Math.sin(angle);
+        x = v.end.x + (len * Math.cos(angle)),
+        y = v.end.y + (len * Math.sin(angle));
 
-    this.canvasManager.paintLine(v.end, new Point(x, y));
+    this.canvasManager.paintLine(v.end, new Point(x, y), this.scale);
   }
 
 }

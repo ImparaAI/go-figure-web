@@ -33,9 +33,11 @@ export class DrawingAnimatorComponent implements OnInit {
   originalOpacity: number = 0.2;
   trackOutput: boolean = false;
   scale: number = 1;
-  vectorPainter: VectorPainter;
-  outputPainter: OutputPainter;
-  originalPointsPainter: OriginalPointsPainter;
+  painters: {
+    vector: VectorPainter;
+    output: OutputPainter;
+    originalPoints: OriginalPointsPainter;
+  };
 
   constructor(private route: ActivatedRoute, private router: Router, private api: ApiService) {
     router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -48,9 +50,11 @@ export class DrawingAnimatorComponent implements OnInit {
 
   onCanvasReady(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
-    this.vectorPainter = new VectorPainter(this.canvasManager);
-    this.outputPainter = new OutputPainter(this.canvasManager);
-    this.originalPointsPainter = new OriginalPointsPainter(this.canvasManager);
+    this.painters = {
+      vector: new VectorPainter(this.canvasManager),
+      output: new OutputPainter(this.canvasManager),
+      originalPoints: new OriginalPointsPainter(this.canvasManager),
+    };
   }
 
   async load() {
@@ -111,9 +115,9 @@ export class DrawingAnimatorComponent implements OnInit {
 
   repaint() {
     this.canvasManager.clearCanvas();
-    this.originalPointsPainter.paint(this.drawing.originalPoints, this.originalOpacity, this.scale);
-    this.vectorPainter.paint(this.series.vectors.slice(0, this.maxVectorCount));
-    this.outputPainter.paint(this.output, this.time, this.scale);
+    this.painters.originalPoints.paint(this.drawing.originalPoints, this.originalOpacity);
+    this.painters.vector.paint(this.series.vectors.slice(0, this.maxVectorCount));
+    this.painters.output.paint(this.output, this.time);
   }
 
   repositionCanvas() {
@@ -170,6 +174,10 @@ export class DrawingAnimatorComponent implements OnInit {
 
   incrementScale(scale: number) {
     this.scale += scale;
+
+    for (let painter of Object.values(this.painters)) {
+      painter.setScale(this.scale)
+    }
 
     this.repaint();
   }

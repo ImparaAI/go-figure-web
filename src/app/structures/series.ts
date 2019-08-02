@@ -16,8 +16,8 @@ export class FourierSeries {
 
       v.start.x = i == 0 ? 0 : this.vectors[i-1].end.x;
       v.start.y = i == 0 ? 0 : this.vectors[i-1].end.y;
-      v.end.x = v.start.x + this.getXComponent(time, constant) * scale;
-      v.end.y = v.start.y + this.getYComponent(time, constant) * scale;
+      v.end.x = v.start.x + this.getXComponent(time, constant);
+      v.end.y = v.start.y + this.getYComponent(time, constant);
     });
   }
 

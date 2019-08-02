@@ -3,15 +3,15 @@ import { CanvasManager } from '@app/structures/canvas_manager';
 
 export class OriginalPointsPainter {
 
-  protected rgb: string;
+  protected scale: number = 1;
+  protected rgb: string ="0, 0, 0";
   protected canvasManager: CanvasManager;
 
   constructor(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
-    this.rgb = "0, 0, 0";
   }
 
-  public paint(originalPoints: {x: number, y: number, time: number}[], opacity: number, scale: number): void {
+  public paint(originalPoints: {x: number, y: number, time: number}[], opacity: number): void {
     if (opacity <= 0)
       return;
 
@@ -22,13 +22,18 @@ export class OriginalPointsPainter {
         this.canvasManager.setLineWidth(3);
         this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, ${opacity})`);
         this.canvasManager.paintLine(
-          new Point(lastValue.x * scale, lastValue.y * scale),
-          new Point(value.x * scale, value.y * scale)
+          new Point(lastValue.x, lastValue.y),
+          new Point(value.x, value.y),
+          this.scale
         );
       }
 
       lastValue = value;
     });
+  }
+
+  public setScale(scale: number): void {
+    this.scale = scale;
   }
 
 }

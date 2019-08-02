@@ -1,7 +1,6 @@
 import { Point } from '@app/structures/point';
 
 export class CanvasManager {
-  scale: number = 1;
   origin: Point = new Point;
   element: HTMLCanvasElement;
   drawer: CanvasRenderingContext2D;
@@ -25,8 +24,8 @@ export class CanvasManager {
   }
 
   centerOn(point: Point) {
-    let center = new Point(this.element.width / 2 / this.scale, this.element.height / 2 / this.scale);
-    this.setOrigin(center.x - point.x * this.scale, center.y - point.y * this.scale);
+    let center = new Point(this.element.width / 2, this.element.height / 2);
+    this.setOrigin(center.x - point.x, center.y - point.y);
   }
 
   setOrigin(x: number, y: number) {
@@ -38,37 +37,21 @@ export class CanvasManager {
   }
 
   shiftOrigin(deltaX: number, deltaY: number) {
-    deltaX = deltaX / this.scale;
-    deltaY = deltaY / this.scale;
-
     this.origin = new Point(this.origin.x + deltaX, this.origin.y + deltaY);
     this.drawer.translate(deltaX, deltaY);
   }
 
-  zoomIn() {
-    this.zoom((this.scale + 0.1) / this.scale);
-  }
-
-  zoomOut() {
-    this.zoom((this.scale - 0.1) / this.scale);
-  }
-
-  zoom(scale: number) {
-    this.scale *= scale;
-    this.drawer.scale(scale, scale);
-  }
-
-  paintPoint(p: Point) {
+  paintPoint(p: Point, scale: number = 1) {
     this.drawer.beginPath();
     this.drawer.fillStyle = 'black';
-    this.drawer.fillRect(p.x, p.y, 1, 1);
+    this.drawer.fillRect(p.x * scale, p.y * scale, 1, 1);
     this.drawer.closePath();
   }
 
-  paintLine(start: Point, end: Point) {
+  paintLine(start: Point, end: Point, scale: number = 1) {
     this.drawer.beginPath();
-    this.drawer.moveTo(start.x, start.y);
-    this.drawer.lineTo(end.x, end.y);
+    this.drawer.moveTo(start.x * scale, start.y * scale);
+    this.drawer.lineTo(end.x * scale, end.y * scale);
     this.drawer.stroke();
     this.drawer.closePath();
   }
