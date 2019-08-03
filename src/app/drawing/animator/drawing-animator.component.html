@@ -27,8 +27,7 @@
     </div>
 
     <div class="playpause">
-      <button mat-raised-button color="primary" class="playpause" (click)="start()" *ngIf="!run">Play</button>
-      <button mat-raised-button color="primary" class="playpause" (click)="pause()" *ngIf="run">Pause</button>
+      <button mat-raised-button color="primary" class="playpause" (click)="togglePause()">{{run ? 'Pause' : 'Play'}}</button>
     </div>
   </div>
 </div>
