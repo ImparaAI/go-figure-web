@@ -87,8 +87,11 @@ export class DrawingAnimatorComponent implements OnInit {
     this.output = [];
   }
 
-  pause()  {
-    this.run = false;
+  togglePause()  {
+    if (!this.run)
+      this.start()
+    else
+      this.run = false;
   }
 
   start()  {
