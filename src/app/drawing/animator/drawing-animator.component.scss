@@ -1,3 +1,7 @@
+h2 {
+  margin: 40px 0 53px;
+}
+
 .processing {
   padding-top: 130px;
   text-align: center;
@@ -12,20 +16,11 @@
   }
 }
 
-.c-page-title {
-  margin: 40px 0 53px;
-}
-
 .drawing {
   text-align: center;
 
   > .c-canvas-container {
     position: relative;
-
-    > iai-draggable-canvas {
-      display: inline-block;
-      border: 1px dashed gray;
-    }
 
     > .total-vectors {
       position: absolute;

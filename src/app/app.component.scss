@@ -1,6 +1,8 @@
+@import 'variables/colors';
+
 .super-header {
   height: 10px;
-  background-color: #00171f;
+  background-color: $accentColor;
   border-bottom: 1px solid #555;
 }
 

@@ -1,3 +1,6 @@
+@import 'variables/colors';
+@import 'themes/go-figure/theme';
+
 :host {
   display: block;
   margin-top: 80px;
@@ -11,7 +14,7 @@
 }
 
 h3 {
-  color: #00171f;
+  color: $accentColor;
   text-align: center;
   font-size: 23px;
   margin-bottom: 15px;
@@ -20,24 +23,28 @@ h3 {
 .container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   padding: 5px;
   width: 90%;
   margin: 0 auto;
 
-  > .link {
-    display: block;
-    border: 1px solid #666;
-    background-color: #00171f;
-    border-radius: 10px;
-    flex-basis: 200px;
+  > * {
     margin: 10px;
+    flex-basis: 200px;
+  }
+}
 
-    &:hover {
-      background-color: #263A41;
-    }
+a {
+  display: block;
+  border: 1px solid #666;
+  background-color: $accentColor;
+  border-radius: 10px;
 
-    > img {
-      width: 100%;
-    }
+  &:hover {
+    background-color: mat-color($accentPalette, 400);
+  }
+
+  >img {
+    width: 100%;
   }
 }

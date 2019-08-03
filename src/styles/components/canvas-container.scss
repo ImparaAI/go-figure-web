@@ -1,5 +1,7 @@
+@import 'variables/colors';
+
 .c-canvas-container {
   display: inline-block;
   border: 1px dashed gray;
-  background-color: $richBlack;
+  background-color: $accentColor;
 }

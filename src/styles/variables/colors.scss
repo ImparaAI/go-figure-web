@@ -1,5 +1,5 @@
-$white: #fff;
-$richBlack: #00171f;
-$prussianBlue: #003459;
-$cerulean: #007ea7;
-$vividCerulean: #00a8e8;
+@import 'themes/go-figure/theme';
+
+$primaryColor: mat-color($primaryPalette);
+$accentColor: mat-color($accentPalette);
+$warnColor: mat-color($warnPalette);
