@@ -4,4 +4,9 @@
   font-size: 25px;
   color: $accentColor;
   text-align: center;
+  margin: 40px 0 53px;
+
+  &__with-sub {
+  	margin-bottom: 7px;
+  }
 }
