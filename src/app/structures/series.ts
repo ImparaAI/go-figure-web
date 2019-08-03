@@ -1,4 +1,5 @@
 import { Vector } from '@app/structures/vector';
+import { Point2D } from '@app/structures/point';
 
 interface FourierConstant {
   n: number;
@@ -41,6 +42,10 @@ export class FourierSeries {
 
   getCyclicalComponent(n: number, time: number) {
     return 2 * Math.PI * n * time;
+  }
+
+  getImageCenterpoint(): Point2D {
+    return this.vectors[0].end;
   }
 
 }

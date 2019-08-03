@@ -176,14 +176,31 @@ export class DrawingAnimatorComponent implements OnInit {
     return new Point2D(finalVector.end.x, finalVector.end.y);
   }
 
-  incrementScale(scale: number) {
-    this.scale = Math.max(0.01, this.scale + scale);
+  updateScale(scale: number) {
+    this.scale = scale;
 
     for (let painter of Object.values(this.painters)) {
       painter.setScale(this.scale)
     }
 
     this.repaint();
+  }
+
+  incrementScale(scale: number) {
+    this.updateScale(Math.max(0.01, this.scale + scale));
+  }
+
+  zoomInAndSlow() {
+    this.timeInterval = this.minTimeInterval;
+    this.trackOutput = true;
+    this.updateScale(7);
+  }
+
+  resetZoomAndSpeed() {
+    this.timeInterval = 0.005;
+    this.trackOutput = false;
+    this.updateScale(1);
+    this.canvasManager.centerOn(this.series.getImageCenterpoint());
   }
 
 }

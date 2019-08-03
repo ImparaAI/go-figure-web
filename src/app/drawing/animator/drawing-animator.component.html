@@ -7,12 +7,12 @@
   <div class="main">Loading...</div>
 </div>
 
-<h2 class="header" *ngIf="!loading && maxVectorCount">
+<h2 class="c-page-title" *ngIf="!loading && maxVectorCount">
   Drawing #{{id}}
 </h2>
 
 <div class="drawing" [hidden]="loading || (maxVectorCount == 0)">
-  <div class="canvas">
+  <div class="c-canvas-container">
     <iai-draggable-canvas
       width="700"
       height="400"
@@ -36,42 +36,53 @@
 </div>
 
 <div class="controls" [hidden]="loading || (maxVectorCount == 0)">
-  <div>
-    <mat-checkbox color="primary" [(ngModel)]="trackOutput">Track Output</mat-checkbox>
+  <div class="c-flex c-flex--space-between">
+    <div>
+      <span>Original:</span>
+      <mat-slider
+          color="primary"
+          [max]="1"
+          [min]="0"
+          [step]=".05"
+          [value]="originalOpacity"
+          (input)="originalOpacity = $event.value">
+      </mat-slider>
+    </div>
+    <div>
+      <span>Speed:</span>
+      <mat-slider
+          color="primary"
+          [max]="0.02"
+          [min]="minTimeInterval"
+          [step]="minTimeInterval"
+          [value]="timeInterval"
+          (input)="timeInterval = $event.value">
+      </mat-slider>
+      {{timeInterval}}
+    </div>
+    <div>
+      <span>Vectors:</span>
+      <mat-slider
+          color="primary"
+          [max]="series ? series.vectors.length : 1"
+          [min]="1"
+          [step]="1"
+          [thumbLabel]="true"
+          [value]="maxVectorCount"
+          (input)="maxVectorCount = $event.value">
+      </mat-slider>
+    </div>
   </div>
-  <div>
-    <span>Original Opacity:</span>
-    <mat-slider
-        color="primary"
-        [max]="1"
-        [min]="0"
-        [step]=".05"
-        [value]="originalOpacity"
-        (input)="originalOpacity = $event.value">
-    </mat-slider>
-  </div>
-  <div>
-    <span>Animation Speed: </span>
-    <mat-slider
-        color="primary"
-        [max]="0.02"
-        [min]="minTimeInterval"
-        [step]="minTimeInterval"
-        [value]="timeInterval"
-        (input)="timeInterval = $event.value">
-    </mat-slider>
-  </div>
-  <div>
-    <span>Vector Count: </span>
-    <mat-slider
-        color="primary"
-        [max]="series ? series.vectors.length : 1"
-        [min]="1"
-        [step]="1"
-        [thumbLabel]="true"
-        [value]="maxVectorCount"
-        (input)="maxVectorCount = $event.value">
-    </mat-slider>
+  <div class="c-flex c-flex--space-between c-flex--center-items">
+    <div>
+      <mat-checkbox color="primary" [(ngModel)]="trackOutput">Track Output</mat-checkbox>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" (click)="zoomInAndSlow()">Zoom in and Slow</button>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" (click)="resetZoomAndSpeed()">Reset Zoom and Speed</button>
+    </div>
   </div>
 </div>
 

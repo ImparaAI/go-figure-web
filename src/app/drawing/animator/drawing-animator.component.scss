@@ -12,16 +12,14 @@
   }
 }
 
-h2 {
+.c-page-title {
   margin: 40px 0 53px;
-  font-size: 25px;
-  text-align: center;
 }
 
 .drawing {
   text-align: center;
 
-  > .canvas {
+  > .c-canvas-container {
     position: relative;
 
     > iai-draggable-canvas {
@@ -52,10 +50,10 @@ h2 {
 }
 
 .controls {
-  text-align: center;
+  width: 700px;
+  margin: 0 auto;
 
-  > div {
-    display: inline-block;
-    margin-right: 32px
+  > .c-flex {
+    margin-bottom: 10px;
   }
 }
