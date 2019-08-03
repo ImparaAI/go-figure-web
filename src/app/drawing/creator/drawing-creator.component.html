@@ -2,7 +2,7 @@
   <h2>Draw Something</h2>
   <h3>(in one continuous line)</h3>
 
-  <div>
+  <div class="c-canvas-container">
     <iai-drawable-canvas
       width="700"
       height="400"
@@ -10,7 +10,9 @@
       (drawingUpdated)="onDrawingUpdated($event)">
     </iai-drawable-canvas>
   </div>
-  <button (click)="submit()" [hidden]="!data || !data.length">Submit</button>
+  <div>
+    <button (click)="submit()" [hidden]="!data || !data.length">Submit</button>
+  </div>
 </div>
 
 

@@ -20,7 +20,7 @@ export class DrawingCreatorComponent {
   onCanvasReady(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
     this.canvasManager.setLineWidth(1);
-    this.canvasManager.setStrokeStyle('black');
+    this.canvasManager.setStrokeStyle('white');
   }
 
   onDrawingUpdated(data: Point3D[]) {

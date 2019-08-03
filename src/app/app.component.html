@@ -1,6 +1,7 @@
-<div class="header c-flex c-flex--space-between">
+<div class="super-header"></div>
+<div class="header c-flex c-flex--space-between c-flex--center-items">
   <a class="logo" [routerLink]="['/']">Go Figure</a>
-  <div class="links c-flex"></div>
+  <a mat-raised-button color="primary" class="draw" [routerLink]="['/']">Draw</a>
 </div>
 <div class="content">
   <router-outlet></router-outlet>

@@ -5,7 +5,7 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 export class OutputPainter {
 
   protected scale: number = 1;
-  protected rgb: string ="255, 165, 0";
+  protected rgb: string ="0, 168, 232";
   protected numStepsHidden: number = 100;
   protected stepsTransparent: number = 400;
   protected canvasManager: CanvasManager;

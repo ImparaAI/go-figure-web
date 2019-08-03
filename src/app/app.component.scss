@@ -1,13 +1,31 @@
+.super-header {
+  height: 10px;
+  background-color: #00171f;
+  border-bottom: 1px solid #888;
+}
+
 .header {
+  position: relative;
+  justify-content: center;
   border-bottom: 1px solid #bbb;
-  padding: 10px 5px;
+  padding: 16px 0;
+  background-color: #003459;
+  font-family: sans-serif;
 }
 
 .logo {
   font-size: 1.3em;
   font-weight: 700;
+  text-decoration: none;
+  color: #fff !important;
+}
+
+.draw {
+  position: absolute;
+  right: 4%;
 }
 
 .content {
   padding: 10px;
+  background-color: #e1e2e1;
 }

@@ -11,6 +11,7 @@
 }
 
 h3 {
+  color: #00171f;
   text-align: center;
   font-size: 23px;
   margin-bottom: 15px;
@@ -26,12 +27,13 @@ h3 {
   > .link {
     display: block;
     border: 1px solid #666;
+    background-color: #00171f;
     border-radius: 10px;
     flex-basis: 200px;
     margin: 10px;
 
     &:hover {
-      background-color: #eee;
+      background-color: #263A41;
     }
 
     > img {
