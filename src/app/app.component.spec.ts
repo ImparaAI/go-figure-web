@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
@@ -12,7 +13,8 @@ describe('AppComponent', () => {
         RouterTestingModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        MockRecentDrawingsComponent
       ],
     }).compileComponents();
   }));
@@ -27,3 +29,10 @@ describe('AppComponent', () => {
   });
 
 });
+
+@Component({
+  selector: 'iai-drawing-recent',
+  template: ''
+})
+class MockRecentDrawingsComponent {
+}
