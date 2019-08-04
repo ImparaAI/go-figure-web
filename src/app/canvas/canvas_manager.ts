@@ -56,6 +56,17 @@ export class CanvasManager {
     this.drawer.closePath();
   }
 
+  paintCircle(center: Point2D, radius: number, scale: number = 1) {
+    this.drawer.beginPath();
+    this.drawer.arc(center.x * scale, center.y * scale, radius * scale, 0, 2 * Math.PI);
+    this.drawer.fill();
+    this.drawer.closePath();
+  }
+
+  setFillStyle(style: string) {
+    this.drawer.fillStyle = style;
+  }
+
   setStrokeStyle(style: string) {
     this.drawer.strokeStyle = style;
   }

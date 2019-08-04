@@ -6,10 +6,12 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 @Component({
   selector: 'iai-drawable-canvas',
   templateUrl: './drawable-canvas.component.html',
+  styleUrls: ['./drawable-canvas.component.scss']
 })
 export class DrawableCanvasComponent implements OnInit {
 
   timestamp: number;
+  cursorPosition: Point2D;
   mouseIsDown: boolean = false;
   canvasManager: CanvasManager;
   lastPoint: Point2D = new Point2D;
@@ -63,6 +65,9 @@ export class DrawableCanvasComponent implements OnInit {
   }
 
   mousemove(x: number, y: number) {
+    this.cursorPosition = new Point2D(x, y);
+    this.repaint();
+
     if (!this.mouseIsDown || this.animation.running)
       return;
 
@@ -79,6 +84,8 @@ export class DrawableCanvasComponent implements OnInit {
   }
 
   mousedown(x: number, y: number) {
+    this.repaint();
+
     if (this.animation.running)
       return;
 
@@ -145,8 +152,8 @@ export class DrawableCanvasComponent implements OnInit {
       return;
     }
 
-    this.canvasManager.clearCanvas();
-    this.moveImage(deltaX, deltaY);
+    this.updateData(deltaX, deltaY);
+    this.repaint();
     this.animation.currentStep++;
 
     window.requestAnimationFrame(() => this.animateToCenter(deltaX, deltaY));
@@ -159,16 +166,9 @@ export class DrawableCanvasComponent implements OnInit {
     this.drawingUpdated.emit(this.data);
   }
 
-  moveImage(deltaX: number, deltaY: number) {
-    let lastPoint: Point3D;
-
+  updateData(deltaX: number, deltaY: number) {
     this.data.forEach((point) => {
       point.update(point.x + deltaX, point.y + deltaY, point.time);
-
-      if (lastPoint)
-        this.canvasManager.paintLine(lastPoint.toPoint2D(), point.toPoint2D());
-
-      lastPoint = point;
     })
   }
 
@@ -176,6 +176,35 @@ export class DrawableCanvasComponent implements OnInit {
     this.data.forEach((point: Point3D) => {
       point.update(Math.round(point.x), Math.round(point.y), point.time);
     });
+  }
+
+  repaint() {
+    this.canvasManager.clearCanvas();
+    this.paintData();
+    this.paintCursor();
+  }
+
+  paintData() {
+    if (!this.data)
+      return;
+
+    let lastPoint: Point3D;
+    this.canvasManager.setLineWidth(3);
+
+    this.data.forEach((point) => {
+      if (lastPoint)
+        this.canvasManager.paintLine(lastPoint.toPoint2D(), point.toPoint2D());
+
+      lastPoint = point;
+    })
+  }
+
+  paintCursor() {
+    if (!this.cursorPosition)
+      return;
+
+    this.canvasManager.setFillStyle(`rgba(255, 255, 255, 1)`);
+    this.canvasManager.paintCircle(this.cursorPosition, 5);
   }
 
 }

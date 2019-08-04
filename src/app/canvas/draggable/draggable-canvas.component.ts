@@ -6,6 +6,7 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 @Component({
   selector: 'iai-draggable-canvas',
   templateUrl: './draggable-canvas.component.html',
+  styleUrls: ['./draggable-canvas.component.scss']
 })
 export class DraggableCanvasComponent implements OnInit {
 

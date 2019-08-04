@@ -3,11 +3,10 @@
   <a class="logo" [routerLink]="['/']">Go Figure</a>
   <div class="links c-flex c-flex--center-items">
     <a class="huh" [routerLink]="['/inspiration']">Huh?</a>
-    <a mat-raised-button color="primary" class="draw" [routerLink]="['/']">Draw</a>
+    <a mat-raised-button color="primary" [routerLink]="['/']">Draw</a>
   </div>
 </div>
 <div class="content">
   <router-outlet></router-outlet>
-
   <iai-drawing-recent></iai-drawing-recent>
 </div>

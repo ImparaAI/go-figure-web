@@ -20,7 +20,7 @@
   font-size: 1.3em;
   font-weight: 700;
   text-decoration: none;
-  color: #fff !important;
+  color: #fff;
   @include no-select;
 }
 
@@ -32,12 +32,9 @@
 .huh {
   font-style: italic;
   text-decoration: none;
-  color: #fff !important;
+  color: #fff;
   @include no-select;
   margin-right: 20px;
-}
-
-.draw {
 }
 
 .content {

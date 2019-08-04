@@ -30,9 +30,5 @@ describe('AppComponent', () => {
 
 });
 
-@Component({
-  selector: 'iai-drawing-recent',
-  template: ''
-})
-class MockRecentDrawingsComponent {
-}
+@Component({selector: 'iai-drawing-recent', template: ''})
+class MockRecentDrawingsComponent {}
