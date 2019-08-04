@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Vector } from '@app/structures/vector';
@@ -17,7 +17,7 @@ import { OriginalPointsPainter } from '@app/drawing/animator/painters/original-p
   templateUrl: './drawing-animator.component.html',
   styleUrls: ['./drawing-animator.component.scss']
 })
-export class DrawingAnimatorComponent implements OnInit {
+export class DrawingAnimatorComponent implements OnInit, OnDestroy {
 
   loading: boolean = true;
   id: number;
@@ -47,6 +47,10 @@ export class DrawingAnimatorComponent implements OnInit {
   ngOnInit() {
     this.id = +this.route.snapshot.paramMap.get('id');
     this.load();
+  }
+
+  ngOnDestroy() {
+    this.stop();
   }
 
   onCanvasReady(canvasManager: CanvasManager) {
