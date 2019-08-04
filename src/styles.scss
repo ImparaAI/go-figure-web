@@ -7,3 +7,7 @@
 
 @include mat-core();
 @include angular-material-theme($theme);
+
+body {
+  background-color: #ececec;
+}
