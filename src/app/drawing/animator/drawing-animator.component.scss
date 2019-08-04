@@ -1,3 +1,5 @@
+@import 'variables/colors';
+
 .processing {
   padding-top: 130px;
   text-align: center;
@@ -46,5 +48,15 @@
 
   > .c-flex {
     margin-bottom: 10px;
+  }
+}
+
+.why {
+  margin-top: 30px;
+  text-align: center;
+
+  > a {
+    color: $accentColor;
+    font-style: italic;
   }
 }

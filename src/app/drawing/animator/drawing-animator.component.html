@@ -83,4 +83,6 @@
   </div>
 </div>
 
-<iai-drawing-recent></iai-drawing-recent>
+<div class="why" [hidden]="loading || (maxVectorCount == 0)">
+  <a [routerLink]="['/inspiration']">I don't get it...</a>
+</div>

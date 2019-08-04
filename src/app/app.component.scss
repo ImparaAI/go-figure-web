@@ -1,3 +1,4 @@
+@import 'mixins/no-select';
 @import 'variables/colors';
 
 .super-header {
@@ -20,11 +21,23 @@
   font-weight: 700;
   text-decoration: none;
   color: #fff !important;
+  @include no-select;
+}
+
+.links {
+  position: absolute;
+  right: 4%;
+}
+
+.huh {
+  font-style: italic;
+  text-decoration: none;
+  color: #fff !important;
+  @include no-select;
+  margin-right: 20px;
 }
 
 .draw {
-  position: absolute;
-  right: 4%;
 }
 
 .content {

@@ -1,8 +1,13 @@
 <div class="super-header"></div>
 <div class="header c-flex c-flex--space-between c-flex--center-items">
   <a class="logo" [routerLink]="['/']">Go Figure</a>
-  <a mat-raised-button color="primary" class="draw" [routerLink]="['/']">Draw</a>
+  <div class="links c-flex c-flex--center-items">
+    <a class="huh" [routerLink]="['/inspiration']">Huh?</a>
+    <a mat-raised-button color="primary" class="draw" [routerLink]="['/']">Draw</a>
+  </div>
 </div>
 <div class="content">
   <router-outlet></router-outlet>
+
+  <iai-drawing-recent></iai-drawing-recent>
 </div>
