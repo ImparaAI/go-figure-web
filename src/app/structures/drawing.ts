@@ -1,6 +1,6 @@
 import { Point3D } from '@app/structures/point';
 
-export class Drawing {
+class Drawing {
   id: number;
   featured: boolean;
   originalPoints: Point3D[];
@@ -8,7 +8,6 @@ export class Drawing {
   createdAt: string;
   lastDrawVectorCalculatedAt: string;
   uri: string;
-  svgPath: string;
 
   constructor(drawing) {
     this.id = drawing.id;
@@ -19,5 +18,18 @@ export class Drawing {
     this.lastDrawVectorCalculatedAt = drawing.lastDrawVectorCalculatedAt;
     this.uri = "/drawing/" + this.id;
   }
-
 }
+
+class DrawingPreview {
+  id: number;
+  uri: string;
+  svgPath: string;
+
+  constructor(drawing) {
+    this.id = drawing.id;
+    this.svgPath = drawing.svgPath;
+    this.uri = "/drawing/" + this.id;
+  }
+}
+
+export { Drawing, DrawingPreview }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Drawing } from '@app/structures/drawing';
 import { ApiService } from '@app/api/api.service';
+import { DrawingPreview } from '@app/structures/drawing';
 
 @Component({
   selector: 'iai-drawing-recent',
@@ -10,7 +10,7 @@ import { ApiService } from '@app/api/api.service';
 })
 export class DrawingRecentComponent implements OnInit {
 
-  drawings: Drawing[] = [];
+  drawings: DrawingPreview[] = [];
 
   constructor(private api: ApiService) { }
 
@@ -20,28 +20,11 @@ export class DrawingRecentComponent implements OnInit {
 
   async load() {
     try {
-      let rawDrawings = await this.api.getRecentDrawings();
-
-      this.drawings = rawDrawings.map(drawing => {return new Drawing(drawing)});
-      this.drawings.forEach(drawing => drawing.svgPath = this.buildSvgPath(drawing));
+      this.drawings = (await this.api.getRecentDrawings()).map(drawing => new DrawingPreview(drawing));
     }
     catch (e) {
 
     }
-  }
-
-  buildSvgPath(drawing: Drawing): string {
-    let path = "";
-
-    drawing.originalPoints.forEach((point, i) => {
-
-      if (i == 0)
-        path += `M ${point.x} ${point.y} `;
-      else
-        path += `L ${point.x} ${point.y} `;
-    });
-
-    return path;
   }
 
 }
