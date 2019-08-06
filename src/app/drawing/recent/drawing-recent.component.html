@@ -4,7 +4,11 @@
 
 <div class="container">
   <a *ngFor="let drawing of drawings" [routerLink]="[drawing.uri]">
-    <img [src]="drawing.image"/>
+    <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <svg:g>
+        <svg:path [attr.d]="drawing.svgPath" stroke="white" stroke-width="3" fill="none" ></svg:path>
+      </svg:g>
+    </svg>
   </a>
   <span *ngFor="let i of [0,1,2,3,4,5,6,7,8,9]"></span>
 </div>

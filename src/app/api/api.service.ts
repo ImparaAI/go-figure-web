@@ -15,8 +15,8 @@ export class ApiService {
     return this.http.get('/drawings/recent').toPromise();
   }
 
-  createDrawing(points: object[], image: string): Promise<any> {
-  	return this.http.post('/drawing', {points, image}).toPromise();
+  createDrawing(points: object[]): Promise<any> {
+  	return this.http.post('/drawing', {points}).toPromise();
   }
 
 }

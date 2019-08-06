@@ -23,10 +23,25 @@ export class DrawingRecentComponent implements OnInit {
       let rawDrawings = await this.api.getRecentDrawings();
 
       this.drawings = rawDrawings.map(drawing => {return new Drawing(drawing)});
+      this.drawings.forEach(drawing => drawing.svgPath = this.buildSvgPath(drawing));
     }
     catch (e) {
 
     }
+  }
+
+  buildSvgPath(drawing: Drawing): string {
+    let path = "";
+
+    drawing.originalPoints.forEach((point, i) => {
+
+      if (i == 0)
+        path += `M ${point.x} ${point.y} `;
+      else
+        path += `L ${point.x} ${point.y} `;
+    });
+
+    return path;
   }
 
 }

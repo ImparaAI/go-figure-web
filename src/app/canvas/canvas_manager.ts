@@ -75,8 +75,4 @@ export class CanvasManager {
     this.drawer.lineWidth = width;
   }
 
-  getPng() {
-    return this.element.toDataURL();
-  }
-
 }
