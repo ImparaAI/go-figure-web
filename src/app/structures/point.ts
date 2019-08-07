@@ -7,9 +7,11 @@ class Point2D {
     this.y = y;
   }
 
-  update(x: number, y: number) {
+  update(x: number, y: number): Point2D {
     this.x = x;
     this.y = y;
+
+    return this;
   }
 
   clone(): Point2D {
@@ -29,14 +31,24 @@ class Point3D {
     this.time = time;
   }
 
-  update(x: number, y: number, time: number) {
+  update(x: number, y: number, time: number): Point3D {
     this.x = x;
     this.y = y;
     this.time = time;
+
+    return this;
   }
 
   clone(): Point3D {
     return new Point3D(this.x, this.y, this.time);
+  }
+
+  shift(deltaX: number, deltaY: number, deltaT: number): Point3D {
+    this.x += deltaX
+    this.y += deltaY;
+    this.time += deltaT;
+
+    return this;
   }
 
   toPoint2D(): Point2D {

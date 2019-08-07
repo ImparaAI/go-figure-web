@@ -1,7 +1,11 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
+import { Vector } from '@app/structures/vector';
 import { Point2D, Point3D } from '@app/structures/point';
 import { CanvasManager } from '@app/canvas/canvas_manager';
+import { DataPainter } from '@app/canvas/drawable/painters/data';
+import { CursorPainter } from '@app/canvas/drawable/painters/cursor';
+import { AnimationConfig } from '@app/canvas/drawable/animation-config';
 
 @Component({
   selector: 'iai-drawable-canvas',
@@ -16,14 +20,14 @@ export class DrawableCanvasComponent implements OnInit {
   canvasManager: CanvasManager;
   lastPoint: Point2D = new Point2D;
   currentPoint: Point2D = new Point2D;
-  data: Point3D[];
+  data: Point3D[] = [];
   drawLimits: {left: number, right: number, top: number, bottom: number};
   imageCentered: boolean = true;
-  animation: {
-    running: boolean,
-    currentStep: number,
-    totalSteps: number,
-  }
+  animation: AnimationConfig = new AnimationConfig;
+  painters: {
+    data: DataPainter;
+    cursor: CursorPainter;
+  };
 
   @Input() width: number;
   @Input() height: number;
@@ -36,17 +40,18 @@ export class DrawableCanvasComponent implements OnInit {
       throw new Error("A valid width and height need to be provided to the drawable canvas.")
     }
 
-    this.animation = {
-      running: false,
-      currentStep: 0,
-      totalSteps: 25,
-    }
+    this.animation.clear();
   }
 
   ngAfterViewInit() {
     this.bindEvents();
     this.canvasManager = new CanvasManager(this.canvas.nativeElement);
     this.canvasInitialized.emit(this.canvasManager);
+
+    this.painters = {
+      data: new DataPainter(this.canvasManager),
+      cursor: new CursorPainter(this.canvasManager),
+    };
   }
 
   bindEvents() {
@@ -80,7 +85,7 @@ export class DrawableCanvasComponent implements OnInit {
       return;
 
     this.mouseIsDown = false;
-    this.centerImage();
+    this.completeImage();
   }
 
   mousedown(x: number, y: number) {
@@ -134,35 +139,64 @@ export class DrawableCanvasComponent implements OnInit {
     }
   }
 
+  completeImage() {
+    if (this.imageCentered)
+      return;
+
+    this.animation.running = true;
+    this.animation.connecting = this.connectImage();
+    this.animation.centering = this.centerImage();
+    this.animate();
+  }
+
+  connectImage(): boolean {
+    if (this.data.length < 3)
+      return false;
+
+    let firstPoint: Point3D = this.data[0],
+        lastPoint: Point3D = this.data[this.data.length - 1],
+        distance: number = (new Vector(firstPoint.toPoint2D(), lastPoint.toPoint2D())).length(),
+        time: number = lastPoint.time + distance / 500;
+
+    this.data.push(new Point3D(firstPoint.x, firstPoint.y, time));
+    return true;
+  }
+
   centerImage() {
     if (this.imageCentered || !this.drawLimits)
-      return;
+      return false;
 
     let xTranslation: number = (this.width - this.drawLimits.right - this.drawLimits.left) / 2,
         yTranslation: number = (this.height - this.drawLimits.bottom - this.drawLimits.top) / 2;
 
-    this.animation.running = true;
-    this.animation.currentStep = 0;
-    this.animateToCenter(xTranslation / this.animation.totalSteps, yTranslation / this.animation.totalSteps);
+    this.animation.centeringDeltaX = xTranslation / this.animation.totalSteps;
+    this.animation.centeringDeltaY = yTranslation / this.animation.totalSteps;
+    return true;
   }
 
-  animateToCenter(deltaX: number, deltaY: number) {
+  animate() {
     if (this.animation.currentStep == this.animation.totalSteps) {
       this.completeAnimation();
+      this.repaint();
       return;
     }
 
-    this.updateData(deltaX, deltaY);
+    if (this.animation.centering) {
+      this.updateData(this.animation.centeringDeltaX, this.animation.centeringDeltaY);
+    }
+
     this.repaint();
     this.animation.currentStep++;
 
-    window.requestAnimationFrame(() => this.animateToCenter(deltaX, deltaY));
+    window.requestAnimationFrame(() => this.animate());
   }
 
   completeAnimation() {
+    if (this.animation.centering)
+      this.imageCentered = true;
+
     this.roundData();
-    this.imageCentered = true;
-    this.animation.running = false;
+    this.animation.clear();
     this.drawingUpdated.emit(this.data);
   }
 
@@ -180,31 +214,12 @@ export class DrawableCanvasComponent implements OnInit {
 
   repaint() {
     this.canvasManager.clearCanvas();
-    this.paintData();
-    this.paintCursor();
-  }
 
-  paintData() {
-    if (!this.data)
-      return;
+    if (this.data)
+      this.painters.data.paint(this.data, this.animation);
 
-    let lastPoint: Point3D;
-    this.canvasManager.setLineWidth(3);
-
-    this.data.forEach((point) => {
-      if (lastPoint)
-        this.canvasManager.paintLine(lastPoint.toPoint2D(), point.toPoint2D());
-
-      lastPoint = point;
-    })
-  }
-
-  paintCursor() {
-    if (!this.cursorPosition)
-      return;
-
-    this.canvasManager.setFillStyle(`rgba(255, 255, 255, 1)`);
-    this.canvasManager.paintCircle(this.cursorPosition, 5);
+    if (this.cursorPosition && !this.animation.running)
+      this.painters.cursor.paint(this.cursorPosition);
   }
 
 }

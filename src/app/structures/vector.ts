@@ -1,8 +1,13 @@
 import { Point2D } from '@app/structures/point';
 
 export class Vector {
-  start: Point2D = new Point2D;
-  end: Point2D = new Point2D;
+  start: Point2D;
+  end: Point2D;
+
+  constructor(start?: Point2D, end?: Point2D) {
+    this.start = start || new Point2D;
+    this.end = end || new Point2D;
+  }
 
   length(): number {
     return Math.sqrt(Math.pow(this.end.x - this.start.x, 2) + Math.pow(this.end.y - this.start.y, 2));

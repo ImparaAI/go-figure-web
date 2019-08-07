@@ -5,7 +5,7 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 export class VectorPainter {
 
   protected scale: number = 1;
-  protected rgb: string ="255, 255, 255";
+  protected rgb: string = "255, 255, 255";
   protected arrowAngle: number = 50;
   protected canvasManager: CanvasManager;
 

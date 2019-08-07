@@ -4,7 +4,7 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 export class OriginalPointsPainter {
 
   protected scale: number = 1;
-  protected rgb: string ="255, 255, 255";
+  protected rgb: string = "255, 255, 255";
   protected canvasManager: CanvasManager;
 
   constructor(canvasManager: CanvasManager) {
