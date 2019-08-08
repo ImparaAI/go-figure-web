@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Vector } from '@app/structures/vector';
 import { Point2D } from '@app/structures/point';
@@ -130,7 +130,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
 
   repositionCanvas() {
     if (this.trackOutput && this.series.vectors.length) {
-      let finalVector = this.series.vectors[this.series.vectors.length - 1],
+      let finalVector = this.series.vectors[this.maxVectorCount - 1],
           point = new Point2D(finalVector.end.x * this.scale, finalVector.end.y * this.scale);
 
       this.canvasManager.centerOn(point)
