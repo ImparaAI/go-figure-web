@@ -81,7 +81,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
       }
     }
     catch (e) {
-
+      this.router.navigateByUrl('404', {skipLocationChange: true});
     }
   }
 

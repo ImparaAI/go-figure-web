@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { InspirationComponent } from './inspiration/inspiration.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { DrawingRecentComponent } from './drawing/recent/drawing-recent.component';
 import { DrawingCreatorComponent } from './drawing/creator/drawing-creator.component';
 import { DrawableCanvasComponent } from './canvas/drawable/drawable-canvas.component';
@@ -23,6 +24,7 @@ import { DrawingAnimatorComponent } from '@app/drawing/animator/drawing-animator
     DrawableCanvasComponent,
     DraggableCanvasComponent,
     DrawingAnimatorComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     //browser modules come first
