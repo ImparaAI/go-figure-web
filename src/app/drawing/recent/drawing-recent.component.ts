@@ -13,16 +13,24 @@ export class DrawingRecentComponent implements OnInit {
   drawings: DrawingPreview[] = [];
   loading: bool = true;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService) {
+    api.drawingCreated.subscribe((value) => {
+      this.load();
+    });
+  }
 
   ngOnInit() {
     this.load();
   }
 
-  async load() {
+  async load(hideLoading: bool) {
     try {
-      this.loading = true;
+      this.loading = hideLoading ? false : true;
       this.drawings = (await this.api.getRecentDrawings()).map(drawing => new DrawingPreview(drawing));
+
+      setTimeout(()=>{
+        this.load(true)
+      }, 10000)
     }
     catch (e) {
       this.drawings = [];
