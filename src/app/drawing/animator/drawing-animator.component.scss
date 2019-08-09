@@ -19,6 +19,7 @@
 
   > .c-canvas-container {
     position: relative;
+    margin-bottom: 10px;
 
     > .total-vectors {
       position: absolute;
@@ -29,15 +30,6 @@
       margin-right: auto;
       font-size: 13px;
       color: #777;
-    }
-
-    > .playpause {
-      position: absolute;
-      bottom: 10px;
-      left: 0;
-      right: 0;
-      margin-left: auto;
-      margin-right: auto;
     }
   }
 }
