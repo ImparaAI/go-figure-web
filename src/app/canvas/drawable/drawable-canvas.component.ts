@@ -15,6 +15,7 @@ import { AnimationConfig } from '@app/canvas/drawable/animation-config';
 export class DrawableCanvasComponent implements OnInit {
 
   timestamp: number;
+  secondsLeft: number;
   cursorPosition: Point2D;
   mouseIsDown: boolean = false;
   mouseOutsideCanvas: boolean = true;
@@ -66,29 +67,30 @@ export class DrawableCanvasComponent implements OnInit {
         this.mouseup();
     }, false);
     this.canvas.nativeElement.addEventListener("mouseout", (e) => {
-        this.mouseup();
+        this.mouseout();
     }, false);
   }
 
   mousemove(x: number, y: number) {
     this.cursorPosition = new Point2D(x, y);
     this.repaint();
+    this.mouseOutsideCanvas = false;
 
     if (!this.mouseIsDown || this.animation.running)
       return;
 
     this.updateMousePositions(x, y);
     this.canvasManager.paintLine(this.lastPoint, this.currentPoint);
-    this.mouseOutsideCanvas = false;
   }
 
   mouseup() {
+    this.mouseOutsideCanvas = false;
+
     if (this.animation.running)
       return;
 
     this.mouseIsDown = false;
     this.completeImage();
-    this.mouseOutsideCanvas = false;
   }
 
   mouseout() {
@@ -115,9 +117,26 @@ export class DrawableCanvasComponent implements OnInit {
     this.data = [];
     this.canvasManager.clearCanvas();
     this.timestamp = Date.now();
+    this.secondsLeft = 6;
     this.drawLimits = undefined;
     this.imageCentered = true;
     this.drawingUpdated.emit(this.data);
+
+    this.countdownTick()
+  }
+
+  countdownTick() {
+    if (!this.mouseIsDown)
+      return;
+
+    if (!this.secondsLeft)
+      return this.mouseup();
+
+    this.secondsLeft--;
+
+    setTimeout(()=>{
+      this.countdownTick()
+    }, 1000)
   }
 
   updateMousePositions(x: number, y: number) {

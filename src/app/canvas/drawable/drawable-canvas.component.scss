@@ -1,8 +1,17 @@
 :host {
   display: block;
+  position: relative;
 }
 
 canvas {
   display: block;
   cursor: none;
+}
+
+.countdown {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	font-size: 23px;
+	color: #fff;
 }
