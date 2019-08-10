@@ -115,7 +115,6 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
     this.series.update(this.time, this.scale);
 
     this.repaint();
-    this.repositionCanvas();
     this.updateTime();
 
     window.requestAnimationFrame(() => this.animate());
@@ -126,6 +125,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
     this.painters.originalPoints.paint(this.drawing.originalPoints, this.originalOpacity);
     this.painters.vector.paint(this.series.vectors.slice(0, this.maxVectorCount));
     this.painters.output.paint(this.output, this.time);
+    this.repositionCanvas();
   }
 
   repositionCanvas() {
