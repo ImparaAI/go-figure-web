@@ -30,7 +30,7 @@ export class DrawingRecentComponent implements OnInit {
 
       setTimeout(()=>{
         this.load(true)
-      }, 10000)
+      }, 30000)
     }
     catch (e) {
       this.drawings = [];
