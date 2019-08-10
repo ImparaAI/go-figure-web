@@ -17,7 +17,7 @@ export class VectorPainter {
     this.canvasManager.setLineWidth(1);
     this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, 1)`);
 
-    vectors.forEach((v: Vector, i: int) => {
+    vectors.forEach((v: Vector, i: number) => {
       if (!i)
         return;
 

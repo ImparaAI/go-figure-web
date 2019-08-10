@@ -6,7 +6,7 @@ import { HttpService } from '@app/api/http.service';
 @Injectable({ providedIn: 'root' })
 export class ApiService {
 
-  public drawingCreated: Subject<int> = new Subject();
+  public drawingCreated: Subject<boolean> = new Subject();
 
   constructor(private http: HttpService) { }
 

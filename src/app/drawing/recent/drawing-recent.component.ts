@@ -11,7 +11,7 @@ import { DrawingPreview } from '@app/structures/drawing';
 export class DrawingRecentComponent implements OnInit {
 
   drawings: DrawingPreview[] = [];
-  loading: bool = true;
+  loading: boolean = true;
 
   constructor(private api: ApiService) {
     api.drawingCreated.subscribe((value) => {
@@ -23,7 +23,7 @@ export class DrawingRecentComponent implements OnInit {
     this.load();
   }
 
-  async load(hideLoading: bool) {
+  async load(hideLoading?: boolean) {
     try {
       this.loading = hideLoading ? false : true;
       this.drawings = (await this.api.getRecentDrawings()).map(drawing => new DrawingPreview(drawing));
