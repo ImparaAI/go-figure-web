@@ -58,20 +58,15 @@ export class DrawableCanvasComponent implements OnInit {
   bindEvents() {
     this.canvas.nativeElement.addEventListener("mousemove", (e) => {
         this.mousemove(e.layerX, e.layerY);
-        this.mouseOutsideCanvas = false;
     }, false);
     this.canvas.nativeElement.addEventListener("mousedown", (e) => {
         this.mousedown(e.layerX, e.layerY);
-        this.mouseOutsideCanvas = false;
     }, false);
     this.canvas.nativeElement.addEventListener("mouseup", (e) => {
         this.mouseup();
-        this.mouseOutsideCanvas = false;
     }, false);
     this.canvas.nativeElement.addEventListener("mouseout", (e) => {
         this.mouseup();
-        this.mouseOutsideCanvas = true;
-        this.repaint();
     }, false);
   }
 
@@ -84,6 +79,7 @@ export class DrawableCanvasComponent implements OnInit {
 
     this.updateMousePositions(x, y);
     this.canvasManager.paintLine(this.lastPoint, this.currentPoint);
+    this.mouseOutsideCanvas = false;
   }
 
   mouseup() {
@@ -92,6 +88,13 @@ export class DrawableCanvasComponent implements OnInit {
 
     this.mouseIsDown = false;
     this.completeImage();
+    this.mouseOutsideCanvas = false;
+  }
+
+  mouseout() {
+    this.mouseup();
+    this.mouseOutsideCanvas = true;
+    this.repaint();
   }
 
   mousedown(x: number, y: number) {
@@ -105,6 +108,7 @@ export class DrawableCanvasComponent implements OnInit {
     this.clear();
     this.updateMousePositions(x, y);
     this.canvasManager.paintPoint(this.currentPoint);
+    this.mouseOutsideCanvas = false;
   }
 
   clear() {
