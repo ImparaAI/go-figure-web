@@ -13,13 +13,14 @@ export class DraggableCanvasComponent implements OnInit {
   dragStart: Point2D;
   mouseIsDown: boolean;
   canvasManager: CanvasManager;
+  mousePosition: Point2D = new Point2D;
 
   @Input() width: number;
   @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
   @Output() canvasInitialized = new EventEmitter<CanvasManager>();
-  @Output() zoomIn = new EventEmitter<void>();
-  @Output() zoomOut = new EventEmitter<void>();
+  @Output() zoomIn = new EventEmitter<Point2D>();
+  @Output() zoomOut = new EventEmitter<Point2D>();
   @Output() originMoved = new EventEmitter<Point2D>();
 
   ngOnInit() {
@@ -60,20 +61,22 @@ export class DraggableCanvasComponent implements OnInit {
     e = window.event || e;
     e.stopPropagation();
     event.preventDefault();
-    this.mousescroll(e.wheelDelta || -e.detail);
+    this.mousescroll(e.wheelDelta || -e.detail, this.mousePosition);
 
     return false;
   }
 
-  mousescroll(pixles: number) {
+  mousescroll(pixles: number, mousePosition: Point2D) {
     if (pixles > 0)
-      this.zoomIn.emit();
+      this.zoomIn.emit(mousePosition);
 
     else
-      this.zoomOut.emit();
+      this.zoomOut.emit(mousePosition);
   }
 
   mousemove(x: number, y: number) {
+    this.mousePosition.update(x, y);
+
     if (!this.mouseIsDown)
       return;
 

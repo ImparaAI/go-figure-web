@@ -183,7 +183,11 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
     return new Point2D(finalVector.end.x, finalVector.end.y);
   }
 
-  updateScale(scale: number) {
+  updateScale(scale: number, mousePosition: Point2D) {
+    let originalPoint = mousePosition.clone().scale(1 / this.scale),
+        newPoint = originalPoint.clone().scale(scale);
+
+    this.canvasManager.shiftOrigin(mousePosition.x - newPoint.x, mousePosition.y - newPoint.y)
     this.scale = scale;
 
     for (let painter of Object.values(this.painters)) {
@@ -193,20 +197,24 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
     this.repaint();
   }
 
-  incrementScale(scale: number) {
-    this.updateScale(Math.max(0.01, this.scale + scale));
+  incrementScale(mousePosition: Point2D) {
+    this.updateScale(Math.min(100, this.scale * 1.1), mousePosition);
+  }
+
+  decrementScale(mousePosition: Point2D) {
+    this.updateScale(Math.max(0.01, this.scale / 1.1), mousePosition);
   }
 
   zoomInAndSlow() {
     this.timeInterval = this.minTimeInterval;
     this.trackOutput = true;
-    this.updateScale(7);
+    this.updateScale(7, new Point2D);
   }
 
   resetZoomAndSpeed() {
     this.timeInterval = 0.005;
     this.trackOutput = false;
-    this.updateScale(1);
+    this.updateScale(1, new Point2D);
     this.canvasManager.centerOn(this.series.getImageCenterpoint());
   }
 

@@ -14,6 +14,13 @@ class Point2D {
     return this;
   }
 
+  scale(scale: number): Point2D {
+    this.x *= scale;
+    this.y *= scale;
+
+    return this;
+  }
+
   clone(): Point2D {
     return new Point2D(this.x, this.y);
   }
