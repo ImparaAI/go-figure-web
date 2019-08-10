@@ -34,7 +34,7 @@ export class DrawingCreatorComponent {
       this.router.navigate(['drawing', response.id]);
     }
     catch (e) {
-      alert('Fail.');
+      alert('Something went wrong...please reload the page and try again!');
     }
   }
 

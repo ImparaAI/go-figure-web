@@ -17,6 +17,7 @@ export class DrawableCanvasComponent implements OnInit {
   timestamp: number;
   cursorPosition: Point2D;
   mouseIsDown: boolean = false;
+  mouseOutsideCanvas: boolean = true;
   canvasManager: CanvasManager;
   lastPoint: Point2D = new Point2D;
   currentPoint: Point2D = new Point2D;
@@ -56,16 +57,21 @@ export class DrawableCanvasComponent implements OnInit {
 
   bindEvents() {
     this.canvas.nativeElement.addEventListener("mousemove", (e) => {
-        this.mousemove(e.layerX, e.layerY)
+        this.mousemove(e.layerX, e.layerY);
+        this.mouseOutsideCanvas = false;
     }, false);
     this.canvas.nativeElement.addEventListener("mousedown", (e) => {
         this.mousedown(e.layerX, e.layerY);
+        this.mouseOutsideCanvas = false;
     }, false);
     this.canvas.nativeElement.addEventListener("mouseup", (e) => {
         this.mouseup();
+        this.mouseOutsideCanvas = false;
     }, false);
     this.canvas.nativeElement.addEventListener("mouseout", (e) => {
         this.mouseup();
+        this.mouseOutsideCanvas = true;
+        this.repaint();
     }, false);
   }
 
@@ -218,7 +224,7 @@ export class DrawableCanvasComponent implements OnInit {
     if (this.data)
       this.painters.data.paint(this.data, this.animation);
 
-    if (this.cursorPosition && !this.animation.running)
+    if (this.cursorPosition && !this.mouseOutsideCanvas && !this.animation.running)
       this.painters.cursor.paint(this.cursorPosition);
   }
 

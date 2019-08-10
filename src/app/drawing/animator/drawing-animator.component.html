@@ -25,14 +25,21 @@
     <div class="total-vectors">
       Total vectors: {{maxVectorCount}}
     </div>
-
-    <div class="playpause">
-      <button mat-raised-button color="primary" class="playpause" (click)="togglePause()">{{run ? 'Pause' : 'Play'}}</button>
-    </div>
   </div>
 </div>
 
 <div class="controls" [hidden]="loading || (maxVectorCount == 0)">
+  <div class="c-flex c-flex--space-between c-flex--center-items">
+    <div>
+      <mat-checkbox color="primary" [(ngModel)]="trackOutput">Track Output</mat-checkbox>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" (click)="zoomInAndSlow()">Zoom in and Slow</button>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" (click)="resetZoomAndSpeed()">Reset Zoom and Speed</button>
+    </div>
+  </div>
   <div class="c-flex c-flex--space-between">
     <div>
       <span>Original:</span>
@@ -55,7 +62,6 @@
           [value]="timeInterval"
           (input)="timeInterval = $event.value">
       </mat-slider>
-      {{timeInterval}}
     </div>
     <div>
       <span>Vectors:</span>
@@ -68,17 +74,6 @@
           [value]="maxVectorCount"
           (input)="maxVectorCount = $event.value">
       </mat-slider>
-    </div>
-  </div>
-  <div class="c-flex c-flex--space-between c-flex--center-items">
-    <div>
-      <mat-checkbox color="primary" [(ngModel)]="trackOutput">Track Output</mat-checkbox>
-    </div>
-    <div>
-      <button mat-raised-button color="primary" (click)="zoomInAndSlow()">Zoom in and Slow</button>
-    </div>
-    <div>
-      <button mat-raised-button color="primary" (click)="resetZoomAndSpeed()">Reset Zoom and Speed</button>
     </div>
   </div>
 </div>

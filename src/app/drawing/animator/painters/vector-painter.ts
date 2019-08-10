@@ -17,7 +17,10 @@ export class VectorPainter {
     this.canvasManager.setLineWidth(1);
     this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, 1)`);
 
-    vectors.forEach((v: Vector) => {
+    vectors.forEach((v: Vector, i: number) => {
+      if (!i)
+        return;
+
       this.canvasManager.paintLine(v.start, v.end, this.scale);
       this.paintVectorArrow(v, this.arrowAngle / 2);
       this.paintVectorArrow(v, -this.arrowAngle / 2);

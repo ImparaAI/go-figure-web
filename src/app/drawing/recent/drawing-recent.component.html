@@ -2,7 +2,14 @@
 
 <h3>Recent Drawings</h3>
 
-<div class="container">
+<div class="loading" *ngIf="loading">Loading drawings...</div>
+
+<div class="no-drawings" *ngIf="!loading && !drawings.length">
+	<p>There are no recent drawings. You can be the first!</p>
+	<div><a mat-raised-button color="primary" [routerLink]="['/']">Draw Something New</a></div>
+</div>
+
+<div class="container" *ngIf="!loading && drawings.length">
   <a *ngFor="let drawing of drawings" [routerLink]="[drawing.uri]">
     <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <svg:g>
