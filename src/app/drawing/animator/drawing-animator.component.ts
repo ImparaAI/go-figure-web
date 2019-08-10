@@ -183,11 +183,17 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
     return new Point2D(finalVector.end.x, finalVector.end.y);
   }
 
-  updateScale(scale: number, mousePosition: Point2D) {
-    let originalPoint = mousePosition.clone().scale(1 / this.scale),
-        newPoint = originalPoint.clone().scale(scale);
+  shiftOriginOnZoom(mousePosition: Point2D, originalScale: number, newScale: number) {
+    let origin = this.canvasManager.origin,
+        originalPoint = mousePosition.clone().shift(-origin.x, -origin.y).scale(1 / originalScale),
+        newPoint = originalPoint.clone().scale(newScale).shift(origin.x, origin.y);
 
     this.canvasManager.shiftOrigin(mousePosition.x - newPoint.x, mousePosition.y - newPoint.y)
+  }
+
+  updateScale(scale: number, mousePosition: Point2D) {
+    this.shiftOriginOnZoom(mousePosition, this.scale, scale);
+
     this.scale = scale;
 
     for (let painter of Object.values(this.painters)) {

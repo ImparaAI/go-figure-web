@@ -21,6 +21,13 @@ class Point2D {
     return this;
   }
 
+  shift(x: number, y: number): Point2D {
+    this.x += x;
+    this.y += y;
+
+    return this;
+  }
+
   clone(): Point2D {
     return new Point2D(this.x, this.y);
   }

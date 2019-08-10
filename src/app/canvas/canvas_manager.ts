@@ -37,7 +37,7 @@ export class CanvasManager {
   }
 
   shiftOrigin(deltaX: number, deltaY: number) {
-    this.origin = new Point2D(this.origin.x + deltaX, this.origin.y + deltaY);
+    this.origin.shift(deltaX, deltaY);
     this.drawer.translate(deltaX, deltaY);
   }
 
