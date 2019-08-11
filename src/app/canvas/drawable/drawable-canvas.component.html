@@ -1,2 +1,2 @@
 <canvas #canvas [width]="width" [height]="height"></canvas>
-<div class="countdown" *ngIf="mouseIsDown">{{secondsLeft}}</div>
+<div class="countdown" *ngIf="shouldShowCountdown()">{{drawing.secondsLeft}}</div>
