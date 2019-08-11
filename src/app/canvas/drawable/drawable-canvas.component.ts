@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 
 import { Vector } from '@app/structures/vector';
 import { Drawing } from '@app/canvas/drawable/drawing';
@@ -18,26 +18,44 @@ export class DrawableCanvasComponent implements OnInit {
   eventRouter: EventRouter;
   inputSeries: InputSeries = new InputSeries;
 
-  @Input() width: number;
   @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
   @Output() drawingUpdated = new EventEmitter<Point3D[]>();
   @Output() canvasInitialized = new EventEmitter<CanvasManager>();
 
   ngOnInit() {
-    if (this.width === undefined || this.height === undefined) {
-      throw new Error("A valid width and height need to be provided to the drawable canvas.")
+    if (this.height === undefined) {
+      throw new Error("A valid height needs to be provided to the drawable canvas.")
     }
   }
 
   ngAfterViewInit() {
     this.canvasManager = new CanvasManager(this.canvas.nativeElement);
-    this.canvasInitialized.emit(this.canvasManager);
     this.drawing = new Drawing(this.canvasManager, this.inputSeries, this.drawingUpdated);
     this.eventRouter = new EventRouter(this.drawing);
+    this.setCanvasSize();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.setCanvasSize();
   }
 
   shouldShowCountdown() {
     return !!this.drawing && this.drawing.cursorPressed;
+  }
+
+  setCanvasSize() {
+    let canvas = this.canvas.nativeElement,
+        width = canvas.clientWidth,
+        height = canvas.clientHeight;
+
+    if (canvas.width !== width || canvas.height !== height)
+    {
+      this.drawing.clear();
+      canvas.width = width;
+      canvas.height = height;
+      this.canvasInitialized.emit(this.canvasManager);
+    }
   }
 }

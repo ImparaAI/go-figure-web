@@ -43,7 +43,7 @@ export class CanvasManager {
 
   paintPoint(p: Point2D, scale: number = 1) {
     this.drawer.beginPath();
-    this.drawer.fillStyle = 'black';
+    this.drawer.fillStyle = 'white';
     this.drawer.fillRect(p.x * scale, p.y * scale, 1, 1);
     this.drawer.closePath();
   }

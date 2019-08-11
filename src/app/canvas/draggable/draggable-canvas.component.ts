@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 
 import { Point2D } from '@app/structures/point';
 import { CanvasManager } from '@app/canvas/canvas_manager';
@@ -24,15 +24,20 @@ export class DraggableCanvasComponent implements OnInit {
   @Output() originMoved = new EventEmitter<Point2D>();
 
   ngOnInit() {
-    if (this.width === undefined || this.height === undefined) {
-      throw new Error("A valid width and height need to be provided to the drawable canvas.")
+    if (this.height === undefined) {
+      throw new Error("A valid height needs to be provided to the draggable canvas.")
     }
   }
 
   ngAfterViewInit() {
     this.bindDragEvents();
     this.canvasManager = new CanvasManager(this.canvas.nativeElement);
-    this.canvasInitialized.emit(this.canvasManager);
+    this.setCanvasSize();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.setCanvasSize();
   }
 
   bindDragEvents() {
@@ -97,6 +102,19 @@ export class DraggableCanvasComponent implements OnInit {
   mousedown(x: number, y: number) {
     this.mouseIsDown = true;
     this.dragStart = new Point2D(x, y);
+  }
+
+  setCanvasSize() {
+    let canvas = this.canvas.nativeElement,
+        width = canvas.clientWidth,
+        height = canvas.clientHeight;
+
+    if (canvas.width !== width || canvas.height !== height)
+    {
+      canvas.width = width;
+      canvas.height = height;
+      this.canvasInitialized.emit(this.canvasManager);
+    }
   }
 
 }

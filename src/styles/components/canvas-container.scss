@@ -1,7 +1,10 @@
 @import 'variables/colors';
 
 .c-canvas-container {
-  display: inline-block;
+  display: block;
   border: 1px dashed gray;
   background-color: $accentColor;
+  margin: 0 auto;
+  max-width: 700px;
+  height: 400px;
 }

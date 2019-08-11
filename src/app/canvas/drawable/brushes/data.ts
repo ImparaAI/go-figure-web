@@ -14,6 +14,7 @@ export class DataBrush {
 
   public paint(data: Point3D[]): void {
     let prevPoint: Point3D;
+    this.drawing.canvasManager.setFillStyle(`rgba(${this.rgb}, 1)`);
     this.drawing.canvasManager.setLineWidth(this.lineWidth);
 
     data.forEach((point, i) => {

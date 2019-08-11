@@ -14,7 +14,6 @@
 <div class="drawing" [hidden]="loading || (maxVectorCount == 0)">
   <div class="c-canvas-container">
     <iai-draggable-canvas
-      width="700"
       height="400"
       (canvasInitialized)="onCanvasReady($event)"
       (originMoved)="repaint()"
@@ -25,6 +24,15 @@
     <div class="total-vectors">
       Total vectors: {{maxVectorCount}}
     </div>
+  </div>
+</div>
+
+<div class="controls-responsive">
+  <div>
+    <button mat-raised-button color="primary" (click)="zoomInAndSlow()">Zoom in and Slow</button>
+  </div>
+  <div>
+    <button mat-raised-button color="primary" (click)="resetZoomAndSpeed()">Reset Zoom and Speed</button>
   </div>
 </div>
 

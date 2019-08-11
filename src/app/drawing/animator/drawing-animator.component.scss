@@ -1,4 +1,6 @@
+@import 'mixins/no-select';
 @import 'variables/colors';
+@import 'variables/responsive';
 
 .processing {
   padding-top: 130px;
@@ -24,22 +26,40 @@
     > .total-vectors {
       position: absolute;
       bottom: 10px;
-      left: 590px;
-      right: 0;
-      margin-left: auto;
-      margin-right: auto;
+      right: 10px;
       font-size: 13px;
       color: #777;
+      @include no-select;
     }
   }
 }
 
 .controls {
+  @media #{$mobile}
+  {
+    display: none;
+  }
+
   width: 700px;
   margin: 0 auto;
 
   > .c-flex {
     margin-bottom: 10px;
+  }
+}
+
+.controls-responsive {
+  display: none;
+  margin: 0 auto;
+
+  > div {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  @media #{$mobile}
+  {
+    display: block;
   }
 }
 
