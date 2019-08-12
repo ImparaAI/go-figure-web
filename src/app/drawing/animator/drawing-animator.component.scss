@@ -6,13 +6,20 @@
   padding-top: 130px;
   text-align: center;
 
+  @media #{$mobile}
+  {
+    padding: 40px 13%;
+  }
+
   > .main {
     font-size: 25px;
     padding-bottom: 40px;
+    line-height: 30px;
   }
 
   > .sub {
     font-style: italic;
+    line-height: 21px;
   }
 }
 

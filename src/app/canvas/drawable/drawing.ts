@@ -34,6 +34,7 @@ export class Drawing {
     this.inputSeries.addPoint(new Point3D(x, y, time));
     this.finalizer.updateDrawLimits(x, y);
     this.updateEvent.emit(this.inputSeries.points);
+    this.painter.paint();
   }
 
   clear(): void {

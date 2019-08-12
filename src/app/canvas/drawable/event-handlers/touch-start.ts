@@ -1,16 +1,18 @@
 import { Drawing } from '@app/canvas/drawable/drawing';
-import { EventHandler } from '@app/canvas/drawable/event-handlers/event-handler';
+import { TouchEventHandler } from '@app/canvas/drawable/event-handlers/touch-event-handler';
 
-export class MouseDown extends EventHandler {
+export class TouchStart extends TouchEventHandler {
   constructor(drawing: Drawing) {
     super(drawing);
   }
 
   public getEventName(): string {
-    return 'mousedown';
+    return 'touchstart';
   }
 
   public handle(e: any): void {
+    let position = this.getPosition(e);
+
     this.drawing.painter.paint();
 
     if (this.drawing.finalizer.running)
@@ -18,7 +20,7 @@ export class MouseDown extends EventHandler {
 
     this.drawing.clear();
     this.drawing.pressCursor();
-    this.drawing.addPoint(e.layerX, e.layerY);
+    this.drawing.addPoint(position.x, position.y);
     this.drawing.painter.mouseInside();
   }
 }

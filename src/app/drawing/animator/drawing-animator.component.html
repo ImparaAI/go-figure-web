@@ -27,20 +27,8 @@
   </div>
 </div>
 
-<div class="controls-responsive">
-  <div>
-    <button mat-raised-button color="primary" (click)="zoomInAndSlow()">Zoom in and Slow</button>
-  </div>
-  <div>
-    <button mat-raised-button color="primary" (click)="resetZoomAndSpeed()">Reset Zoom and Speed</button>
-  </div>
-</div>
-
-<div class="controls" [hidden]="loading || (maxVectorCount == 0)">
-  <div class="c-flex c-flex--space-between c-flex--center-items">
-    <div>
-      <mat-checkbox color="primary" [(ngModel)]="trackOutput">Track Output</mat-checkbox>
-    </div>
+<div [hidden]="loading || (maxVectorCount == 0)">
+  <div class="controls-responsive">
     <div>
       <button mat-raised-button color="primary" (click)="zoomInAndSlow()">Zoom in and Slow</button>
     </div>
@@ -48,40 +36,54 @@
       <button mat-raised-button color="primary" (click)="resetZoomAndSpeed()">Reset Zoom and Speed</button>
     </div>
   </div>
-  <div class="c-flex c-flex--space-between">
-    <div>
-      <span>Original:</span>
-      <mat-slider
-          color="primary"
-          [max]="1"
-          [min]="0"
-          [step]=".05"
-          [value]="originalOpacity"
-          (input)="originalOpacity = $event.value">
-      </mat-slider>
+
+  <div class="controls">
+    <div class="c-flex c-flex--space-between c-flex--center-items">
+      <div>
+        <mat-checkbox color="primary" [(ngModel)]="trackOutput">Track Output</mat-checkbox>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" (click)="zoomInAndSlow()">Zoom in and Slow</button>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" (click)="resetZoomAndSpeed()">Reset Zoom and Speed</button>
+      </div>
     </div>
-    <div>
-      <span>Speed:</span>
-      <mat-slider
-          color="primary"
-          [max]="0.02"
-          [min]="minTimeInterval"
-          [step]="minTimeInterval"
-          [value]="timeInterval"
-          (input)="timeInterval = $event.value">
-      </mat-slider>
-    </div>
-    <div>
-      <span>Vectors:</span>
-      <mat-slider
-          color="primary"
-          [max]="series ? series.vectors.length : 1"
-          [min]="1"
-          [step]="1"
-          [thumbLabel]="true"
-          [value]="maxVectorCount"
-          (input)="maxVectorCount = $event.value">
-      </mat-slider>
+    <div class="c-flex c-flex--space-between">
+      <div>
+        <span>Original:</span>
+        <mat-slider
+            color="primary"
+            [max]="1"
+            [min]="0"
+            [step]=".05"
+            [value]="originalOpacity"
+            (input)="originalOpacity = $event.value">
+        </mat-slider>
+      </div>
+      <div>
+        <span>Speed:</span>
+        <mat-slider
+            color="primary"
+            [max]="0.02"
+            [min]="minTimeInterval"
+            [step]="minTimeInterval"
+            [value]="timeInterval"
+            (input)="timeInterval = $event.value">
+        </mat-slider>
+      </div>
+      <div>
+        <span>Vectors:</span>
+        <mat-slider
+            color="primary"
+            [max]="series ? series.vectors.length : 1"
+            [min]="1"
+            [step]="1"
+            [thumbLabel]="true"
+            [value]="maxVectorCount"
+            (input)="maxVectorCount = $event.value">
+        </mat-slider>
+      </div>
     </div>
   </div>
 </div>

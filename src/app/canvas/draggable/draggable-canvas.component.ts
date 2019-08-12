@@ -35,6 +35,10 @@ export class DraggableCanvasComponent implements OnInit {
     this.setCanvasSize();
   }
 
+  ngAfterViewChecked() {
+    this.setCanvasSize();
+  }
+
   @HostListener('window:resize')
   onResize() {
     this.setCanvasSize();
