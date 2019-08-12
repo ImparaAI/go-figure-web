@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.gofigure.com',
+  apiUrl: 'http://api.gofigure.impara.ai',
 };
