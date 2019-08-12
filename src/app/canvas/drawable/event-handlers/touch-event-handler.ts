@@ -6,12 +6,13 @@ export abstract class TouchEventHandler extends EventHandler {
     super(drawing);
   }
 
-  getPosition(e: TouchEvent): {x: number, y: number} {
-    let boundingRectangle = e.target.getBoundingClientRect();
+  getPosition(event: TouchEvent): {x: number, y: number} {
+    let element: HTMLElement = event.target as HTMLElement,
+        boundingRectangle: ClientRect = element.getBoundingClientRect();
 
     return {
-      x: e.touches[0].clientX - boundingRectangle.left,
-      y: e.touches[0].clientY - boundingRectangle.top
+      x: event.touches[0].clientX - boundingRectangle.left,
+      y: event.touches[0].clientY - boundingRectangle.top
     }
   }
 }

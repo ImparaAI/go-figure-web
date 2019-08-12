@@ -40,14 +40,11 @@ export class DrawableCanvasComponent implements OnInit {
   @HostListener('document:touchstart', ['$event'])
   @HostListener('document:touchmove', ['$event'])
   stopTouchScrollOnCanvas(event) {
-    if (event.target === this.canvasManager.element.parent)
-    {
+    if (event.target === this.canvasManager.element)
       event.preventDefault();
-    }
   }
 
   shouldShowCountdown() {
     return !!this.drawing && this.drawing.cursorPressed;
   }
-
 }

@@ -13,6 +13,7 @@ export class TouchStart extends TouchEventHandler {
   public handle(e: any): void {
     let position = this.getPosition(e);
 
+    this.drawing.painter.mouseOutside();
     this.drawing.painter.paint();
 
     if (this.drawing.finalizer.running)
