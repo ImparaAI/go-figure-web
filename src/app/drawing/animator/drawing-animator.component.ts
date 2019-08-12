@@ -133,7 +133,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
       let finalVector = this.series.vectors[this.maxVectorCount - 1],
           point = new Point2D(finalVector.end.x * this.scale, finalVector.end.y * this.scale);
 
-      this.canvasManager.centerOn(point)
+      this.canvasManager.centerOn(point);
     }
   }
 

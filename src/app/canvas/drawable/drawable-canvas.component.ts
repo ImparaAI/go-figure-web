@@ -19,13 +19,14 @@ export class DrawableCanvasComponent implements OnInit {
   inputSeries: InputSeries = new InputSeries;
 
   @Input() height: number;
+  @Input() width: number;
   @ViewChild('canvas') canvas: ElementRef;
   @Output() drawingUpdated = new EventEmitter<Point3D[]>();
   @Output() canvasInitialized = new EventEmitter<CanvasManager>();
 
   ngOnInit() {
-    if (this.height === undefined) {
-      throw new Error("A valid height needs to be provided to the drawable canvas.")
+    if (this.width === undefined || this.height === undefined) {
+      throw new Error("A valid width and height need to be provided to the drawable canvas.")
     }
   }
 
@@ -33,12 +34,7 @@ export class DrawableCanvasComponent implements OnInit {
     this.canvasManager = new CanvasManager(this.canvas.nativeElement);
     this.drawing = new Drawing(this.canvasManager, this.inputSeries, this.drawingUpdated);
     this.eventRouter = new EventRouter(this.drawing);
-    this.setCanvasSize();
-  }
-
-  @HostListener('window:resize')
-  onResize() {
-    this.setCanvasSize();
+    this.canvasInitialized.emit(this.canvasManager);
   }
 
   @HostListener('document:touchstart', ['$event'])
@@ -54,17 +50,4 @@ export class DrawableCanvasComponent implements OnInit {
     return !!this.drawing && this.drawing.cursorPressed;
   }
 
-  setCanvasSize() {
-    let canvas = this.canvas.nativeElement,
-        width = canvas.clientWidth,
-        height = canvas.clientHeight;
-
-    if (canvas.width !== width || canvas.height !== height)
-    {
-      this.drawing.clear();
-      canvas.width = width;
-      canvas.height = height;
-      this.canvasInitialized.emit(this.canvasManager);
-    }
-  }
 }
