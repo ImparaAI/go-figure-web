@@ -1,9 +1,14 @@
 <div class="super-header"></div>
 <div class="header c-flex c-flex--space-between c-flex--center-items">
-  <a class="logo" [routerLink]="['/']">Go Figure</a>
-  <div class="links c-flex c-flex--center-items">
+  <div class="left">
     <a class="huh" [routerLink]="['/inspiration']">Huh?</a>
-    <a mat-raised-button color="primary" [routerLink]="['/']">Draw</a>
+  </div>
+  <div class="logo">
+    <a [routerLink]="['/']">Go Figure</a>
+  </div>
+  <div class="right">
+    <a class="huh" [routerLink]="['/inspiration']">Huh?</a>
+    <a class="draw" mat-raised-button color="primary" [routerLink]="['/']">Draw</a>
   </div>
 </div>
 <div class="content">

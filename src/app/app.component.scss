@@ -1,5 +1,6 @@
 @import 'mixins/no-select';
 @import 'variables/colors';
+@import 'variables/responsive';
 
 .super-header {
   height: 10px;
@@ -9,24 +10,49 @@
 
 .header {
   position: relative;
-  justify-content: center;
   border-bottom: 1px solid #bbb;
   padding: 16px 0;
   background-color: #003459;
   font-family: sans-serif;
+
+  > div {
+    flex-basis: 33%;
+  }
 }
 
 .logo {
-  font-size: 1.3em;
-  font-weight: 700;
-  text-decoration: none;
-  color: #fff;
-  @include no-select;
+  text-align: center;
+
+  > a {
+    font-size: 1.3em;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    @include no-select;
+  }
 }
 
-.links {
-  position: absolute;
-  right: 4%;
+.left {
+  > .huh {
+    display: none;
+    margin-left: 7%;
+
+    @media #{$mobile}
+    {
+      display: block;
+    }
+  }
+}
+
+.right {
+  text-align: right;
+
+  > .huh {
+    @media #{$mobile}
+    {
+      display: none;
+    }
+  }
 }
 
 .huh {
@@ -35,6 +61,10 @@
   color: #fff;
   @include no-select;
   margin-right: 20px;
+}
+
+.draw {
+  margin-right: 7%;
 }
 
 .content {
