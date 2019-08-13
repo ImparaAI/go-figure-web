@@ -44,8 +44,4 @@ export class FourierSeries {
     return 2 * Math.PI * n * time;
   }
 
-  getImageCenterpoint(): Point2D {
-    return this.vectors[0].end;
-  }
-
 }

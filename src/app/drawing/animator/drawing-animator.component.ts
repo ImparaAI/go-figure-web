@@ -221,7 +221,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
     this.timeInterval = 0.005;
     this.trackOutput = false;
     this.updateScale(1, new Point2D);
-    this.canvasManager.centerOn(this.series.getImageCenterpoint());
+    this.canvasManager.setOrigin(0, 0);
   }
 
 }
