@@ -51,6 +51,8 @@ RUN cd /var/www/go-figure && \
     npm install -g npm && \
     npm install
 
+RUN ./node_modules/.bin/ng build --prod
+
 EXPOSE 80 49153
 
 ENV TERM=xterm-color \
