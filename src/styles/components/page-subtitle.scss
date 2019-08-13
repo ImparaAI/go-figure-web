@@ -3,4 +3,9 @@
   color: $accentColor;
   font-style: italic;
   margin-bottom: 30px;
+
+  @media #{$mobile}
+  {
+    margin-bottom: 20px;
+  }
 }
