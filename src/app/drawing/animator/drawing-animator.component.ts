@@ -121,11 +121,11 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   }
 
   repaint() {
+    this.repositionCanvas();
     this.canvasManager.clearCanvas();
     this.painters.originalPoints.paint(this.drawing.originalPoints, this.originalOpacity);
     this.painters.vector.paint(this.series.vectors.slice(0, this.maxVectorCount));
     this.painters.output.paint(this.output, this.time);
-    this.repositionCanvas();
   }
 
   repositionCanvas() {
@@ -204,7 +204,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   }
 
   incrementScale(mousePosition: Point2D) {
-    this.updateScale(Math.min(100, this.scale * 1.1), mousePosition);
+    this.updateScale(Math.min(1500, this.scale * 1.1), mousePosition);
   }
 
   decrementScale(mousePosition: Point2D) {
