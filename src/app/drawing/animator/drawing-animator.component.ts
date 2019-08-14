@@ -184,8 +184,9 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
     this.canvasManager.shiftOrigin(mousePosition.x - newPoint.x, mousePosition.y - newPoint.y)
   }
 
-  updateScale(scale: number, mousePosition: Point2D) {
-    this.shiftOriginOnZoom(mousePosition, this.scale, scale);
+  updateScale(scale: number, mousePosition?: Point2D) {
+    if (mousePosition)
+      this.shiftOriginOnZoom(mousePosition, this.scale, scale);
 
     this.scale = scale;
 
@@ -207,13 +208,20 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   zoomInAndSlow() {
     this.timeInterval = this.minTimeInterval;
     this.trackOutput = true;
-    this.updateScale(7, new Point2D);
+    this.updateScale(this.calculateFullZoomScale());
+  }
+
+  calculateFullZoomScale(): number {
+    let vector = this.series.vectors[this.maxVectorCount - 1],
+        canvasWidth = this.canvasManager.getNativeElement().width;
+
+    return canvasWidth * 0.25 / vector.length()
   }
 
   resetZoomAndSpeed() {
     this.timeInterval = 0.005;
     this.trackOutput = false;
-    this.updateScale(1, new Point2D);
+    this.updateScale(1);
     this.canvasManager.setOrigin(0, 0);
   }
 
