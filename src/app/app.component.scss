@@ -15,6 +15,11 @@
   background-color: #003459;
   font-family: sans-serif;
 
+  @media #{$mobile}
+  {
+    padding: 8px 0;
+  }
+
   > div {
     flex-basis: 33%;
   }
