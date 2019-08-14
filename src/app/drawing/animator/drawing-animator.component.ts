@@ -91,13 +91,6 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
     this.output = [];
   }
 
-  togglePause()  {
-    if (!this.run)
-      this.start()
-    else
-      this.run = false;
-  }
-
   start()  {
     if (this.run)
       return;
