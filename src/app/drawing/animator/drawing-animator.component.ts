@@ -221,16 +221,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   }
 
   calculateFullZoomScale(): number {
-    if (this.maxVectorCount < 20)
-      return 7;
-    else if (this.maxVectorCount < 40)
-      return 10;
-    else if (this.maxVectorCount < 60)
-      return 12;
-    else if (this.maxVectorCount < 80)
-      return 14;
-    else
-      return 18;
+    return this.maxVectorCount / 2.5;
   }
 
   resetZoomAndSpeed() {
