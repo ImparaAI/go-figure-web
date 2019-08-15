@@ -27,6 +27,8 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   timeInterval: number = 0.005;
   run: boolean = false;
   output: OutputDatum[] = [];
+  currentOutput: OutputDatum;
+  outputTimeInterval: number = 0.0005;
   canvasManager: CanvasManager;
   series: FourierSeries;
   maxVectorCount: number = 1;
@@ -118,7 +120,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
     this.canvasManager.clearCanvas();
     this.painters.originalPoints.paint(this.drawing.originalPoints, this.originalOpacity);
     this.painters.vector.paint(this.series.vectors.slice(0, this.maxVectorCount));
-    this.painters.output.paint(this.output, this.time);
+    this.painters.output.paint(this.output, this.time, this.currentOutput);
   }
 
   repositionCanvas() {
@@ -139,14 +141,14 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   }
 
   initializeOutput() {
-    for (var time = 0; time < 1; time += this.minTimeInterval) {
+    for (var time = 0; time < 1; time += this.outputTimeInterval) {
       this.output.push({time});
     }
   }
 
   updateOutput() {
-    let index = (Math.round(this.prevTime / this.minTimeInterval) + 1) % this.output.length,
-        finalIndex = Math.round(this.time / this.minTimeInterval) % this.output.length;
+    let index = (Math.floor(this.prevTime / this.outputTimeInterval) + 1) % this.output.length,
+        finalIndex = Math.floor(this.time / this.outputTimeInterval) % this.output.length;
 
     //update all skipped outputs due to changing time interval
     while (this.time != this.prevTime && index != finalIndex) {
@@ -156,6 +158,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
 
     //update current output
     this.updateOutputValues(this.output[finalIndex]);
+    this.currentOutput = {time: this.time, point: this.getOutputPoint(this.time)};
   }
 
   updateOutputValues(output: OutputDatum) {
@@ -198,7 +201,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   }
 
   onZoom(event) {
-    let scale = Math.max(0.01, Math.min(1500, event.scale));
+    let scale = Math.max(0.01, Math.min(1500, this.scale * event.scale));
 
     this.updateScale(scale, event.center);
   }

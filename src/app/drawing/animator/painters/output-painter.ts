@@ -14,7 +14,7 @@ export class OutputPainter {
     this.canvasManager = canvasManager;
   }
 
-  public paint(output: OutputDatum[], time: number): void {
+  public paint(output: OutputDatum[], time: number, finalOutput: OutputDatum): void {
     let index: number = this.getStartIndex(time, output),
         value, lastValue;
 
@@ -34,6 +34,15 @@ export class OutputPainter {
       lastValue = value;
       index = (index + 1) % output.length;
     }
+
+    if (value && value.point && finalOutput) {
+      this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, 1)`);
+      this.canvasManager.paintLine(
+        new Point2D(value.point.x, value.point.y),
+        new Point2D(finalOutput.point.x, finalOutput.point.y),
+        this.scale
+      );
+    }
   }
 
   protected shouldDrawLine(step: number, output: OutputDatum, prevOutput: OutputDatum): boolean {
@@ -48,7 +57,7 @@ export class OutputPainter {
   }
 
   protected getStartIndex(time: number, output: OutputDatum[]): number {
-    let finalIndex: number = Math.round(time / output[1].time);
+    let finalIndex: number = Math.floor(time / output[1].time);
     return (finalIndex + 1) % output.length;
   }
 
