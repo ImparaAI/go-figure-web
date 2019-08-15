@@ -23,7 +23,7 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   id: number;
   time: number = 0;
   prevTime: number = 0;
-  minTimeInterval: number = 0.0005;
+  minTimeInterval: number = 0.0001;
   timeInterval: number = 0.005;
   run: boolean = false;
   output: OutputDatum[] = [];
@@ -204,16 +204,22 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   }
 
   zoomInAndSlow() {
-    this.timeInterval = this.minTimeInterval;
+    this.timeInterval = this.calculateSlowTimeInterval();
     this.trackOutput = true;
     this.updateScale(this.calculateFullZoomScale());
   }
 
-  calculateFullZoomScale(): number {
-    let vector = this.series.vectors[this.maxVectorCount - 1],
-        canvasWidth = this.canvasManager.getNativeElement().width;
+  calculateSlowTimeInterval() {
+    if (this.maxVectorCount < 40)
+      return 0.0003;
+    else if (this.maxVectorCount < 80)
+      return 0.0002;
+    else
+      return this.minTimeInterval;
+  }
 
-    return canvasWidth * 0.25 / vector.length()
+  calculateFullZoomScale(): number {
+    return this.maxVectorCount / 2.5;
   }
 
   resetZoomAndSpeed() {
