@@ -18,9 +18,8 @@
       height="400"
       (canvasInitialized)="onCanvasReady($event)"
       (originMoved)="repaint()"
-      (zoomIn)="incrementScale($event)"
-      (zoomOut)="decrementScale($event)">
-    </iai-draggable-canvas>
+      (zoom)="onZoom($event)"
+    ></iai-draggable-canvas>
 
     <div class="total-vectors">
       Total vectors: {{maxVectorCount}}

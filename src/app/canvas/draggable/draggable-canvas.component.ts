@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { Point2D } from '@app/structures/point';
 import { CanvasManager } from '@app/canvas/canvas_manager';
@@ -19,8 +19,7 @@ export class DraggableCanvasComponent implements OnInit {
   @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
   @Output() canvasInitialized = new EventEmitter<CanvasManager>();
-  @Output() zoomIn = new EventEmitter<Point2D>();
-  @Output() zoomOut = new EventEmitter<Point2D>();
+  @Output() zoom = new EventEmitter<{scale: number, center?: Point2D}>();
   @Output() originMoved = new EventEmitter<Point2D>();
 
   ngOnInit() {
@@ -49,6 +48,16 @@ export class DraggableCanvasComponent implements OnInit {
         this.mouseup();
     }, false);
 
+    this.canvas.nativeElement.addEventListener("touchmove", (e) => {
+        this.mousemove(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
+    }, false);
+    this.canvas.nativeElement.addEventListener("touchstart", (e) => {
+        this.mousedown(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    }, false);
+    this.canvas.nativeElement.addEventListener("touchend", (e) => {
+        this.mouseup();
+    }, false);
+
     if (this.canvas.nativeElement.addEventListener) {
       this.canvas.nativeElement.addEventListener("wheel", (e) => this.handleMousescroll(e), false);
       this.canvas.nativeElement.addEventListener("DOMMouseScroll", (e) => this.handleMousescroll(e), false);
@@ -68,10 +77,18 @@ export class DraggableCanvasComponent implements OnInit {
 
   mousescroll(pixles: number, mousePosition: Point2D) {
     if (pixles > 0)
-      this.zoomIn.emit(mousePosition);
+      this.zoom.emit({scale: 1.1, center: mousePosition});
 
     else
-      this.zoomOut.emit(mousePosition);
+      this.zoom.emit({scale: 1 / 1.1, center: mousePosition});
+  }
+
+  onPinchIn(event) {
+    this.zoom.emit({scale: event.scale, center: new Point2D(event.center.x, event.center.y)});
+  }
+
+  onPinchOut(event) {
+    this.zoom.emit({scale: event.scale, center: new Point2D(event.center.x, event.center.y)});
   }
 
   mousemove(x: number, y: number) {

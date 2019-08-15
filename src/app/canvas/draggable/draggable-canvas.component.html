@@ -1,1 +1,5 @@
-<canvas [width]="width" [height]="height" #canvas></canvas>
+<canvas #canvas
+        [width]="width"
+        [height]="height"
+        (pinchin)="onPinchIn($event)"
+        (pinchout)="onPinchOut($event)"></canvas>
