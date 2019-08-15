@@ -7,6 +7,11 @@ before_install:
 script:
   - docker exec web bash -c "/var/www/go-figure/node_modules/@angular/cli/bin/ng test --watch=false"
   - docker exec web bash -c "/var/www/go-figure/node_modules/@angular/cli/bin/ng e2e --port 4202"
+deploy:
+  provider: script
+  script: bash dockerhub_push
+  on:
+    branch: master
 notifications:
   email:
     on_success: never
