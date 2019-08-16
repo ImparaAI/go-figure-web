@@ -100,7 +100,6 @@ describe('DrawingBoardComponent', () => {
     canvas.triggerEventHandler('mouseup', null);
 
     fixture.whenStable().then(() => {
-      console.log(outputPoints);
       expect(outputPoints.length).toBe(5);
 
       outputPoints.forEach((outputPoint: Point3D, i: number) => {
