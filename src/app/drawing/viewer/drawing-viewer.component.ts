@@ -6,18 +6,18 @@ import { Point2D } from '@app/structures/point';
 import { Drawing } from '@app/structures/drawing';
 import { ApiService } from '@app/api/api.service';
 import { FourierSeries } from '@app/structures/series';
-import { OutputDatum } from '@app/drawing/animator/output';
+import { OutputDatum } from '@app/drawing/viewer/output';
 import { CanvasManager } from '@app/canvas/canvas_manager';
-import { VectorPainter } from '@app/drawing/animator/painters/vector-painter';
-import { OutputPainter } from '@app/drawing/animator/painters/output-painter';
-import { OriginalPointsPainter } from '@app/drawing/animator/painters/original-points-painter';
+import { VectorPainter } from '@app/drawing/viewer/painters/vector-painter';
+import { OutputPainter } from '@app/drawing/viewer/painters/output-painter';
+import { OriginalPointsPainter } from '@app/drawing/viewer/painters/original-points-painter';
 
 @Component({
-  selector: 'iai-drawing-animator',
-  templateUrl: './drawing-animator.component.html',
-  styleUrls: ['./drawing-animator.component.scss']
+  selector: 'iai-drawing-viewer',
+  templateUrl: './drawing-viewer.component.html',
+  styleUrls: ['./drawing-viewer.component.scss']
 })
-export class DrawingAnimatorComponent implements OnInit, OnDestroy {
+export class DrawingViewerComponent implements OnInit, OnDestroy {
 
   loading: boolean = true;
   id: number;

@@ -1,5 +1,5 @@
 import { Point2D } from '@app/structures/point';
-import { OutputDatum } from '@app/drawing/animator/output';
+import { OutputDatum } from '@app/drawing/viewer/output';
 import { CanvasManager } from '@app/canvas/canvas_manager';
 
 export class OutputPainter {

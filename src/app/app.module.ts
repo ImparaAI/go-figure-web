@@ -14,7 +14,7 @@ import { DrawingRecentComponent } from './drawing/recent/drawing-recent.componen
 import { DrawingCreatorComponent } from './drawing/creator/drawing-creator.component';
 import { DrawingBoardComponent } from './canvas/drawing-board/drawing-board.component';
 import { DraggableCanvasComponent } from './canvas/draggable/draggable-canvas.component';
-import { DrawingAnimatorComponent } from '@app/drawing/animator/drawing-animator.component';
+import { DrawingViewerComponent } from '@app/drawing/viewer/drawing-viewer.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { DrawingAnimatorComponent } from '@app/drawing/animator/drawing-animator
     DrawingCreatorComponent,
     DrawingBoardComponent,
     DraggableCanvasComponent,
-    DrawingAnimatorComponent,
+    DrawingViewerComponent,
     PageNotFoundComponent,
   ],
   imports: [
