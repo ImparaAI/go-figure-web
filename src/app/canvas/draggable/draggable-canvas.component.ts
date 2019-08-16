@@ -75,8 +75,8 @@ export class DraggableCanvasComponent implements OnInit {
     return false;
   }
 
-  mousescroll(pixles: number, mousePosition: Point2D) {
-    if (pixles > 0)
+  mousescroll(pixels: number, mousePosition: Point2D) {
+    if (pixels > 0)
       this.zoom.emit({scale: 1.1, center: mousePosition});
 
     else
