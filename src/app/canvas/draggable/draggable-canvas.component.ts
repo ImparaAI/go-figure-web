@@ -14,6 +14,7 @@ export class DraggableCanvasComponent implements OnInit {
   mouseIsDown: boolean;
   canvasManager: CanvasManager;
   mousePosition: Point2D = new Point2D;
+  zoomScale: number;
 
   @Input() width: number;
   @Input() height: number;
@@ -84,10 +85,12 @@ export class DraggableCanvasComponent implements OnInit {
   }
 
   onPinchIn(event) {
+    this.zoomScale = event.scale;
     this.zoom.emit({scale: event.scale, center: new Point2D(event.center.x, event.center.y)});
   }
 
   onPinchOut(event) {
+    this.zoomScale = event.scale;
     this.zoom.emit({scale: event.scale, center: new Point2D(event.center.x, event.center.y)});
   }
 
