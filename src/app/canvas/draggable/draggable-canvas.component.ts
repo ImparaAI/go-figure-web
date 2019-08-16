@@ -49,14 +49,10 @@ export class DraggableCanvasComponent implements OnInit {
     }, false);
 
     this.canvas.nativeElement.addEventListener("touchmove", (e) => {
-        if (e.changedTouches.length < 2) {
-          this.mousemove(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
-        }
+        this.mousemove(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
     }, false);
     this.canvas.nativeElement.addEventListener("touchstart", (e) => {
-      if (e.changedTouches.length < 2) {
         this.mousedown(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-      }
     }, false);
     this.canvas.nativeElement.addEventListener("touchend", (e) => {
         this.mouseup();
