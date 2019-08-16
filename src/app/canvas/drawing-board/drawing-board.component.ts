@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit, OnDestroy, HostListener, Renderer2 } from '@angular/core';
 
 import { Vector } from '@app/structures/vector';
 import { Point3D } from '@app/structures/point';
@@ -12,7 +12,7 @@ import { InputSeries } from '@app/canvas/drawing-board/input-series';
   templateUrl: './drawing-board.component.html',
   styleUrls: ['./drawing-board.component.scss']
 })
-export class DrawingBoardComponent implements OnInit {
+export class DrawingBoardComponent implements OnInit, OnDestroy {
   canvasManager: CanvasManager;
   drawing: Drawing;
   eventRouter: EventRouter;
@@ -23,6 +23,8 @@ export class DrawingBoardComponent implements OnInit {
   @ViewChild('canvas') canvas: ElementRef;
   @Output() drawingUpdated = new EventEmitter<Point3D[]>();
 
+  constructor(private renderer: Renderer2) {}
+
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
       throw new Error("A valid width and height need to be provided to the drawing board.")
@@ -32,7 +34,12 @@ export class DrawingBoardComponent implements OnInit {
   ngAfterViewInit() {
     this.canvasManager = new CanvasManager(this.canvas.nativeElement);
     this.drawing = new Drawing(this.canvasManager, this.inputSeries, this.drawingUpdated);
-    this.eventRouter = new EventRouter(this.drawing);
+    this.eventRouter = new EventRouter(this.canvas, this.renderer, this.drawing);
+  }
+
+  ngOnDestroy() {
+    if (this.eventRouter)
+      this.eventRouter.unregister();
   }
 
   @HostListener('document:touchstart', ['$event'])
