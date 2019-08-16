@@ -13,15 +13,8 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 export class DrawingCreatorComponent {
 
   data: Point3D[];
-  canvasManager: CanvasManager;
 
   constructor(private router: Router, private api: ApiService) { }
-
-  onCanvasReady(canvasManager: CanvasManager) {
-    this.canvasManager = canvasManager;
-    this.canvasManager.setLineWidth(1);
-    this.canvasManager.setStrokeStyle('white');
-  }
 
   onDrawingUpdated(data: Point3D[]) {
     this.data = data;

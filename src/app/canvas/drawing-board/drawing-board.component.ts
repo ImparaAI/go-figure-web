@@ -22,7 +22,6 @@ export class DrawingBoardComponent implements OnInit {
   @Input() width: number;
   @ViewChild('canvas') canvas: ElementRef;
   @Output() drawingUpdated = new EventEmitter<Point3D[]>();
-  @Output() canvasInitialized = new EventEmitter<CanvasManager>();
 
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
@@ -34,7 +33,6 @@ export class DrawingBoardComponent implements OnInit {
     this.canvasManager = new CanvasManager(this.canvas.nativeElement);
     this.drawing = new Drawing(this.canvasManager, this.inputSeries, this.drawingUpdated);
     this.eventRouter = new EventRouter(this.drawing);
-    this.canvasInitialized.emit(this.canvasManager);
   }
 
   @HostListener('document:touchstart', ['$event'])
