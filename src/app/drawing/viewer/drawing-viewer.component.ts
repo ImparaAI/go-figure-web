@@ -201,7 +201,7 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   }
 
   onZoom(event) {
-    let scale = Math.max(0.01, Math.min(1500, this.scale * event.scale));
+    let scale = Math.max(0.5, Math.min(1500, this.scale * event.scale));
 
     this.updateScale(scale, event.center);
   }
