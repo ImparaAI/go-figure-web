@@ -1,5 +1,5 @@
 import { Point2D } from '@app/structures/point';
-import { Drawing } from '@app/canvas/drawable/drawing';
+import { Drawing } from '@app/canvas/drawing-board/drawing';
 
 export class CursorBrush {
 

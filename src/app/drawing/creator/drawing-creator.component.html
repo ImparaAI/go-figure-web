@@ -3,12 +3,12 @@
   <h3 class="c-page-subtitle">(in one continuous line)</h3>
 
   <div class="c-canvas-container">
-    <iai-drawable-canvas
+    <iai-drawing-board
       width="700"
       height="400"
       (canvasInitialized)="onCanvasReady($event)"
       (drawingUpdated)="onDrawingUpdated($event)">
-    </iai-drawable-canvas>
+    </iai-drawing-board>
   </div>
   <div>
     <button mat-raised-button color="primary" (click)="submit()" [hidden]="!data || !data.length">Submit</button>

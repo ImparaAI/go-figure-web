@@ -1,9 +1,9 @@
-import { Drawing } from '@app/canvas/drawable/drawing';
 import { Point2D, Point3D } from '@app/structures/point';
 import { CanvasManager } from '@app/canvas/canvas_manager';
-import { DataBrush } from '@app/canvas/drawable/brushes/data';
-import { InputSeries } from '@app/canvas/drawable/input-series';
-import { CursorBrush } from '@app/canvas/drawable/brushes/cursor';
+import { Drawing } from '@app/canvas/drawing-board/drawing';
+import { DataBrush } from '@app/canvas/drawing-board/brushes/data';
+import { InputSeries } from '@app/canvas/drawing-board/input-series';
+import { CursorBrush } from '@app/canvas/drawing-board/brushes/cursor';
 
 export class Painter {
   drawing: Drawing;

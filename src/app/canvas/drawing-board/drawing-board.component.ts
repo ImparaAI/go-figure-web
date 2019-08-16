@@ -1,18 +1,18 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 
 import { Vector } from '@app/structures/vector';
-import { Drawing } from '@app/canvas/drawable/drawing';
 import { Point3D } from '@app/structures/point';
 import { CanvasManager } from '@app/canvas/canvas_manager';
-import { EventRouter } from '@app/canvas/drawable/event-router';
-import { InputSeries } from '@app/canvas/drawable/input-series';
+import { Drawing } from '@app/canvas/drawing-board/drawing';
+import { EventRouter } from '@app/canvas/drawing-board/event-router';
+import { InputSeries } from '@app/canvas/drawing-board/input-series';
 
 @Component({
-  selector: 'iai-drawable-canvas',
-  templateUrl: './drawable-canvas.component.html',
-  styleUrls: ['./drawable-canvas.component.scss']
+  selector: 'iai-drawing-board',
+  templateUrl: './drawing-board.component.html',
+  styleUrls: ['./drawing-board.component.scss']
 })
-export class DrawableCanvasComponent implements OnInit {
+export class DrawingBoardComponent implements OnInit {
   canvasManager: CanvasManager;
   drawing: Drawing;
   eventRouter: EventRouter;
@@ -26,7 +26,7 @@ export class DrawableCanvasComponent implements OnInit {
 
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
-      throw new Error("A valid width and height need to be provided to the drawable canvas.")
+      throw new Error("A valid width and height need to be provided to the drawing board.")
     }
   }
 

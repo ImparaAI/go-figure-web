@@ -1,5 +1,5 @@
-import { Drawing } from '@app/canvas/drawable/drawing';
-import { TouchEventHandler } from '@app/canvas/drawable/event-handlers/touch-event-handler';
+import { Drawing } from '@app/canvas/drawing-board/drawing';
+import { TouchEventHandler } from '@app/canvas/drawing-board/event-handlers/touch-event-handler';
 
 export class TouchMove extends TouchEventHandler {
   constructor(drawing: Drawing) {

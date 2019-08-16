@@ -12,7 +12,7 @@ import { InspirationComponent } from './inspiration/inspiration.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { DrawingRecentComponent } from './drawing/recent/drawing-recent.component';
 import { DrawingCreatorComponent } from './drawing/creator/drawing-creator.component';
-import { DrawableCanvasComponent } from './canvas/drawable/drawable-canvas.component';
+import { DrawingBoardComponent } from './canvas/drawing-board/drawing-board.component';
 import { DraggableCanvasComponent } from './canvas/draggable/draggable-canvas.component';
 import { DrawingAnimatorComponent } from '@app/drawing/animator/drawing-animator.component';
 
@@ -22,7 +22,7 @@ import { DrawingAnimatorComponent } from '@app/drawing/animator/drawing-animator
     InspirationComponent,
     DrawingRecentComponent,
     DrawingCreatorComponent,
-    DrawableCanvasComponent,
+    DrawingBoardComponent,
     DraggableCanvasComponent,
     DrawingAnimatorComponent,
     PageNotFoundComponent,

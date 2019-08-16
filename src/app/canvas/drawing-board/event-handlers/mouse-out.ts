@@ -1,13 +1,13 @@
-import { Drawing } from '@app/canvas/drawable/drawing';
-import { TouchEventHandler } from '@app/canvas/drawable/event-handlers/touch-event-handler';
+import { Drawing } from '@app/canvas/drawing-board/drawing';
+import { EventHandler } from '@app/canvas/drawing-board/event-handlers/event-handler';
 
-export class TouchEnd extends TouchEventHandler {
+export class MouseOut extends EventHandler {
   constructor(drawing: Drawing) {
     super(drawing);
   }
 
   public getEventName(): string {
-    return 'touchend';
+    return 'mouseout';
   }
 
   public handle(e: any): void {
@@ -18,5 +18,6 @@ export class TouchEnd extends TouchEventHandler {
 
     this.drawing.liftCursor();
     this.drawing.finish();
+    this.drawing.painter.paint();
   }
 }

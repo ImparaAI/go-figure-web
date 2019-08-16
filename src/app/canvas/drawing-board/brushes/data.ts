@@ -1,6 +1,6 @@
 import { Vector } from '@app/structures/vector';
-import { Drawing } from '@app/canvas/drawable/drawing';
 import { Point2D, Point3D } from '@app/structures/point';
+import { Drawing } from '@app/canvas/drawing-board/drawing';
 
 export class DataBrush {
 

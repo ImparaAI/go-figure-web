@@ -1,6 +1,6 @@
 import { Point2D } from '@app/structures/point';
-import { Drawing } from '@app/canvas/drawable/drawing';
-import { EventHandler } from '@app/canvas/drawable/event-handlers/event-handler';
+import { Drawing } from '@app/canvas/drawing-board/drawing';
+import { EventHandler } from '@app/canvas/drawing-board/event-handlers/event-handler';
 
 export class MouseMove extends EventHandler {
   constructor(drawing: Drawing) {

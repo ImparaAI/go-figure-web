@@ -1,4 +1,4 @@
-import { Drawing } from '@app/canvas/drawable/drawing';
+import { Drawing } from '@app/canvas/drawing-board/drawing';
 
 export abstract class EventHandler {
   drawing: Drawing;

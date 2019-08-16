@@ -1,9 +1,9 @@
 import { EventEmitter } from '@angular/core';
 import { Point3D } from '@app/structures/point';
-import { Painter } from '@app/canvas/drawable/painter';
 import { CanvasManager } from '@app/canvas/canvas_manager';
-import { Finalizer } from '@app/canvas/drawable/finalizer';
-import { InputSeries } from '@app/canvas/drawable/input-series';
+import { Painter } from '@app/canvas/drawing-board/painter';
+import { Finalizer } from '@app/canvas/drawing-board/finalizer';
+import { InputSeries } from '@app/canvas/drawing-board/input-series';
 
 export class Drawing {
   canvasManager: CanvasManager;

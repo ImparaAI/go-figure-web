@@ -1,8 +1,8 @@
 import { EventEmitter } from '@angular/core';
 import { Vector } from '@app/structures/vector';
-import { Painter } from '@app/canvas/drawable/painter';
 import { Point2D, Point3D } from '@app/structures/point';
-import { InputSeries } from '@app/canvas/drawable/input-series';
+import { Painter } from '@app/canvas/drawing-board/painter';
+import { InputSeries } from '@app/canvas/drawing-board/input-series';
 
 export class Finalizer {
   painter: Painter;
