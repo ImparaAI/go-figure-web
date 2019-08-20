@@ -11,7 +11,7 @@ import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core
 import { ApiService } from '@app/api/api.service';
 import { Point2D, Point3D } from '@app/structures/point';
 import { PatchedGestureConfig } from '@app/gesture-config';
-import { DrawingViewerComponent } from './drawing-viewer.component';
+import { DrawingViewerComponent } from '../drawing-viewer.component';
 import { DraggableCanvasComponent } from '@app/canvas/draggable/draggable-canvas.component';
 
 describe('DrawingViewerComponent', () => {
@@ -64,7 +64,7 @@ describe('DrawingViewerComponent', () => {
 
     /*
      When the canvas changes for whatever reason and the expected values need to be updated, console log the toDataURL() and copy the value into
-     the expected json files.
+     the expected json files after verifying they are correct in the browser.
      */
   }));
 
