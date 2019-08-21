@@ -50,16 +50,16 @@ describe('DrawingViewerComponent', () => {
     apiService.getDrawing.and.returnValue(Promise.resolve(json));
     fixture.detectChanges();
 
-    expect(component.time).toBe(0);
+    expect(component.drawing.animator.time).toBe(0);
 
     tick(2000);
 
-    expect(component.time).toBe(0.6300000000000004);
+    expect(component.drawing.animator.time).toBe(0.6300000000000004);
     expect(canvas.nativeElement.toDataURL()).toBe(require('./t1.json').image);
 
     tick(2000);
 
-    expect(component.time).toBe(0.2550000000000008);
+    expect(component.drawing.animator.time).toBe(0.2550000000000008);
     expect(canvas.nativeElement.toDataURL()).toBe(require('./t2.json').image);
 
     /*
