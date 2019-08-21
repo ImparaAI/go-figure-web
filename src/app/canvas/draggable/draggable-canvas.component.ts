@@ -20,8 +20,7 @@ export class DraggableCanvasComponent implements OnInit {
   @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
   @Output() canvasInitialized = new EventEmitter<CanvasManager>();
-  @Output() zoom = new EventEmitter<number>();
-  @Output() originMoved = new EventEmitter<Point2D>();
+  @Output() canvasUpdated = new EventEmitter<void>();
 
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
@@ -80,7 +79,7 @@ export class DraggableCanvasComponent implements OnInit {
     let boundedScale = Math.max(0.5, Math.min(1500, this.canvasManager.scale * scale));
 
     this.canvasManager.setScale(boundedScale);
-    this.zoom.emit(boundedScale);
+    this.canvasUpdated.emit();
   }
 
   mousescroll(pixels: number, mousePosition: Point2D) {
@@ -113,7 +112,7 @@ export class DraggableCanvasComponent implements OnInit {
     if (deltaX || deltaY) {
       this.canvasManager.shiftOrigin(deltaX, deltaY);
       this.dragStart = new Point2D(x, y);
-      this.originMoved.emit(new Point2D(this.canvasManager.origin.x, this.canvasManager.origin.y));
+      this.canvasUpdated.emit();
     }
   }
 
