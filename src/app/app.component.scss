@@ -38,13 +38,36 @@
 }
 
 .left {
+  > a {
+    vertical-align: middle;
+  }
+
   > .huh {
     display: none;
     margin-left: 8%;
 
     @media #{$mobile}
     {
-      display: block;
+      display: inline-block;
+    }
+  }
+
+  > .github {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    margin-left: 8%;
+
+    > svg > path {
+      fill: rgba(255, 255, 255, 0.3);
+      stroke: none;
+    }
+
+    @media #{$mobile}
+    {
+      margin-left: 0;
+      width: 30px;
+      height: 30px;
     }
   }
 }
