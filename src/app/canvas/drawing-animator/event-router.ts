@@ -1,13 +1,15 @@
 import { ElementRef, Renderer2 } from '@angular/core';
 
 import { Drawing } from '@app/canvas/drawing-animator/drawing';
-import { Pinch } from '@app/canvas/drawing-animator/event-handlers/pinch';
 import { MouseUp } from '@app/canvas/drawing-animator/event-handlers/mouse-up';
 import { MouseOut } from '@app/canvas/drawing-animator/event-handlers/mouse-out';
 import { TouchEnd } from '@app/canvas/drawing-animator/event-handlers/touch-end';
 import { MouseDown } from '@app/canvas/drawing-animator/event-handlers/mouse-down';
 import { MouseMove } from '@app/canvas/drawing-animator/event-handlers/mouse-move';
 import { TouchMove } from '@app/canvas/drawing-animator/event-handlers/touch-move';
+import { PinchMove } from '@app/canvas/drawing-animator/event-handlers/pinch-move';
+import { PinchEnd } from '@app/canvas/drawing-animator/event-handlers/pinch-end';
+import { PinchStart } from '@app/canvas/drawing-animator/event-handlers/pinch-start';
 import { TouchStart } from '@app/canvas/drawing-animator/event-handlers/touch-start';
 import { MouseWheel } from '@app/canvas/drawing-animator/event-handlers/mouse-wheel';
 import { EventHandler } from '@app/canvas/drawing-animator/event-handlers/event-handler';
@@ -16,8 +18,12 @@ export class EventRouter {
   protected canvas: ElementRef;
   protected renderer: Renderer2;
   protected drawing: Drawing;
-  protected eventHandlerClasses = [Pinch, MouseUp, MouseOut, TouchEnd, MouseDown, MouseMove, TouchMove, TouchStart, MouseWheel];
   protected handlerDestroyers: (() => void)[] = [];
+  protected eventHandlerClasses = [
+    PinchMove, PinchStart, PinchEnd,
+    TouchEnd, TouchMove, TouchStart,
+    MouseUp, MouseOut,  MouseDown, MouseMove, MouseWheel
+  ];
 
   constructor(canvas: ElementRef, renderer: Renderer2, drawing: Drawing) {
     this.canvas = canvas;
