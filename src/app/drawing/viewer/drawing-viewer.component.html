@@ -28,10 +28,10 @@
 <div *ngIf="!loading && drawing?.maxVectorCount > 0">
   <div class="controls-responsive">
     <div>
-      <button mat-raised-button color="primary" (click)="drawing?.zoomInAndSlow()">Zoom in and Slow</button>
+      <button mat-raised-button color="primary" (click)="zoomInAndSlow()">Zoom in and Slow</button>
     </div>
     <div>
-      <button mat-raised-button color="primary" (click)="drawing?.resetZoomAndSpeed()">Reset Zoom and Speed</button>
+      <button mat-raised-button color="primary" (click)="resetZoomAndSpeed()">Reset Zoom and Speed</button>
     </div>
   </div>
 
@@ -63,7 +63,7 @@
         <span>Vectors:</span>
         <mat-slider
             color="primary"
-            [max]="series ? series.vectors.length - 1 : 0"
+            [max]="drawing.fourierSeries.vectors.length - 1"
             [min]="0"
             [step]="1"
             [thumbLabel]="true"
