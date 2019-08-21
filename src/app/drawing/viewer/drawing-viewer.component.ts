@@ -31,6 +31,7 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   outputTimeInterval: number = 0.0005;
   canvasManager: CanvasManager;
   series: FourierSeries;
+  displayVectorCount: number = 0;
   maxVectorCount: number = 1;
   drawing: Drawing;
   trackOutput: boolean = false;
@@ -66,7 +67,7 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   async load() {
     try {
       this.drawing = new Drawing(await this.api.getDrawing(this.id));
-      this.maxVectorCount = this.drawing.drawVectors.length;
+      this.setVectorCount(this.drawing.drawVectors.length);
 
       if (!this.maxVectorCount) {
         setTimeout(()=>{
@@ -229,6 +230,11 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
     this.trackOutput = false;
     this.updateScale(1);
     this.canvasManager.setOrigin(0, 0);
+  }
+
+  setVectorCount(count: number) {
+    this.maxVectorCount = count;
+    this.displayVectorCount = count - 1;
   }
 
 }

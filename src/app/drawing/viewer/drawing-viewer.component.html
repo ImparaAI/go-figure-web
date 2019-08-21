@@ -22,7 +22,7 @@
     ></iai-draggable-canvas>
 
     <div class="total-vectors">
-      Total vectors: {{maxVectorCount}}
+      Total vectors: {{displayVectorCount}}
     </div>
   </div>
 </div>
@@ -65,12 +65,12 @@
         <span>Vectors:</span>
         <mat-slider
             color="primary"
-            [max]="series ? series.vectors.length : 1"
-            [min]="1"
+            [max]="series ? series.vectors.length - 1 : 0"
+            [min]="0"
             [step]="1"
             [thumbLabel]="true"
-            [value]="maxVectorCount"
-            (input)="maxVectorCount = $event.value">
+            [value]="displayVectorCount"
+            (input)="setVectorCount($event.value + 1)">
         </mat-slider>
       </div>
     </div>
