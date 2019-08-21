@@ -41,12 +41,4 @@ export class DraggableCanvasComponent implements OnInit, OnDestroy {
       this.eventRouter.unregister();
   }
 
-  onPinchIn(event) {
-    this.drawing.scaleBy(event.scale, new Point2D(event.center.x, event.center.y));
-  }
-
-  onPinchOut(event) {
-    this.drawing.scaleBy(event.scale, new Point2D(event.center.x, event.center.y));
-  }
-
 }

@@ -12,10 +12,10 @@ import { Drawing } from '@app/canvas/draggable/drawing';
 export class DrawingViewerComponent implements OnInit, OnDestroy {
 
   id: number;
+  drawing: Drawing;
   loading: boolean = true;
   minTimeInterval: number = 0.0001;
   displayVectorCount: number = 0;
-  drawing: Drawing;
 
   constructor(private route: ActivatedRoute, private router: Router, private api: ApiService) {
     router.routeReuseStrategy.shouldReuseRoute = () => false;

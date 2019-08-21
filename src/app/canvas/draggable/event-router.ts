@@ -1,6 +1,7 @@
 import { ElementRef, Renderer2 } from '@angular/core';
 
 import { Drawing } from '@app/canvas/draggable/drawing';
+import { Pinch } from '@app/canvas/draggable/event-handlers/pinch';
 import { MouseUp } from '@app/canvas/draggable/event-handlers/mouse-up';
 import { MouseOut } from '@app/canvas/draggable/event-handlers/mouse-out';
 import { TouchEnd } from '@app/canvas/draggable/event-handlers/touch-end';
@@ -15,7 +16,7 @@ export class EventRouter {
   protected canvas: ElementRef;
   protected renderer: Renderer2;
   protected drawing: Drawing;
-  protected eventHandlerClasses = [MouseUp, MouseOut, TouchEnd, MouseDown, MouseMove, TouchMove, TouchStart, MouseWheel];
+  protected eventHandlerClasses = [Pinch, MouseUp, MouseOut, TouchEnd, MouseDown, MouseMove, TouchMove, TouchStart, MouseWheel];
   protected handlerDestroyers: (() => void)[] = [];
 
   constructor(canvas: ElementRef, renderer: Renderer2, drawing: Drawing) {
@@ -37,11 +38,11 @@ export class EventRouter {
   }
 
   addListener(handler: EventHandler, eventName: string) {
-    let listener = this.renderer.listen(this.canvas.nativeElement, eventName, (e) => {
+    let destroyer = this.renderer.listen(this.canvas.nativeElement, eventName, (e) => {
       handler.handle(e);
     });
 
-    this.handlerDestroyers.push(listener);
+    this.handlerDestroyers.push(destroyer);
   }
 
   unregister(): void {
