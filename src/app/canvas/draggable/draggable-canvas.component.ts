@@ -19,7 +19,7 @@ export class DraggableCanvasComponent implements OnInit, OnDestroy {
   @Input() width: number;
   @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
-  @Output() canvasInitialized = new EventEmitter<CanvasManager>();
+  @Output() canvasInitialized = new EventEmitter<Drawing>();
 
   constructor(private renderer: Renderer2) {}
 
@@ -31,9 +31,9 @@ export class DraggableCanvasComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.canvasManager = new CanvasManager(this.canvas.nativeElement);
-    this.canvasInitialized.emit(this.canvasManager);
     this.drawing = new Drawing(this.canvasManager);
     this.eventRouter = new EventRouter(this.canvas, this.renderer, this.drawing);
+    this.canvasInitialized.emit(this.drawing);
   }
 
   ngOnDestroy() {
@@ -42,11 +42,11 @@ export class DraggableCanvasComponent implements OnInit, OnDestroy {
   }
 
   onPinchIn(event) {
-    this.drawing.updateScale(event.scale, new Point2D(event.center.x, event.center.y));
+    this.drawing.scaleBy(event.scale, new Point2D(event.center.x, event.center.y));
   }
 
   onPinchOut(event) {
-    this.drawing.updateScale(event.scale, new Point2D(event.center.x, event.center.y));
+    this.drawing.scaleBy(event.scale, new Point2D(event.center.x, event.center.y));
   }
 
 }

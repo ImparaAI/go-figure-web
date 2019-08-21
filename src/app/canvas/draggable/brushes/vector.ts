@@ -1,26 +1,26 @@
 import { Point2D } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
-import { CanvasManager } from '@app/canvas/canvas_manager';
+import { Drawing } from '@app/canvas/draggable/drawing';
 
-export class VectorPainter {
+export class VectorsBrush {
 
   protected rgb: string = "255, 255, 255";
   protected arrowAngle: number = 50;
-  protected canvasManager: CanvasManager;
+  protected drawing: Drawing;
 
-  constructor(canvasManager: CanvasManager) {
-    this.canvasManager = canvasManager;
+  constructor(drawing: Drawing) {
+    this.drawing = drawing;
   }
 
   public paint(vectors: Vector[]): void {
-    this.canvasManager.setLineWidth(1);
-    this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, 1)`);
+    this.drawing.canvasManager.setLineWidth(1);
+    this.drawing.canvasManager.setStrokeStyle(`rgba(${this.rgb}, 1)`);
 
     vectors.forEach((v: Vector, i: number) => {
       if (!i)
         return;
 
-      this.canvasManager.paintLine(v.start, v.end);
+      this.drawing.canvasManager.paintLine(v.start, v.end);
       this.paintVectorArrow(v, this.arrowAngle / 2);
       this.paintVectorArrow(v, -this.arrowAngle / 2);
     });
@@ -32,7 +32,7 @@ export class VectorPainter {
         x = v.end.x + (len * Math.cos(angle)),
         y = v.end.y + (len * Math.sin(angle));
 
-    this.canvasManager.paintLine(v.end, new Point2D(x, y));
+    this.drawing.canvasManager.paintLine(v.end, new Point2D(x, y));
   }
 
 }

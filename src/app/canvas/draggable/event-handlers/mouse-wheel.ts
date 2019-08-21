@@ -18,6 +18,6 @@ export class MouseWheel extends EventHandler {
     event.stopPropagation();
     event.preventDefault();
 
-    this.drawing.updateScale(scale, this.drawing.cursorPosition);
+    this.drawing.scaleBy(scale, this.drawing.cursorPosition);
   }
 }

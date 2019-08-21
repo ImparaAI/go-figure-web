@@ -91,9 +91,4 @@ export class CanvasManager {
     this.shiftOrigin(focalPoint.x - newPoint.x, focalPoint.y - newPoint.y)
   }
 
-  updateScale(scale: number, center?: Point2D) {
-
-  }
-
-
 }

@@ -1,20 +1,29 @@
-import { Point2D } from '@app/structures/point';
-import { Painter } from '@app/canvas/draggable/painter';
+import { Point2D, Point3D } from '@app/structures/point';
+import { FourierSeries } from '@app/structures/series';
+import { Animator } from '@app/canvas/draggable/animator';
 import { CanvasManager } from '@app/canvas/canvas_manager';
+import { OutputSeries } from '@app/canvas/draggable/output-series';
 
 export class Drawing {
   canvasManager: CanvasManager;
-  painter: Painter;
+  animator: Animator;
+  output: OutputSeries;
+  fourierSeries: FourierSeries;
   cursorPressed: boolean = false;
   cursorPosition: Point2D = new Point2D;
   lastPressedPoint: Point2D;
+  maxVectorCount: number;
+  originalPoints: Point3D[];
 
   constructor(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
-    this.painter = new Painter(this, this.canvasManager);
+    this.animator = new Animator(this);
   }
 
-  clear(): void {
+  setData(drawVectors, originalPoints) {
+    this.fourierSeries = new FourierSeries(drawVectors);;
+    this.originalPoints = originalPoints.map((op) => new Point3D(op.x, op.y, op.time));
+    this.output = new OutputSeries(this);
   }
 
   pressCursor(x: number, y: number): void {
@@ -38,15 +47,19 @@ export class Drawing {
     if (deltaX || deltaY) {
       this.canvasManager.shiftOrigin(deltaX, deltaY);
       this.lastPressedPoint = new Point2D(x, y);
-      this.painter.paint();
+      this.animator.repaint();
     }
   }
 
-  updateScale(scale: number, focalPoint: Point2D) {
-    let boundedScale = Math.max(0.5, Math.min(1500, this.canvasManager.scale * scale));
+  setScale(scale: number, focalPoint?: Point2D) {
+    let boundedScale = Math.max(0.5, Math.min(1500, scale));
 
-    this.canvasManager.setScale(boundedScale, focalPoint);
-    this.painter.paint();
+    this.canvasManager.setScale(scale, focalPoint);
+    this.animator.repaint();
+  }
+
+  scaleBy(scale: number, focalPoint?: Point2D) {
+    this.setScale(this.canvasManager.scale * scale, focalPoint);
   }
 
 }
