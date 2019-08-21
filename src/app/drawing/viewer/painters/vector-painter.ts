@@ -4,7 +4,6 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 
 export class VectorPainter {
 
-  protected scale: number = 1;
   protected rgb: string = "255, 255, 255";
   protected arrowAngle: number = 50;
   protected canvasManager: CanvasManager;
@@ -21,14 +20,10 @@ export class VectorPainter {
       if (!i)
         return;
 
-      this.canvasManager.paintLine(v.start, v.end, this.scale);
+      this.canvasManager.paintLine(v.start, v.end);
       this.paintVectorArrow(v, this.arrowAngle / 2);
       this.paintVectorArrow(v, -this.arrowAngle / 2);
     });
-  }
-
-  public setScale(scale: number): void {
-    this.scale = scale;
   }
 
   protected paintVectorArrow(v: Vector, rotation: number) {
@@ -37,7 +32,7 @@ export class VectorPainter {
         x = v.end.x + (len * Math.cos(angle)),
         y = v.end.y + (len * Math.sin(angle));
 
-    this.canvasManager.paintLine(v.end, new Point2D(x, y), this.scale);
+    this.canvasManager.paintLine(v.end, new Point2D(x, y));
   }
 
 }

@@ -3,7 +3,6 @@ import { CanvasManager } from '@app/canvas/canvas_manager';
 
 export class OriginalPointsPainter {
 
-  protected scale: number = 1;
   protected opacity: number = 0.2;
   protected rgb: string = "255, 255, 255";
   protected canvasManager: CanvasManager;
@@ -19,15 +18,11 @@ export class OriginalPointsPainter {
       if (i != 0) {
         this.canvasManager.setLineWidth(3);
         this.canvasManager.setStrokeStyle(`rgba(${this.rgb}, ${this.opacity})`);
-        this.canvasManager.paintLine(lastValue.toPoint2D(), value.toPoint2D(), this.scale);
+        this.canvasManager.paintLine(lastValue.toPoint2D(), value.toPoint2D());
       }
 
       lastValue = value;
     });
-  }
-
-  public setScale(scale: number): void {
-    this.scale = scale;
   }
 
 }

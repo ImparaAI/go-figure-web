@@ -20,7 +20,7 @@ export class DraggableCanvasComponent implements OnInit {
   @Input() height: number;
   @ViewChild('canvas') canvas: ElementRef;
   @Output() canvasInitialized = new EventEmitter<CanvasManager>();
-  @Output() zoom = new EventEmitter<{scale: number, center?: Point2D}>();
+  @Output() zoom = new EventEmitter<number>();
   @Output() originMoved = new EventEmitter<Point2D>();
 
   ngOnInit() {
@@ -76,22 +76,29 @@ export class DraggableCanvasComponent implements OnInit {
     return false;
   }
 
+  updateScale(scale: number, focalPoint: Point2D) {
+    let boundedScale = Math.max(0.5, Math.min(1500, this.canvasManager.scale * scale));
+
+    this.canvasManager.setScale(boundedScale);
+    this.zoom.emit(boundedScale);
+  }
+
   mousescroll(pixels: number, mousePosition: Point2D) {
     if (pixels > 0)
-      this.zoom.emit({scale: 1.1, center: mousePosition});
+      this.updateScale(1.1, mousePosition);
 
     else
-      this.zoom.emit({scale: 1 / 1.1, center: mousePosition});
+      this.updateScale(1 / 1.1, mousePosition);
   }
 
   onPinchIn(event) {
     this.zoomScale = event.scale;
-    this.zoom.emit({scale: event.scale, center: new Point2D(event.center.x, event.center.y)});
+    this.updateScale(event.scale, new Point2D(event.center.x, event.center.y));
   }
 
   onPinchOut(event) {
     this.zoomScale = event.scale;
-    this.zoom.emit({scale: event.scale, center: new Point2D(event.center.x, event.center.y)});
+    this.updateScale(event.scale, new Point2D(event.center.x, event.center.y));
   }
 
   mousemove(x: number, y: number) {

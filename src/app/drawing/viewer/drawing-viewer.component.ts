@@ -107,7 +107,7 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
       return;
 
     this.updateOutput();
-    this.series.update(this.time, this.scale);
+    this.series.update(this.time);
 
     this.repaint();
     this.updateTime();
@@ -125,10 +125,9 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
 
   repositionCanvas() {
     if (this.trackOutput && this.series.vectors.length) {
-      let finalVector = this.series.vectors[this.maxVectorCount - 1],
-          point = new Point2D(finalVector.end.x * this.scale, finalVector.end.y * this.scale);
+      let finalVector = this.series.vectors[this.maxVectorCount - 1];
 
-      this.canvasManager.centerOn(point);
+      this.canvasManager.centerOn(new Point2D(finalVector.end.x, finalVector.end.y));
     }
   }
 
@@ -172,38 +171,16 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   }
 
   getOutputPoint(time: number) {
-    this.series.update(time, this.scale);
+    this.series.update(time);
 
     let finalVector = this.series.vectors[this.maxVectorCount - 1];
 
     return new Point2D(finalVector.end.x, finalVector.end.y);
   }
 
-  shiftOriginOnZoom(mousePosition: Point2D, originalScale: number, newScale: number) {
-    let origin = this.canvasManager.origin,
-        originalPoint = mousePosition.clone().shift(-origin.x, -origin.y).scale(1 / originalScale),
-        newPoint = originalPoint.clone().scale(newScale).shift(origin.x, origin.y);
-
-    this.canvasManager.shiftOrigin(mousePosition.x - newPoint.x, mousePosition.y - newPoint.y)
-  }
-
-  updateScale(scale: number, center?: Point2D) {
-    if (center)
-      this.shiftOriginOnZoom(center, this.scale, scale);
-
-    this.scale = scale;
-
-    for (let painter of Object.values(this.painters)) {
-      painter.setScale(this.scale)
-    }
-
+  updateScale(scale: number) {
+    this.canvasManager.setScale(scale);
     this.repaint();
-  }
-
-  onZoom(event) {
-    let scale = Math.max(0.5, Math.min(1500, this.scale * event.scale));
-
-    this.updateScale(scale, event.center);
   }
 
   zoomInAndSlow() {

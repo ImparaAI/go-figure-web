@@ -16,7 +16,7 @@ export class FourierSeries {
     this.vectors = this.constants.map(() => new Vector);
   }
 
-  update(time: number, scale: number) {
+  update(time: number) {
     this.vectors.forEach((v: Vector, i: number) => {
       let constant = this.constants[i],
           val = 2 * Math.PI * constant.n * time;
