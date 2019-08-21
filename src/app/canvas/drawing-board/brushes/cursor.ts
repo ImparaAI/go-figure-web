@@ -13,7 +13,7 @@ export class CursorBrush {
 
   public paint(point: Point2D): void {
     this.drawing.canvasManager.setFillStyle(`rgba(${this.rgb}, 1)`);
-    this.drawing.canvasManager.paintCircle(point, this.radius);
+    this.drawing.canvasManager.paintFilledCircle(point, this.radius);
   }
 
 }

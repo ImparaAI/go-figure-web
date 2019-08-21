@@ -60,6 +60,13 @@ export class CanvasManager {
   paintCircle(center: Point2D, radius: number) {
     this.drawer.beginPath();
     this.drawer.arc(center.x * this.scale, center.y * this.scale, radius * this.scale, 0, 2 * Math.PI);
+    this.drawer.stroke();
+    this.drawer.closePath();
+  }
+
+  paintFilledCircle(center: Point2D, radius: number) {
+    this.drawer.beginPath();
+    this.drawer.arc(center.x * this.scale, center.y * this.scale, radius * this.scale, 0, 2 * Math.PI);
     this.drawer.fill();
     this.drawer.closePath();
   }

@@ -14,15 +14,16 @@ export class VectorsBrush {
 
   public paint(vectors: Vector[]): void {
     this.drawing.canvasManager.setLineWidth(1);
-    this.drawing.canvasManager.setStrokeStyle(`rgba(${this.rgb}, 1)`);
 
     vectors.forEach((v: Vector, i: number) => {
       if (!i)
         return;
 
+      this.drawing.canvasManager.setStrokeStyle(`rgba(${this.rgb}, 1)`);
       this.drawing.canvasManager.paintLine(v.start, v.end);
       this.paintVectorArrow(v, this.arrowAngle / 2);
       this.paintVectorArrow(v, -this.arrowAngle / 2);
+      this.paintVectorCircle(v);
     });
   }
 
@@ -33,6 +34,12 @@ export class VectorsBrush {
         y = v.end.y + (len * Math.sin(angle));
 
     this.drawing.canvasManager.paintLine(v.end, new Point2D(x, y));
+  }
+
+  protected paintVectorCircle(v: Vector) {
+    this.drawing.canvasManager.setStrokeStyle(`rgba(255, 255, 255, .05)`);
+
+    this.drawing.canvasManager.paintCircle(v.start, v.length());
   }
 
 }
