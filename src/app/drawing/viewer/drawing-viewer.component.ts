@@ -33,7 +33,6 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   series: FourierSeries;
   maxVectorCount: number = 1;
   drawing: Drawing;
-  originalOpacity: number = 0.2;
   trackOutput: boolean = false;
   scale: number = 1;
   painters: {
@@ -118,7 +117,7 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   repaint() {
     this.repositionCanvas();
     this.canvasManager.clearCanvas();
-    this.painters.originalPoints.paint(this.drawing.originalPoints, this.originalOpacity);
+    this.painters.originalPoints.paint(this.drawing.originalPoints);
     this.painters.vector.paint(this.series.vectors.slice(0, this.maxVectorCount));
     this.painters.output.paint(this.output, this.time, this.currentOutput);
   }
