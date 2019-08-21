@@ -1,6 +1,6 @@
 import { Point2D } from '@app/structures/point';
 import { Vector } from '@app/structures/vector';
-import { Drawing } from '@app/canvas/draggable/drawing';
+import { Drawing } from '@app/canvas/drawing-animator/drawing';
 
 export class VectorsBrush {
 

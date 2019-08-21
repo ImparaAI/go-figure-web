@@ -1,8 +1,8 @@
 import { Point2D } from '@app/structures/point';
-import { Drawing } from '@app/canvas/draggable/drawing';
-import { OutputBrush } from '@app/canvas/draggable/brushes/output';
-import { VectorsBrush } from '@app/canvas/draggable/brushes/vector';
-import { OriginalPointsBrush } from '@app/canvas/draggable/brushes/original';
+import { Drawing } from '@app/canvas/drawing-animator/drawing';
+import { OutputBrush } from '@app/canvas/drawing-animator/brushes/output';
+import { VectorsBrush } from '@app/canvas/drawing-animator/brushes/vector';
+import { OriginalPointsBrush } from '@app/canvas/drawing-animator/brushes/original';
 
 export class Animator {
 

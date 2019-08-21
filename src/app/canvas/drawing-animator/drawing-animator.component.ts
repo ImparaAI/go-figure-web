@@ -1,16 +1,16 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit, OnDestroy, Renderer2 } from '@angular/core';
 
 import { Point2D } from '@app/structures/point';
-import { Drawing } from '@app/canvas/draggable/drawing';
 import { CanvasManager } from '@app/canvas/canvas_manager';
-import { EventRouter } from '@app/canvas/draggable/event-router';
+import { Drawing } from '@app/canvas/drawing-animator/drawing';
+import { EventRouter } from '@app/canvas/drawing-animator/event-router';
 
 @Component({
-  selector: 'iai-draggable-canvas',
-  templateUrl: './draggable-canvas.component.html',
-  styleUrls: ['./draggable-canvas.component.scss']
+  selector: 'iai-drawing-animator',
+  templateUrl: './drawing-animator.component.html',
+  styleUrls: ['./drawing-animator.component.scss']
 })
-export class DraggableCanvasComponent implements OnInit, OnDestroy {
+export class DrawingAnimatorComponent implements OnInit, OnDestroy {
 
   drawing: Drawing;
   eventRouter: EventRouter;
@@ -25,7 +25,7 @@ export class DraggableCanvasComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.width === undefined || this.height === undefined) {
-      throw new Error("A valid width and height need to be provided to the draggable canvas.")
+      throw new Error("A valid width and height need to be provided to the drawing animator.")
     }
   }
 

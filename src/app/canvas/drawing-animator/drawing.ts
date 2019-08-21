@@ -1,8 +1,8 @@
-import { Point2D, Point3D } from '@app/structures/point';
 import { FourierSeries } from '@app/structures/series';
-import { Animator } from '@app/canvas/draggable/animator';
+import { Point2D, Point3D } from '@app/structures/point';
 import { CanvasManager } from '@app/canvas/canvas_manager';
-import { OutputSeries } from '@app/canvas/draggable/output-series';
+import { Animator } from '@app/canvas/drawing-animator/animator';
+import { OutputSeries } from '@app/canvas/drawing-animator/output-series';
 
 export class Drawing {
   canvasManager: CanvasManager;

@@ -1,6 +1,6 @@
 import { Point2D } from '@app/structures/point';
-import { Drawing } from '@app/canvas/draggable/drawing';
-import { OutputSeries, OutputDatum } from '@app/canvas/draggable/output-series';
+import { Drawing } from '@app/canvas/drawing-animator/drawing';
+import { OutputSeries, OutputDatum } from '@app/canvas/drawing-animator/output-series';
 
 export class OutputBrush {
 

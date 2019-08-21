@@ -1,6 +1,6 @@
 import { Point2D } from '@app/structures/point';
-import { Drawing } from '@app/canvas/draggable/drawing';
-import { EventHandler } from '@app/canvas/draggable/event-handlers/event-handler';
+import { Drawing } from '@app/canvas/drawing-animator/drawing';
+import { EventHandler } from '@app/canvas/drawing-animator/event-handlers/event-handler';
 
 export class Pinch extends EventHandler {
   constructor(drawing: Drawing) {

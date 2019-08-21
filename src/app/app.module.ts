@@ -12,9 +12,9 @@ import { InspirationComponent } from './inspiration/inspiration.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { DrawingRecentComponent } from './drawing/recent/drawing-recent.component';
 import { DrawingCreatorComponent } from './drawing/creator/drawing-creator.component';
-import { DrawingBoardComponent } from './canvas/drawing-board/drawing-board.component';
-import { DraggableCanvasComponent } from './canvas/draggable/draggable-canvas.component';
 import { DrawingViewerComponent } from '@app/drawing/viewer/drawing-viewer.component';
+import { DrawingBoardComponent } from './canvas/drawing-board/drawing-board.component';
+import { DrawingAnimatorComponent } from './canvas/drawing-animator/drawing-animator.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { DrawingViewerComponent } from '@app/drawing/viewer/drawing-viewer.compo
     DrawingRecentComponent,
     DrawingCreatorComponent,
     DrawingBoardComponent,
-    DraggableCanvasComponent,
+    DrawingAnimatorComponent,
     DrawingViewerComponent,
     PageNotFoundComponent,
   ],

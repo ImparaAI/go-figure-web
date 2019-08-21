@@ -1,5 +1,5 @@
 import { Point2D } from '@app/structures/point';
-import { Drawing } from '@app/canvas/draggable/drawing';
+import { Drawing } from '@app/canvas/drawing-animator/drawing';
 
 interface OutputDatum {
   time: number;

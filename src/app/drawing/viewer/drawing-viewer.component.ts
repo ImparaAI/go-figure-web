@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ApiService } from '@app/api/api.service';
-import { Drawing } from '@app/canvas/draggable/drawing';
+import { Drawing } from '@app/canvas/drawing-animator/drawing';
 
 @Component({
   selector: 'iai-drawing-viewer',

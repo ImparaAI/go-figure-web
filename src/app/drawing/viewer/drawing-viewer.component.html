@@ -13,11 +13,11 @@
 
 <div class="drawing" [hidden]="loading || (drawing?.maxVectorCount == 0)">
   <div class="c-canvas-container">
-    <iai-draggable-canvas
+    <iai-drawing-animator
       width="700"
       height="400"
       (canvasInitialized)="onCanvasReady($event)"
-    ></iai-draggable-canvas>
+    ></iai-drawing-animator>
 
     <div class="total-vectors">
       Total vectors: {{displayVectorCount}}

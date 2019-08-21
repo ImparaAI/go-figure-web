@@ -1,16 +1,16 @@
 import { ElementRef, Renderer2 } from '@angular/core';
 
-import { Drawing } from '@app/canvas/draggable/drawing';
-import { Pinch } from '@app/canvas/draggable/event-handlers/pinch';
-import { MouseUp } from '@app/canvas/draggable/event-handlers/mouse-up';
-import { MouseOut } from '@app/canvas/draggable/event-handlers/mouse-out';
-import { TouchEnd } from '@app/canvas/draggable/event-handlers/touch-end';
-import { MouseDown } from '@app/canvas/draggable/event-handlers/mouse-down';
-import { MouseMove } from '@app/canvas/draggable/event-handlers/mouse-move';
-import { TouchMove } from '@app/canvas/draggable/event-handlers/touch-move';
-import { TouchStart } from '@app/canvas/draggable/event-handlers/touch-start';
-import { MouseWheel } from '@app/canvas/draggable/event-handlers/mouse-wheel';
-import { EventHandler } from '@app/canvas/draggable/event-handlers/event-handler';
+import { Drawing } from '@app/canvas/drawing-animator/drawing';
+import { Pinch } from '@app/canvas/drawing-animator/event-handlers/pinch';
+import { MouseUp } from '@app/canvas/drawing-animator/event-handlers/mouse-up';
+import { MouseOut } from '@app/canvas/drawing-animator/event-handlers/mouse-out';
+import { TouchEnd } from '@app/canvas/drawing-animator/event-handlers/touch-end';
+import { MouseDown } from '@app/canvas/drawing-animator/event-handlers/mouse-down';
+import { MouseMove } from '@app/canvas/drawing-animator/event-handlers/mouse-move';
+import { TouchMove } from '@app/canvas/drawing-animator/event-handlers/touch-move';
+import { TouchStart } from '@app/canvas/drawing-animator/event-handlers/touch-start';
+import { MouseWheel } from '@app/canvas/drawing-animator/event-handlers/mouse-wheel';
+import { EventHandler } from '@app/canvas/drawing-animator/event-handlers/event-handler';
 
 export class EventRouter {
   protected canvas: ElementRef;

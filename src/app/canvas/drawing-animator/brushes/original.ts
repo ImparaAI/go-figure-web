@@ -1,5 +1,5 @@
-import { Drawing } from '@app/canvas/draggable/drawing';
 import { Point2D, Point3D } from '@app/structures/point';
+import { Drawing } from '@app/canvas/drawing-animator/drawing';
 
 export class OriginalPointsBrush {
 
