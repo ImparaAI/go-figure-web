@@ -14,6 +14,7 @@ export class Drawing {
   lastPressedPoint: Point2D;
   maxVectorCount: number;
   originalPoints: Point3D[];
+  pinchStartScale: number | null;
 
   constructor(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
@@ -51,10 +52,18 @@ export class Drawing {
     }
   }
 
+  startPinch() {
+    this.pinchStartScale = this.canvasManager.scale;
+  }
+
+  endPinch() {
+    this.pinchStartScale = null;
+  }
+
   setScale(scale: number, focalPoint?: Point2D):void {
     let boundedScale = Math.max(0.5, Math.min(1500, scale));
 
-    this.canvasManager.setScale(scale, focalPoint);
+    this.canvasManager.setScale(boundedScale, focalPoint);
     this.animator.repaint();
   }
 
