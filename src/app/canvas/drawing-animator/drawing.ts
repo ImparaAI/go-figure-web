@@ -52,26 +52,26 @@ export class Drawing {
     }
   }
 
-  startPinch() {
+  startPinch(): void {
     this.pinchStartScale = this.canvasManager.scale;
   }
 
-  endPinch() {
+  endPinch(): void {
     this.pinchStartScale = null;
   }
 
-  setScale(scale: number, focalPoint?: Point2D):void {
+  setScale(scale: number, focalPoint?: Point2D): void {
     let boundedScale = Math.max(0.5, Math.min(1500, scale));
 
     this.canvasManager.setScale(boundedScale, focalPoint);
     this.animator.repaint();
   }
 
-  scaleBy(scale: number, focalPoint?: Point2D):void {
+  scaleBy(scale: number, focalPoint?: Point2D): void {
     this.setScale(this.canvasManager.scale * scale, focalPoint);
   }
 
-  destroy():void {
+  destroy(): void {
     this.animator.stop();
 
     if (this.output)
