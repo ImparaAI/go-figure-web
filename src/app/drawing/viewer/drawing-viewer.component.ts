@@ -14,9 +14,9 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   id: number;
   drawing: Drawing;
   loading: boolean = true;
-  longPollTimeout: NodeJS.Timer;
   minTimeInterval: number = 0.0001;
   displayVectorCount: number = 0;
+  longPollTimeout;
 
   constructor(private route: ActivatedRoute, private router: Router, private api: ApiService) {
     router.routeReuseStrategy.shouldReuseRoute = () => false;
