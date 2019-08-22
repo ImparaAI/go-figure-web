@@ -6,7 +6,7 @@ import { MaterialModule } from '@app/material.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick, flush } from '@angular/core/testing';
 
 import { ApiService } from '@app/api/api.service';
 import { Point2D, Point3D } from '@app/structures/point';
@@ -45,8 +45,38 @@ describe('DrawingViewerComponent', () => {
     canvas = fixture.debugElement.query(By.css('canvas'));
   });
 
+  it('should show the loading page', () => {
+    let json = require('./api-mock-processing.json');
+
+    apiService.getDrawing.and.returnValue(new Promise(resolve => setTimeout(() => resolve(json), 1000)));
+    fixture.detectChanges();
+
+    expect(!!fixture.debugElement.query(By.css('.drawing')).nativeElement.hasAttribute('hidden')).toBe(true);
+    expect(fixture.debugElement.query(By.css('.controls'))).toBeFalsy();
+    expect(fixture.debugElement.query(By.css('.loading'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.processing'))).toBeFalsy();
+  });
+
+  it('should show the processing page', fakeAsync(() => {
+    let json = require('./api-mock-processing.json');
+
+    apiService.getDrawing.and.returnValue(Promise.resolve(json));
+
+    fixture.detectChanges();
+    tick(2000);
+    fixture.detectChanges();
+
+    expect(!!fixture.debugElement.query(By.css('.drawing')).nativeElement.hasAttribute('hidden')).toBe(true);
+    expect(fixture.debugElement.query(By.css('.controls'))).toBeFalsy();
+    expect(fixture.debugElement.query(By.css('.loading'))).toBeFalsy();
+    expect(fixture.debugElement.query(By.css('.processing'))).toBeTruthy();
+
+    fixture.destroy();
+    flush();
+  }));
+
   it('should look a certain way', fakeAsync(() => {
-    let json = require('./api-mock.json');
+    let json = require('./api-mock-success.json');
     apiService.getDrawing.and.returnValue(Promise.resolve(json));
     fixture.detectChanges();
 

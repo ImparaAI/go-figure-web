@@ -51,15 +51,22 @@ export class Drawing {
     }
   }
 
-  setScale(scale: number, focalPoint?: Point2D) {
+  setScale(scale: number, focalPoint?: Point2D):void {
     let boundedScale = Math.max(0.5, Math.min(1500, scale));
 
     this.canvasManager.setScale(scale, focalPoint);
     this.animator.repaint();
   }
 
-  scaleBy(scale: number, focalPoint?: Point2D) {
+  scaleBy(scale: number, focalPoint?: Point2D):void {
     this.setScale(this.canvasManager.scale * scale, focalPoint);
+  }
+
+  destroy():void {
+    this.animator.stop();
+
+    if (this.output)
+      this.output.clear();
   }
 
 }

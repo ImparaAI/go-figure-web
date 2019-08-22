@@ -39,6 +39,9 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.eventRouter)
       this.eventRouter.unregister();
+
+    if (this.drawing)
+      this.drawing.animator.stop();
   }
 
 }

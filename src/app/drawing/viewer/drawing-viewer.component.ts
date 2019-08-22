@@ -14,6 +14,7 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   id: number;
   drawing: Drawing;
   loading: boolean = true;
+  longPollTimeout: NodeJS.Timer;
   minTimeInterval: number = 0.0001;
   displayVectorCount: number = 0;
 
@@ -27,8 +28,8 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.drawing)
-      this.drawing.animator.stop();
+    if (this.longPollTimeout)
+      clearTimeout(this.longPollTimeout)
   }
 
   onCanvasReady(drawing: Drawing) {
@@ -36,13 +37,20 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
   }
 
   async load() {
-    try {
-      let drawingData = await this.api.getDrawing(this.id);
+    let drawingData;
 
+    try {
+      drawingData = await this.api.getDrawing(this.id);
+    }
+    catch (e) {
+      this.router.navigateByUrl('404', {skipLocationChange: true});
+    }
+    finally {
       if (!drawingData.drawVectors.length) {
-        setTimeout(()=>{
-          this.loading = false;
-          this.load()
+        this.loading = false;
+
+        this.longPollTimeout = setTimeout(()=>{
+          this.load();
         }, 1000)
       }
       else {
@@ -51,9 +59,6 @@ export class DrawingViewerComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.drawing.animator.start();
       }
-    }
-    catch (e) {
-      this.router.navigateByUrl('404', {skipLocationChange: true});
     }
   }
 

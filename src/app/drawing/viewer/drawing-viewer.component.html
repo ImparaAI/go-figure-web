@@ -1,9 +1,9 @@
-<div class="processing" *ngIf="!loading && !drawing?.maxVectorCount">
+<div class="processing wait-text" *ngIf="!loading && !drawing?.maxVectorCount">
   <div class="main">Hang tight...the drawing is being generated.</div>
   <div class="sub">While you wait, check out these drawings submitted by other people..</div>
 </div>
 
-<div class="processing" *ngIf="loading">
+<div class="loading wait-text" *ngIf="loading">
   <div class="main">Loading...</div>
 </div>
 
@@ -11,7 +11,7 @@
   Drawing #{{id}}
 </h2>
 
-<div class="drawing" [hidden]="loading || (drawing?.maxVectorCount == 0)">
+<div class="drawing" [hidden]="loading || !drawing?.maxVectorCount">
   <div class="c-canvas-container">
     <iai-drawing-animator
       width="700"
