@@ -20,5 +20,5 @@ if [ $DEVELOPMENT == true ]; then
 else
   touch /var/healthy
 
-  supervisord
+  /usr/sbin/nginx -g "daemon off;"
 fi
