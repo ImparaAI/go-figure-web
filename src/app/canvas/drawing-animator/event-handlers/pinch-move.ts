@@ -26,7 +26,7 @@ export class PinchMove extends EventHandler {
 
   protected calculateCenterpoint(e: any): Point2D {
     let parentDimensions: DOMRect = this.drawing.canvasManager.element.parentElement.getBoundingClientRect() as DOMRect,
-        x: number = e.center.x - parentDimensions.x,
+        x: number = e.center.x - parentDimensions.x - this.drawing.canvasManager.element.offsetLeft,
         y: number = e.center.y - parentDimensions.y;
 
     return new Point2D(x, y);
