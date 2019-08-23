@@ -40,7 +40,7 @@ RUN ln -s /app/node_modules/@angular/cli/bin/ng /usr/bin
 
 RUN ./node_modules/.bin/ng build --prod
 
-EXPOSE 80 49153
+EXPOSE 80
 
 ENV TERM=xterm-color \
     DEVELOPMENT=true \
