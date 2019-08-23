@@ -15,8 +15,20 @@ export class PinchMove extends EventHandler {
     if (!this.drawing.pinchStartScale)
       return;
 
-    let scale = (e.scale - 1) / 1.5 + 1;
+    this.drawing.setScale(this.calculateScale(e), this.calculateCenterpoint(e));
+  }
 
-    this.drawing.setScale(this.drawing.pinchStartScale * scale, new Point2D(e.center.x, e.center.y));
+  protected calculateScale(e: any): number {
+    let adjustedScaleFactor: number = (e.scale - 1) / 1.5 + 1;
+
+    return this.drawing.pinchStartScale * adjustedScaleFactor;
+  }
+
+  protected calculateCenterpoint(e: any): Point2D {
+    let parentDimensions: DOMRect = this.drawing.canvasManager.element.parentElement.getBoundingClientRect() as DOMRect,
+        x: number = e.center.x - parentDimensions.x,
+        y: number = e.center.y - parentDimensions.y;
+
+    return new Point2D(x, y);
   }
 }
