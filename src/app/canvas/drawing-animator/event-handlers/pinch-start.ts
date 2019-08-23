@@ -12,6 +12,8 @@ export class PinchStart extends EventHandler {
   }
 
   public handle(e: any): void {
-    this.drawing.startPinch();
+    let pointers = e.pointers.map((pointer) => new Point2D(pointer.x, pointer.y));
+
+    this.drawing.startPinch(pointers);
   }
 }
