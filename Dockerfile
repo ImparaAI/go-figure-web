@@ -1,4 +1,4 @@
-FROM alpine:edge as dev
+FROM alpine:edge as builder
 
 # Install packages
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
@@ -29,36 +29,37 @@ RUN ln -snf /bin/bash /bin/sh && \
     rm -fr /var/cache/apk/*
 
 # Install app
-COPY . /var/www/go-figure
-WORKDIR /var/www/go-figure
+COPY . /app
+WORKDIR /app
 
-RUN cd /var/www/go-figure && \
+RUN cd /app && \
     npm install -g npm && \
     npm install
+
+RUN ln -s /app/node_modules/.bin/ng /usr/bin
 
 RUN ./node_modules/.bin/ng build --prod
 
 EXPOSE 80 49153
 
 ENV TERM=xterm-color \
+    DEVELOPMENT=true \
     CHROME_BIN=/usr/bin/chromium-browser \
     CHROME_PATH=/usr/lib/chromium/
 
 CMD ["sh", "/bin/start.sh"]
 
 
+FROM alpine as final
 
+COPY --from=builder /app/dist /app
+COPY --from=builder /bin/start.sh /bin/start.sh
 
-FROM alpine:edge as prod
-
-COPY --from=dev /bin/start.sh /bin/start.sh
-COPY --from=dev /var/www/go-figure/dist /var/www/go-figure/dist
+WORKDIR /app
 
 # Set up nginx
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-RUN apk --no-cache add nginx && \
-    mkdir -p /run/nginx && \
-    rm -fr /var/cache/apk/*
+RUN apk --no-cache add nginx
 
 EXPOSE 80
 
