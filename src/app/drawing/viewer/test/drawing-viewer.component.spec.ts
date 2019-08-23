@@ -45,8 +45,6 @@ describe('DrawingViewerComponent', () => {
     canvas = fixture.debugElement.query(By.css('canvas'));
   });
 
-  return;
-
   it('should show the loading page', () => {
     let json = require('./api-mock-processing.json');
 

@@ -18,7 +18,5 @@ export class PinchMove extends EventHandler {
     let scale = (e.scale - 1) / 1.5 + 1;
 
     this.drawing.setScale(this.drawing.pinchStartScale * scale, new Point2D(e.center.x, e.center.y));
-
-    this.drawing.log = JSON.stringify(e);
   }
 }
