@@ -11,6 +11,7 @@ export class TouchMove extends EventHandler {
   }
 
   public handle(e: any): void {
-    this.drawing.moveCursor(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    if (e.touches.length == 1)
+      this.drawing.moveCursor(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
   }
 }

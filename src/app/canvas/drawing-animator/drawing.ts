@@ -15,6 +15,7 @@ export class Drawing {
   maxVectorCount: number;
   originalPoints: Point3D[];
   pinchStartScale: number | null;
+  pointers: Point2D[];
 
   constructor(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
@@ -52,23 +53,32 @@ export class Drawing {
     }
   }
 
-  startPinch() {
+  startPinch(pointers: Point2D[]): void {
     this.pinchStartScale = this.canvasManager.scale;
+    this.pointers = pointers;
   }
 
-  endPinch() {
+  endPinch(): void {
     this.pinchStartScale = null;
+    this.pointers = [];
   }
 
-  setScale(scale: number, focalPoint?: Point2D) {
+  setScale(scale: number, focalPoint?: Point2D): void {
     let boundedScale = Math.max(0.5, Math.min(1500, scale));
 
     this.canvasManager.setScale(boundedScale, focalPoint);
     this.animator.repaint();
   }
 
-  scaleBy(scale: number, focalPoint?: Point2D) {
+  scaleBy(scale: number, focalPoint?: Point2D): void {
     this.setScale(this.canvasManager.scale * scale, focalPoint);
+  }
+
+  destroy(): void {
+    this.animator.stop();
+
+    if (this.output)
+      this.output.clear();
   }
 
 }

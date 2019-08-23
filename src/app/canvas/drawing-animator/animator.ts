@@ -31,7 +31,6 @@ export class Animator {
   stop()  {
     this.time = 0;
     this.isAnimating = false;
-    this.drawing.output.clear();
   }
 
   start()  {
