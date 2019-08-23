@@ -78,3 +78,7 @@
 <div class="why" [hidden]="loading || (drawing?.maxVectorCount == 0)">
   <a [routerLink]="['/inspiration']">I don't get it...</a>
 </div>
+
+<div style="background: white;">
+  {{drawing?.log}}
+</div>
