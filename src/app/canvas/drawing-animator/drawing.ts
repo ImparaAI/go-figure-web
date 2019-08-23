@@ -16,6 +16,8 @@ export class Drawing {
   originalPoints: Point3D[];
   pinchStartScale: number | null;
 
+  log: string;
+
   constructor(canvasManager: CanvasManager) {
     this.canvasManager = canvasManager;
     this.animator = new Animator(this);
