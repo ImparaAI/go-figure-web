@@ -30,10 +30,12 @@ export class DrawingAnimatorComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.canvasManager = new CanvasManager(this.canvas.nativeElement);
-    this.drawing = new Drawing(this.canvasManager);
-    this.eventRouter = new EventRouter(this.canvas, this.renderer, this.drawing);
-    this.canvasInitialized.emit(this.drawing);
+    setTimeout(() => {
+      this.canvasManager = new CanvasManager(this.canvas.nativeElement);
+      this.drawing = new Drawing(this.canvasManager);
+      this.eventRouter = new EventRouter(this.canvas, this.renderer, this.drawing);
+      this.canvasInitialized.emit(this.drawing);
+    });
   }
 
   ngOnDestroy() {
