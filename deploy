@@ -1,6 +1,7 @@
 #!/bin/bash
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 docker push imparaai/go-figure-web
+docker push imparaai/go-figure-web:dev
 
 openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv -in gce-deploy-service-account.json.enc -out gce-deploy-service-account.json -d
 

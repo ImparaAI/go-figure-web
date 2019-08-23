@@ -7,12 +7,13 @@ env:
 cache:
   directories:
   - $HOME/google-cloud-sdk
-before_install:
+before_script:
+  - docker build --target builder -t imparaai/go-figure-web:dev .
   - docker build -t imparaai/go-figure-web .
-  - docker run -d --name web imparaai/go-figure-web
+  - docker run -d --name web imparaai/go-figure-web:dev
 script:
-  - docker exec web bash -c "/var/www/go-figure/node_modules/@angular/cli/bin/ng test --watch=false"
-  - docker exec web bash -c "/var/www/go-figure/node_modules/@angular/cli/bin/ng e2e --port 4202"
+  - docker exec web bash -c "ng test --watch=false"
+  - docker exec web bash -c "ng e2e --port 4202"
 deploy:
   provider: script
   script: bash deploy
