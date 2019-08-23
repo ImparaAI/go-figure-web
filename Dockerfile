@@ -36,7 +36,7 @@ RUN cd /app && \
     npm install -g npm && \
     npm install
 
-RUN ln -s /app/node_modules/.bin/ng /usr/bin
+RUN ln -s /app/node_modules/@angular/cli/bin/ng /usr/bin
 
 RUN ./node_modules/.bin/ng build --prod
 
