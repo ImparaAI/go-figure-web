@@ -19,7 +19,7 @@ export class PinchMove extends EventHandler {
   }
 
   protected calculateScale(e: any): number {
-    let adjustedScaleFactor: number = (e.scale - 1) / 1.5 + 1;
+    let adjustedScaleFactor: number = (e.scale - 1) / 1.3 + 1;
 
     return this.drawing.pinchStartScale * adjustedScaleFactor;
   }
