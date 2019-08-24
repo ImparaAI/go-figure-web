@@ -12,8 +12,8 @@ before_script:
   - docker build -t imparaai/go-figure-web .
   - docker run -d --name web imparaai/go-figure-web:dev
 script:
-  - docker exec web bash -c "ng test --watch=false"
-  - docker exec web bash -c "ng e2e --port 4202"
+  - docker exec web /bin/sh -c "ng test --watch=false"
+  - docker exec web /bin/sh -c "ng e2e --port 4202"
 deploy:
   provider: script
   script: bash deploy
