@@ -39,4 +39,4 @@ RUN apk --no-cache add nginx
 WORKDIR /app
 EXPOSE 80
 
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+CMD ["/usr/sbin/nginx", "-g", "pid /tmp/nginx.pid; daemon off;"]
