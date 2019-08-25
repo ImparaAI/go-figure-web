@@ -11,6 +11,8 @@ export class TouchEnd extends TouchEventHandler {
   }
 
   public handle(e: any): void {
+    e.preventDefault();
+
     this.drawing.painter.mouseOutside();
 
     if (this.drawing.finalizer.running)

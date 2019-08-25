@@ -11,6 +11,8 @@ export class TouchMove extends TouchEventHandler {
   }
 
   public handle(e: any): void {
+    e.preventDefault();
+
     let position = this.getPosition(e);
 
     this.drawing.painter.mouseOutside();
